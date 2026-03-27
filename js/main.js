@@ -208,3 +208,32 @@ function displayCart(containerId) {
 
   container.innerHTML += `<h3>Total: KES ${total}</h3>`;
 }
+
+// ======================
+// WHATSAPP CHECKOUT
+// ======================
+function checkoutWhatsApp() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  let message = "Hello DK World Kenya,%0A%0AI want to order:%0A";
+
+  let total = 0;
+
+  cart.forEach(item => {
+    message += `- ${item.name} (KES ${item.price})%0A`;
+    total += item.price;
+  });
+
+  message += `%0ATotal: KES ${total}%0A%0A`;
+  message += "Please guide me on payment and delivery.";
+
+  const phoneNumber = "254710346425"; // your number
+  const url = `https://wa.me/${phoneNumber}?text=${message}`;
+
+  window.open(url, "_blank");
+}
