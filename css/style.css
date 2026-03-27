@@ -211,3 +211,49 @@ button:hover {
     background: #F3F4F6;
   }
 }
+
+
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 50px 20px;
+  background: #1E3A8A;
+  color: white;
+}
+
+.hero button {
+  margin-top: 15px;
+}
+
+/* CATEGORIES */
+.categories {
+  padding: 30px;
+  text-align: center;
+}
+
+.category-list {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.category {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 250px;
+}
+
+/* TRUST */
+.trust {
+  text-align: center;
+  padding: 30px;
+}
+
+.trust-box {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
