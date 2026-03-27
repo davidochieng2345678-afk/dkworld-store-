@@ -1,1 +1,18 @@
+<h2>Add Product</h2>
 
+<input id="name" placeholder="Name"><br>
+<input id="price" placeholder="Price"><br>
+<input id="image" placeholder="Image URL"><br>
+
+<button onclick="add()">Add</button>
+
+<script src="js/main.js"></script>
+<script>
+function add(){
+  saveProduct(
+    document.getElementById("name").value,
+    document.getElementById("price").value,
+    document.getElementById("image").value
+  );
+}
+</script>
