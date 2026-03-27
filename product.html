@@ -1,1 +1,17 @@
+<div id="product"></div>
 
+<script src="js/main.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const name = params.get("name");
+
+const products = JSON.parse(localStorage.getItem("products")) || [];
+const product = products.find(p=>p.name === name);
+
+document.getElementById("product").innerHTML = `
+  <h2>${product.name}</h2>
+  <img src="${product.image}" width="200">
+  <p>KES ${product.price}</p>
+  <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+`;
+</script>
