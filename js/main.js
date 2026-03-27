@@ -1,50 +1,52 @@
-  // ======================
-// MENU TOGGLE
+// ======================
+// INIT
 // ======================
 document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.getElementById("menu-toggle");
-  const menu = document.getElementById("menu");
-  if (toggle && menu) {
-    toggle.addEventListener("click", () => {
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
-    });
-  }
-
-  // Display products after DOM loaded
+  initMenu();
   displayProducts("productsContainer");
+  loadProductPage();
 });
 
 // ======================
-// PRODUCTS STORAGE
+// MENU
 // ======================
-let products = [
-  {
-    id: 1,
-    name: "DK World Website Template",
-    price: 5000,
-    sku: "DKW001",
-    description: "Premium ready-to-use website for small businesses.",
-    images: ["../images/product1.png"],
-    video: "https://youtu.be/xyz123",
-    stock: 10,
-    category: "Websites",
-    tags: ["website", "template", "digital product"],
-    faq: [
-      { question: "Can I customize this?", answer: "Yes, fully customizable." },
-      { question: "Is support included?", answer: "Yes, 30 days free support." }
-    ],
-    createdAt: new Date().toISOString()
-  }
-];
+function initMenu() {
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("menu");
 
-function saveProduct(product) {
-  products.push(product);
-  localStorage.setItem("products", JSON.stringify(products));
-  alert("Product added!");
+  if (toggle && menu) {
+    toggle.addEventListener("click", () => {
+      if (menu.style.display === "flex") {
+        menu.style.display = "none";
+      } else {
+        menu.style.display = "flex";
+        menu.style.flexDirection = "column";
+      }
+    });
+  }
 }
 
+// ======================
+// STORAGE
+// ======================
 function getProducts() {
-  return JSON.parse(localStorage.getItem("products")) || products;
+  return JSON.parse(localStorage.getItem("products")) || [];
+}
+
+function saveProducts(products) {
+  localStorage.setItem("products", JSON.stringify(products));
+}
+
+function addProduct(product) {
+  let products = getProducts();
+
+  product.id = Date.now();
+  product.createdAt = new Date().toISOString();
+
+  products.push(product);
+  saveProducts(products);
+
+  alert("Product added successfully!");
 }
 
 // ======================
@@ -54,42 +56,39 @@ function displayProducts(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  const items = getProducts();
+  const products = getProducts();
   container.innerHTML = "";
 
-  items.forEach(p => {
+  // Remove old schema
+  document.querySelectorAll('script[type="application/ld+json"]').forEach(el => el.remove());
+
+  products.forEach(p => {
     container.innerHTML += `
-      <div class="product-card">
-        <img src="${p.images[0]}" alt="${p.name}">
+      <div class="product">
+        <img src="${p.images?.[0] || p.image}" alt="${p.name}">
         <h3>${p.name}</h3>
-        <p>${p.description}</p>
-        <p>Price: KES ${p.price}</p>
-        <button onclick="addToCart('${p.id}')">Add to Cart</button>
-        <a href="product.html?id=${p.id}">View Details</a>
+        <p>KES ${p.price}</p>
+        <button onclick="addToCart(${p.id})">Add to Cart</button>
+        <br><br>
+        <a href="product.html?id=${p.id}">View</a>
       </div>
     `;
 
-    // JSON-LD Schema for SEO
     const schema = {
       "@context": "https://schema.org/",
       "@type": "Product",
       "name": p.name,
-      "sku": p.sku,
-      "description": p.description,
-      "image": p.images,
-      "video": p.video || undefined,
+      "sku": p.sku || "",
+      "description": p.description || "",
+      "image": p.images || [p.image],
       "offers": {
         "@type": "Offer",
         "priceCurrency": "KES",
         "price": p.price,
-        "availability": p.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-        "url": window.location.href
-      },
-      "review": p.faq.length > 0 ? {
-        "@type": "Review",
-        "reviewRating": { "@type": "Rating", "ratingValue": 5, "bestRating": 5 },
-        "author": { "@type": "Person", "name": "Happy Customer" }
-      } : undefined
+        "availability": p.stock > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock"
+      }
     };
 
     const script = document.createElement("script");
@@ -100,24 +99,108 @@ function displayProducts(containerId) {
 }
 
 // ======================
-// CART FUNCTIONS
+// PRODUCT PAGE
+// ======================
+function loadProductPage() {
+  const container = document.getElementById("product");
+  if (!container) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  const product = getProducts().find(p => p.id == id);
+
+  if (!product) {
+    container.innerHTML = "<p style='color:red;'>Product not found</p>";
+    return;
+  }
+
+  container.innerHTML = `
+    <div style="background:white; padding:20px; border-radius:12px;">
+      <h2>${product.name}</h2>
+
+      ${product.images
+        ? product.images.map(img => `<img src="${img}" width="200">`).join("")
+        : `<img src="${product.image}" width="200">`
+      }
+
+      ${product.video ? `
+        <div class="video">
+          <iframe width="100%" height="300" src="${product.video}" frameborder="0" allowfullscreen></iframe>
+        </div>
+      ` : ""}
+
+      <p><strong>Price:</strong> KES ${product.price}</p>
+      <p><strong>SKU:</strong> ${product.sku || "N/A"}</p>
+      <p><strong>Stock:</strong> ${product.stock > 0 ? "In Stock" : "Out of Stock"}</p>
+
+      <p>${product.description || ""}</p>
+
+      <button onclick="addToCart(${product.id})">Add to Cart</button>
+
+      ${product.faq?.length ? `
+        <h3>FAQs</h3>
+        ${product.faq.map(f => `
+          <p><strong>${f.question}</strong><br>${f.answer}</p>
+        `).join("")}
+      ` : ""}
+    </div>
+  `;
+
+  // Clear old schema
+  document.querySelectorAll('script[type="application/ld+json"]').forEach(el => el.remove());
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "sku": product.sku,
+    "description": product.description,
+    "image": product.images,
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "KES",
+      "price": product.price,
+      "availability": product.stock > 0
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock"
+    }
+  };
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.text = JSON.stringify(schema);
+  document.head.appendChild(script);
+}
+
+// ======================
+// CART
 // ======================
 function addToCart(productId) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   const product = getProducts().find(p => p.id == productId);
+
   if (!product) return alert("Product not found!");
 
-  cart.push({ id: product.id, name: product.name, price: product.price });
+  cart.push({
+    id: product.id,
+    name: product.name,
+    price: product.price
+  });
+
   localStorage.setItem("cart", JSON.stringify(cart));
   alert("Added to cart!");
 }
 
 function displayCart(containerId) {
   const container = document.getElementById(containerId);
+  if (!container) return;
+
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
   container.innerHTML = "";
 
   let total = 0;
+
   cart.forEach(item => {
     total += item.price;
     container.innerHTML += `<p>${item.name} - KES ${item.price}</p>`;
