@@ -6,12 +6,51 @@ const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
 
 const products = JSON.parse(localStorage.getItem("products")) || [];
-const product = products.find(p=>p.name === name);
+const product = products.find(p => p.name === name);
 
-document.getElementById("product").innerHTML = `
-  <h2>${product.name}</h2>
-  <img src="${product.image}" width="200">
-  <p>KES ${product.price}</p>
-  <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
-`;
+if(product){
+  document.getElementById("product").innerHTML = `
+    <h2>${product.name}</h2>
+    <img src="${product.images[0]}" width="300" alt="${product.name}">
+    ${product.video ? `<div class="video"><iframe width="400" height="225" src="${product.video}" frameborder="0" allowfullscreen></iframe></div>` : ""}
+    <p><strong>Price:</strong> KES ${product.price}</p>
+    <p><strong>SKU:</strong> ${product.sku || "N/A"}</p>
+    <p><strong>Category:</strong> ${product.category}</p>
+    <p><strong>Stock:</strong> ${product.stock > 0 ? "In Stock" : "Out of Stock"}</p>
+    <p>${product.description}</p>
+    <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+
+    ${product.faq && product.faq.length > 0 ? `<h3>FAQs</h3>
+      <ul>
+        ${product.faq.map(f => `<li><strong>${f.question}</strong><br>${f.answer}</li>`).join('')}
+      </ul>` : ""}
+  `;
+
+  // Add JSON-LD schema for SEO
+  const schema = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": product.name,
+    "sku": product.sku,
+    "description": product.description,
+    "image": product.images,
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "KES",
+      "price": product.price,
+      "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "url": window.location.href
+    },
+    "review": product.faq && product.faq.length > 0 ? {
+      "@type": "Review",
+      "reviewRating": { "@type": "Rating", "ratingValue": 5, "bestRating": 5 },
+      "author": { "@type": "Person", "name": "Happy Customer" }
+    } : undefined
+  };
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.text = JSON.stringify(schema);
+  document.head.appendChild(script);
+}
 </script>
