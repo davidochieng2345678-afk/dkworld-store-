@@ -1,78 +1,213 @@
-body {
-  font-family: Arial, sans-serif;
+/* ====== BASE STYLES ====== */
+* {
+  box-sizing: border-box;
   margin: 0;
-  background: #fff;
-}
-
-header {
-  background: #800000;
-  color: white;
-  padding: 15px;
-  text-align: center;
-}
-
-nav ul {
-  list-style: none;
-  display: none;
   padding: 0;
+  font-family: 'Inter', sans-serif;
 }
 
-nav ul li {
-  padding: 10px;
+body {
+  background-color: #F3F4F6; /* light gray */
+  color: #111827; /* dark text */
+  line-height: 1.6;
 }
 
-nav ul li a {
-  color: white;
+a {
   text-decoration: none;
+  color: #1E3A8A; /* deep blue */
+}
+
+ul {
+  list-style: none;
+}
+
+/* ====== HEADER & NAV ====== */
+header {
+  background-color: #1E3A8A; /* deep blue */
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  font-size: 1.8rem;
+}
+
+nav ul.menu {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+nav ul.menu li {
+  position: relative;
+}
+
+nav ul.menu li a {
+  color: white;
+  font-weight: 500;
 }
 
 .menu-toggle {
+  display: none;
+  font-size: 1.5rem;
   cursor: pointer;
-  font-size: 22px;
 }
 
-/* Products */
-#productsContainer {
+/* Dropdown */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  color: #111827;
+  min-width: 150px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content li a {
+  display: block;
+  padding: 10px 15px;
+  color: #111827;
+}
+
+.dropdown-content li a:hover {
+  background-color: #F3F4F6;
+}
+
+/* ====== PRODUCTS GRID ====== */
+.products, #product {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
-  padding: 20px;
+  padding: 30px;
 }
 
+/* Product Card */
 .product {
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 10px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  padding: 15px;
   text-align: center;
+  transition: transform 0.2s;
+}
+
+.product:hover {
+  transform: translateY(-5px);
 }
 
 .product img {
-  width: 100%;
-  border-radius: 10px;
+  max-width: 100%;
+  border-radius: 8px;
 }
 
-/* Buttons */
+.product h3 {
+  margin: 10px 0 5px;
+  font-size: 1.2rem;
+  color: #1E3A8A;
+}
+
+.product p {
+  margin: 5px 0;
+}
+
+/* ====== BUTTONS ====== */
 button {
-  background: #800000;
+  background-color: #10B981; /* green */
   color: white;
   border: none;
-  padding: 10px;
+  padding: 10px 15px;
+  border-radius: 6px;
   cursor: pointer;
-  border-radius: 5px;
+  font-weight: bold;
+  transition: background 0.2s;
 }
 
 button:hover {
-  background: #5a0000;
+  background-color: #059669; /* darker green on hover */
 }
 
-/* WhatsApp Button */
-.whatsapp {
+/* ====== PRODUCT PAGE ====== */
+#product img {
+  margin-bottom: 15px;
+}
+
+#product .video {
+  margin: 15px 0;
+}
+
+#product h2 {
+  color: #1E3A8A;
+  margin-bottom: 10px;
+}
+
+#product h3 {
+  margin-top: 20px;
+  color: #111827;
+}
+
+#product ul li {
+  margin-bottom: 10px;
+}
+
+/* ====== CART ====== */
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.cart-total {
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+/* ====== WHATSAPP FLOAT BUTTON ====== */
+.whatsapp-float {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #25D366;
-  color: white;
-  padding: 15px;
-  border-radius: 50%;
-  text-decoration: none;
+  bottom: 25px;
+  right: 25px;
+  z-index: 100;
+}
+
+.whatsapp-float img {
+  width: 50px;
+  height: 50px;
+}
+
+/* ====== MEDIA QUERIES ====== */
+@media(max-width: 768px) {
+  nav ul.menu {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #1E3A8A;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    padding: 10px 20px;
+    border-radius: 8px;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .dropdown-content {
+    position: static;
+    box-shadow: none;
+    border-radius: 0;
+    background: #F3F4F6;
+  }
 }
