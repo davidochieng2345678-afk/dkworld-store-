@@ -1,1 +1,15 @@
+<h2>Checkout</h2>
 
+<form id="form">
+<input placeholder="Name" required><br>
+<input placeholder="Phone" required><br>
+<button>Order</button>
+</form>
+
+<script>
+document.getElementById("form").addEventListener("submit", e=>{
+  e.preventDefault();
+  alert("Order placed!");
+  localStorage.removeItem("cart");
+});
+</script>
