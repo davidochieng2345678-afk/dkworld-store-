@@ -189,22 +189,19 @@ function loadProductPage() {
   script.text = JSON.stringify(schema);
   document.head.appendChild(script);
 }
-
-
-
 // ======================
 // ADVANCED CART (IMAGE + QUANTITY)
 // ======================
-function addToCart(productId) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const product = getProducts().find(p => p.id == productId);
 
+// Add a product to the cart
+function addToCart(productId) {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const product = getProducts().find(p => p.id == productId);
   if (!product) return alert("Product not found!");
 
-  const existing = cart.find(item => item.id === product.id);
-
-  if (existing) {
-    existing.quantity += 1;
+  const existingItem = cart.find(item => item.id === product.id);
+  if (existingItem) {
+    existingItem.quantity += 1;
   } else {
     cart.push({
       id: product.id,
@@ -215,44 +212,41 @@ function addToCart(productId) {
     });
   }
 
-  localStorage.setItem("cart", JSON.stringify(cart));
+  saveCart(cart);
   displayCart("cartContainer");
+  updateCartCount();
 }
 
+// Display cart contents
 function displayCart(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
   container.innerHTML = "";
 
-  if (cart.length === 0) {
+  if (!cart.length) {
     container.innerHTML = `<p style="text-align:center;">Your cart is empty 🛒</p>`;
     return;
   }
 
   let total = 0;
-
   cart.forEach((item, index) => {
-    total += item.price * item.quantity;
+    const itemTotal = item.price * item.quantity;
+    total += itemTotal;
 
     container.innerHTML += `
       <div style="display:flex; align-items:center; gap:10px; padding:10px; border-bottom:1px solid #ddd;">
-
         <img src="${item.image}" style="width:60px; height:60px; object-fit:cover; border-radius:6px;">
-
         <div style="flex:1;">
           <strong>${item.name}</strong><br>
-          KES ${item.price} × ${item.quantity}<br>
-          <b>KES ${item.price * item.quantity}</b>
+          KES ${item.price} × ${item.quantity} = <b>KES ${itemTotal}</b>
         </div>
-
         <div>
           <button onclick="updateQuantity(${index}, -1)">-</button>
           <button onclick="updateQuantity(${index}, 1)">+</button>
           <button onclick="removeFromCart(${index})" style="background:red; color:white;">X</button>
         </div>
-
       </div>
     `;
   });
@@ -265,50 +259,66 @@ function displayCart(containerId) {
   `;
 }
 
+// Update item quantity
 function updateQuantity(index, change) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
   cart[index].quantity += change;
+  if (cart[index].quantity <= 0) cart.splice(index, 1);
 
-  if (cart[index].quantity <= 0) {
-    cart.splice(index, 1);
-  }
-
-  localStorage.setItem("cart", JSON.stringify(cart));
+  saveCart(cart);
   displayCart("cartContainer");
+  updateCartCount();
 }
 
+// Remove item from cart
 function removeFromCart(index) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
   cart.splice(index, 1);
-  localStorage.setItem("cart", JSON.stringify(cart));
+
+  saveCart(cart);
   displayCart("cartContainer");
+  updateCartCount();
 }
 
+// Checkout via WhatsApp
 function checkoutWhatsApp() {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  if (!cart.length) return alert("Your cart is empty!");
 
-  if (cart.length === 0) {
-    alert("Your cart is empty!");
-    return;
-  }
-
-  let message = "Hello DK World Kenya,%0A%0AI want to order:%0A";
   let total = 0;
+  let message = "Hello DK World Kenya,%0A%0AI want to order:%0A";
 
   cart.forEach(item => {
-    message += `- ${item.name} × ${item.quantity} (KES ${item.price * item.quantity})%0A`;
-    total += item.price * item.quantity;
+    const itemTotal = item.price * item.quantity;
+    total += itemTotal;
+    message += `- ${item.name} × ${item.quantity} (KES ${itemTotal})%0A`;
   });
 
   message += `%0ATotal: KES ${total}%0A`;
-
   const url = `https://wa.me/254710346425?text=${message}`;
   window.open(url, "_blank");
 }
 
+// Save cart to localStorage
+function saveCart(cart) {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+// Update cart count badge
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const countEl = document.getElementById("cartCount");
+  if (countEl) countEl.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+// Initialize cart display on page load
 document.addEventListener("DOMContentLoaded", () => {
   displayCart("cartContainer");
+  updateCartCount();
 });
+
+
+
 
   
 // ======================
