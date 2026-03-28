@@ -1,15 +1,111 @@
-<h2>Your Cart 🛒</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart | DK World Kenya</title>
 
-<div id="cartContainer"></div>
+  <link rel="stylesheet" href="css/style.css">
 
-<br>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0 15px;
+    }
 
-<button onclick="checkoutWhatsApp()">
-  Order via WhatsApp 💬
-</button>
+    h2 {
+      text-align: center;
+      margin: 20px 0;
+    }
 
-<script src="js/main.js"></script>
+    .cart-container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
 
-<script>
-  displayCart("cartContainer");
-</script>
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+      flex-wrap: wrap;
+    }
+
+    .cart-item img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .cart-info {
+      flex: 1;
+    }
+
+    .cart-actions button {
+      margin: 2px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .qty-btn {
+      background: #ddd;
+    }
+
+    .remove-btn {
+      background: #EF4444;
+      color: white;
+    }
+
+    .total {
+      font-size: 18px;
+      margin-top: 15px;
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background: #25D366;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .empty {
+      text-align: center;
+      color: #777;
+      padding: 30px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Your Cart 🛒</h2>
+
+  <div class="cart-container">
+    <div id="cartContainer"></div>
+  </div>
+
+  <script src="js/main.js"></script>
+
+  <script>
+    displayCart("cartContainer");
+  </script>
+
+</body>
+</html>
