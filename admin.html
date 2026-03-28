@@ -4,45 +4,94 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DK World Kenya | Admin Panel</title>
-  <meta name="description" content="Admin panel to add new products to DK World Kenya.">
+  <meta name="description" content="Admin panel to add, edit, and manage products for DK World Kenya.">
   <link rel="stylesheet" href="css/style.css">
   <style>
+    main {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
     input, textarea, select, button {
       width: 100%;
       padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 6px;
+      margin-bottom: 15px;
+      border-radius: 8px;
       border: 1px solid #ccc;
-      box-sizing: border-box;
+      font-size: 1rem;
     }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
     button {
-      background: #25D366;
+      background-color: #1E3A8A;
       color: white;
       border: none;
       cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
     }
+
     button:hover {
-      background: #128C7E;
+      background-color: #111E6C;
     }
-    #existingProducts div img {
-      width: 50px;
-      height: 50px;
-      object-fit: cover;
-      margin-right: 10px;
-      border-radius: 4px;
-    }
-    #existingProducts div {
+
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      border: 1px solid #ccc;
-      padding: 8px;
-      margin-bottom: 10px;
-      border-radius: 6px;
+      align-items: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
     }
-    #existingProducts a {
-      text-decoration: none;
-      color: #000;
+
+    .product-card a {
+      color: #1E3A8A;
+      font-weight: 500;
+    }
+
+    .delete-btn {
+      background: #EF4444;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .delete-btn:hover {
+      background: #C22E2E;
+    }
+
+    .edit-btn {
+      background: #3B82F6;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .edit-btn:hover {
+      background: #1E40AF;
+    }
+
+    h2 {
+      color: #1E3A8A;
+      margin-bottom: 15px;
+    }
+
+    h3 {
+      margin-top: 25px;
+      color: #111827;
     }
   </style>
 </head>
@@ -59,51 +108,74 @@
   </nav>
 </header>
 
-<main style="padding: 20px; max-width: 800px; margin: auto;">
-
+<main>
   <h2>Add Product</h2>
 
-  <input id="name" placeholder="Product Name">
-  <input id="price" type="number" placeholder="Price (KES)">
-  <input id="image" placeholder="Main Image URL">
+  <input id="name" placeholder="Product Name" required>
+  <input id="price" type="number" placeholder="Price (KES)" required>
+  <input id="image" placeholder="Main Image URL" required>
   <input id="images" placeholder="Extra Images (comma separated URLs)">
   <input id="video" placeholder="YouTube Video Link (optional)">
   <input id="sku" placeholder="SKU (e.g ECOM-001)">
-  <input id="stock" type="number" placeholder="Stock Quantity">
+  <input id="stock" type="number" placeholder="Stock Quantity" required>
 
   <select id="category">
     <option value="Websites">Websites</option>
     <option value="Digital Products">Digital Products</option>
   </select>
 
-  <textarea id="description" placeholder="Product Description"></textarea>
+  <textarea id="description" placeholder="Product Description" required></textarea>
 
   <h3>FAQs</h3>
   <input id="faqQ1" placeholder="Question 1">
   <input id="faqA1" placeholder="Answer 1">
+
   <input id="faqQ2" placeholder="Question 2">
   <input id="faqA2" placeholder="Answer 2">
 
-  <button onclick="addProductFromForm()">Add Product</button>
+  <button id="addUpdateBtn">Add Product</button>
 
   <h2>Existing Products</h2>
   <div id="existingProducts"></div>
 </main>
 
 <script>
-// ====== HELPER FUNCTION ======
+let editIndex = null;
+
+// ===== SAVE PRODUCTS =====
 function saveProducts(products){
   localStorage.setItem("products", JSON.stringify(products));
 }
 
-// ====== ADD PRODUCT ======
-function addProductFromForm(){
+// ===== RESET FORM =====
+function resetForm(){
+  document.getElementById("name").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("image").value = "";
+  document.getElementById("images").value = "";
+  document.getElementById("video").value = "";
+  document.getElementById("sku").value = "";
+  document.getElementById("stock").value = "";
+  document.getElementById("category").selectedIndex = 0;
+  document.getElementById("description").value = "";
+  document.getElementById("faqQ1").value = "";
+  document.getElementById("faqA1").value = "";
+  document.getElementById("faqQ2").value = "";
+  document.getElementById("faqA2").value = "";
+
+  document.querySelector("h2").textContent = "Add Product";
+  document.getElementById("addUpdateBtn").textContent = "Add Product";
+  editIndex = null;
+}
+
+// ===== ADD OR UPDATE PRODUCT =====
+function addOrUpdateProduct(){
   const name = document.getElementById("name").value.trim();
   const price = parseFloat(document.getElementById("price").value);
-  const mainImage = document.getElementById("image").value.trim();
-  const extraImagesInput = document.getElementById("images").value.trim();
-  const images = extraImagesInput ? extraImagesInput.split(",").map(url => url.trim()) : [];
-  if(mainImage) images.unshift(mainImage);
+  const image = document.getElementById("image").value.trim();
+  const imagesInput = document.getElementById("images").value.trim();
+  const images = imagesInput ? imagesInput.split(",").map(i=>i.trim()) : [];
+  if(image) images.unshift(image);
   const video = document.getElementById("video").value.trim();
   const sku = document.getElementById("sku").value.trim();
   const stock = parseInt(document.getElementById("stock").value) || 0;
@@ -119,44 +191,27 @@ function addProductFromForm(){
   if(faqQ2 && faqA2) faq.push({question: faqQ2, answer: faqA2});
 
   if(!name || !price || images.length === 0 || !description){
-    alert("Please fill in all required fields: Name, Price, Main Image, Description");
+    alert("Please fill in all required fields (name, price, main image, description).");
     return;
   }
 
-  const newProduct = { name, price, images, video, sku, stock, category, description, faq };
+  const product = { name, price, images, video, sku, stock, category, description, faq };
   const products = JSON.parse(localStorage.getItem("products")) || [];
-  products.push(newProduct);
-  saveProducts(products);
 
-  alert(`✅ Product "${name}" added successfully!`);
-  displayExistingProducts();
+  if(editIndex !== null){
+    products[editIndex] = product;
+    alert("✅ Product updated successfully!");
+  } else {
+    products.push(product);
+    alert("✅ Product added successfully!");
+  }
 
-  document.getElementById("name").value = "";
-  document.getElementById("price").value = "";
-  document.getElementById("image").value = "";
-  document.getElementById("images").value = "";
-  document.getElementById("video").value = "";
-  document.getElementById("sku").value = "";
-  document.getElementById("stock").value = "";
-  document.getElementById("description").value = "";
-  document.getElementById("faqQ1").value = "";
-  document.getElementById("faqA1").value = "";
-  document.getElementById("faqQ2").value = "";
-  document.getElementById("faqA2").value = "";
-}
-
-// ====== REMOVE PRODUCT ======
-function removeProduct(index){
-  const products = JSON.parse(localStorage.getItem("products")) || [];
-  if(!products[index]) return;
-  if(!confirm(`Are you sure you want to delete "${products[index].name}"?`)) return;
-
-  products.splice(index,1);
   saveProducts(products);
   displayExistingProducts();
+  resetForm();
 }
 
-// ====== DISPLAY PRODUCTS ======
+// ===== DISPLAY PRODUCTS =====
 function displayExistingProducts(){
   const container = document.getElementById("existingProducts");
   const products = JSON.parse(localStorage.getItem("products")) || [];
@@ -167,41 +222,73 @@ function displayExistingProducts(){
     return;
   }
 
-  products.forEach((p,index) => {
+  products.forEach((p,index)=>{
     const div = document.createElement("div");
-
-    const leftDiv = document.createElement("div");
-    leftDiv.style.display = "flex";
-    leftDiv.style.alignItems = "center";
-
-    if(p.images && p.images[0]){
-      const img = document.createElement("img");
-      img.src = p.images[0];
-      leftDiv.appendChild(img);
-    }
+    div.className = "product-card";
 
     const link = document.createElement("a");
     link.href = `product.html?name=${encodeURIComponent(p.name)}`;
     link.target = "_blank";
     link.textContent = `${p.name} (${p.category}) - KES ${p.price} - Stock: ${p.stock}`;
-    leftDiv.appendChild(link);
 
-    const skuText = document.createElement("small");
-    skuText.textContent = ` SKU: ${p.sku}`;
-    leftDiv.appendChild(skuText);
+    const editBtn = document.createElement("button");
+    editBtn.className = "edit-btn";
+    editBtn.textContent = "Edit";
+    editBtn.onclick = ()=>editProduct(index);
 
     const deleteBtn = document.createElement("button");
+    deleteBtn.className = "delete-btn";
     deleteBtn.textContent = "Delete";
-    deleteBtn.onclick = () => removeProduct(index);
+    deleteBtn.onclick = ()=>removeProduct(index);
 
-    div.appendChild(leftDiv);
-    div.appendChild(deleteBtn);
+    const btnDiv = document.createElement("div");
+    btnDiv.style.display = "flex";
+    btnDiv.style.gap = "5px";
+    btnDiv.appendChild(editBtn);
+    btnDiv.appendChild(deleteBtn);
 
+    div.appendChild(link);
+    div.appendChild(btnDiv);
     container.appendChild(div);
   });
 }
 
+// ===== EDIT PRODUCT =====
+function editProduct(index){
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const p = products[index];
+  editIndex = index;
+
+  document.getElementById("name").value = p.name;
+  document.getElementById("price").value = p.price;
+  document.getElementById("image").value = p.images[0] || "";
+  document.getElementById("images").value = p.images.slice(1).join(", ");
+  document.getElementById("video").value = p.video;
+  document.getElementById("sku").value = p.sku;
+  document.getElementById("stock").value = p.stock;
+  document.getElementById("category").value = p.category;
+  document.getElementById("description").value = p.description;
+  document.getElementById("faqQ1").value = p.faq[0]?.question || "";
+  document.getElementById("faqA1").value = p.faq[0]?.answer || "";
+  document.getElementById("faqQ2").value = p.faq[1]?.question || "";
+  document.getElementById("faqA2").value = p.faq[1]?.answer || "";
+
+  document.querySelector("h2").textContent = "Edit Product";
+  document.getElementById("addUpdateBtn").textContent = "Save Changes";
+}
+
+// ===== DELETE PRODUCT =====
+function removeProduct(index){
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  if(!confirm(`Are you sure you want to delete "${products[index].name}"?`)) return;
+  products.splice(index,1);
+  saveProducts(products);
+  displayExistingProducts();
+}
+
+// ===== INITIALIZE =====
 document.addEventListener("DOMContentLoaded", displayExistingProducts);
+document.getElementById("addUpdateBtn").addEventListener("click", addOrUpdateProduct);
 </script>
 
 </body>
