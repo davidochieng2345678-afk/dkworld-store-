@@ -177,12 +177,31 @@ function loadProductPage() {
   document.head.appendChild(script);
 }
 
-
-
-
 // ======================
-// CART
+// CART WITH QUANTITY
 // ======================
+function addToCart(productId) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const product = getProducts().find(p => p.id == productId);
+
+  if (!product) return alert("Product not found!");
+
+  const existing = cart.find(item => item.id === product.id);
+  if (existing) {
+    existing.quantity += 1; // Increase quantity if already in cart
+  } else {
+    cart.push({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: 1
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  displayCart("cartContainer");
+}
+
 function displayCart(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -191,35 +210,91 @@ function displayCart(containerId) {
   container.innerHTML = "";
 
   if (cart.length === 0) {
-    container.innerHTML = "<p>Your cart is empty.</p>";
+    container.innerHTML = `<p style="text-align:center; color:#555;">Your cart is empty.</p>`;
     return;
   }
 
   let total = 0;
 
   cart.forEach((item, index) => {
-    total += item.price;
+    total += item.price * item.quantity;
 
     container.innerHTML += `
       <div class="cart-item" style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #ddd;">
-        <span>${item.name} - KES ${item.price}</span>
-        <button style="background-color:#EF4444; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;"
-                onclick="removeFromCart(${index})">Remove</button>
+        <span>${item.name} - KES ${item.price} × ${item.quantity} = KES ${item.price * item.quantity}</span>
+        <div>
+          <button style="padding:3px 8px; margin-right:5px;" onclick="updateQuantity(${index}, -1)">-</button>
+          <button style="padding:3px 8px; margin-right:10px;" onclick="updateQuantity(${index}, 1)">+</button>
+          <button style="background-color:#EF4444; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;"
+                  onclick="removeFromCart(${index})">Remove</button>
+        </div>
       </div>
     `;
   });
 
-  container.innerHTML += `<h3 style="margin-top:15px;">Total: KES ${total}</h3>`;
-  container.innerHTML += `<button onclick="checkoutWhatsApp()" style="padding:10px 15px; margin-top:10px; background-color:#25D366; color:white; border:none; border-radius:5px; cursor:pointer;">Checkout via WhatsApp</button>`;
+  container.innerHTML += `
+    <h3 style="margin-top:15px;">Total: KES ${total}</h3>
+    <button 
+      onclick="checkoutWhatsApp()" 
+      style="padding:10px 15px; margin-top:10px; background-color:#25D366; color:white; border:none; border-radius:5px; cursor:pointer;">
+      Checkout via WhatsApp
+    </button>
+  `;
 }
 
-// Remove an item from cart by index
+// Update quantity for a cart item
+function updateQuantity(index, change) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart[index].quantity += change;
+
+  if (cart[index].quantity <= 0) {
+    cart.splice(index, 1); // Remove item if quantity <= 0
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  displayCart("cartContainer");
+}
+
+// Remove item completely from cart
 function removeFromCart(index) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cart.splice(index, 1); // remove item at index
+  cart.splice(index, 1);
   localStorage.setItem("cart", JSON.stringify(cart));
-  displayCart("cartContainer"); // refresh cart display
+  displayCart("cartContainer");
 }
+
+// Checkout via WhatsApp
+function checkoutWhatsApp() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  let message = "Hello DK World Kenya,%0A%0AI want to order:%0A";
+  let total = 0;
+
+  cart.forEach(item => {
+    message += `- ${item.name} × ${item.quantity} (KES ${item.price * item.quantity})%0A`;
+    total += item.price * item.quantity;
+  });
+
+  message += `%0ATotal: KES ${total}%0A%0A`;
+  message += "Please guide me on payment and delivery.";
+
+  const phoneNumber = "254710346425"; // Your WhatsApp number
+  const url = `https://wa.me/${phoneNumber}?text=${message}`;
+  window.open(url, "_blank");
+}
+
+// Initialize cart on page load
+document.addEventListener("DOMContentLoaded", () => {
+  displayCart("cartContainer");
+});
+
+
+
 // ======================
 // WHATSAPP CHECKOUT
 // ======================
