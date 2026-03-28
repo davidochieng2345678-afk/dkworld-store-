@@ -293,7 +293,118 @@ document.addEventListener("DOMContentLoaded", () => {
   displayCart("cartContainer");
 });
 
+// ======================
+// CART WITH IMAGE + QUANTITY
+// ======================
+function addToCart(productId) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const product = getProducts().find(p => p.id == productId);
 
+  if (!product) return alert("Product not found!");
+
+  const existing = cart.find(item => item.id === product.id);
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images?.[0] || product.image,
+      quantity: 1
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  displayCart("cartContainer");
+}
+
+function displayCart(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  container.innerHTML = "";
+
+  if (cart.length === 0) {
+    container.innerHTML = `<div class="empty">Your cart is empty 🛒</div>`;
+    return;
+  }
+
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    total += item.price * item.quantity;
+
+    container.innerHTML += `
+      <div class="cart-item">
+        
+        <img src="${item.image}" alt="${item.name}">
+
+        <div class="cart-info">
+          <h4>${item.name}</h4>
+          <p>KES ${item.price}</p>
+          <p><strong>KES ${item.price * item.quantity}</strong></p>
+        </div>
+
+        <div class="cart-actions">
+          <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
+          <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+          <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
+        </div>
+
+      </div>
+    `;
+  });
+
+  container.innerHTML += `
+    <div class="total">Total: KES ${total}</div>
+    <button class="checkout-btn" onclick="checkoutWhatsApp()">Checkout via WhatsApp</button>
+  `;
+}
+
+function updateQuantity(index, change) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart[index].quantity += change;
+
+  if (cart[index].quantity <= 0) {
+    cart.splice(index, 1);
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  displayCart("cartContainer");
+}
+
+function removeFromCart(index) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  displayCart("cartContainer");
+}
+
+function checkoutWhatsApp() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  let message = "Hello DK World Kenya,%0A%0AI want to order:%0A";
+  let total = 0;
+
+  cart.forEach(item => {
+    message += `- ${item.name} × ${item.quantity} (KES ${item.price * item.quantity})%0A`;
+    total += item.price * item.quantity;
+  });
+
+  message += `%0ATotal: KES ${total}%0A%0A`;
+  message += "Please guide me on payment.";
+
+  const url = `https://wa.me/254710346425?text=${message}`;
+  window.open(url, "_blank");
+}
 
 // ======================
 // WHATSAPP CHECKOUT
