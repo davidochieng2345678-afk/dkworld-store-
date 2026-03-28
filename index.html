@@ -117,9 +117,25 @@
     </div>
   </div>
 </section>
-<!-- ================= PRODUCTS ================= -->
-<section id="productsContainer" class="products"></section>
 
+  
+<!-- ================= PRODUCTS ================= -->
+<section class="product-filters" style="margin:20px 0;">
+  <input 
+    type="text" 
+    id="searchInput" 
+    placeholder="Search products..." 
+    style="padding:10px; width:100%; margin-bottom:10px; border-radius:6px; border:1px solid #ccc;"
+  >
+
+  <select id="categoryFilter" style="padding:10px; width:100%; margin-bottom:20px; border-radius:6px; border:1px solid #ccc;">
+    <option value="">All Categories</option>
+    <option value="Websites">Websites</option>
+    <option value="Digital Products">Digital Products</option>
+  </select>
+</section>
+
+<section id="productsContainer" class="products"></section>
 <!-- ================= WHATSAPP FLOAT ================= -->
 <a href="https://wa.me/254710346425" target="_blank" class="whatsapp-float">
   <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
@@ -127,6 +143,7 @@
 
 <!-- ================= JS ================= -->
 <script src="js/main.js"></script>
+  
 
 </body>
 </html>
