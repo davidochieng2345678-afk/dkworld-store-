@@ -317,65 +317,64 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCartCount();
 });
 
-
-
-
-  
 // ======================
 // WHATSAPP CHECKOUT
 // ======================
 function checkoutWhatsApp() {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  if (cart.length === 0) {
-    alert("Your cart is empty!");
-    return;
-  }
-
-  let message = "Hello DK World Kenya,%0A%0AI want to order:%0A";
+  if (!cart.length) return alert("Your cart is empty!");
 
   let total = 0;
+  let message = "Hello DK World Kenya,%0A%0AI want to order:%0A";
 
   cart.forEach(item => {
-    message += `- ${item.name} (KES ${item.price})%0A`;
-    total += item.price;
+    const itemTotal = item.price * (item.quantity || 1); // include quantity if available
+    total += itemTotal;
+    message += `- ${item.name} × ${item.quantity || 1} (KES ${itemTotal})%0A`;
   });
 
-  message += `%0ATotal: KES ${total}%0A%0A`;
-  message += "Please guide me on payment and delivery.";
+  message += `%0ATotal: KES ${total}%0A%0APlease guide me on payment and delivery.`;
 
-  const phoneNumber = "254710346425"; // your number
+  const phoneNumber = "254710346425"; // DK World Kenya number
   const url = `https://wa.me/${phoneNumber}?text=${message}`;
-
   window.open(url, "_blank");
 }
 
-
+// ======================
+// ADD PRODUCT FROM FORM
+// ======================
 function addProductFromForm() {
   const product = {
-    name: document.getElementById("name").value,
+    name: document.getElementById("name").value.trim(),
     price: Number(document.getElementById("price").value),
-    image: document.getElementById("image").value,
-    images: document.getElementById("images").value.split(","),
-    video: document.getElementById("video").value,
-    sku: document.getElementById("sku").value,
+    image: document.getElementById("image").value.trim(),
+    images: document.getElementById("images").value
+              .split(",")
+              .map(img => img.trim())
+              .filter(Boolean),
+    video: document.getElementById("video").value.trim(),
+    sku: document.getElementById("sku").value.trim(),
     stock: Number(document.getElementById("stock").value),
-    category: document.getElementById("category").value,
-    description: document.getElementById("description").value,
+    category: document.getElementById("category").value.trim(),
+    description: document.getElementById("description").value.trim(),
     faq: [
       {
-        question: document.getElementById("faqQ1").value,
-        answer: document.getElementById("faqA1").value
+        question: document.getElementById("faqQ1").value.trim(),
+        answer: document.getElementById("faqA1").value.trim()
       },
       {
-        question: document.getElementById("faqQ2").value,
-        answer: document.getElementById("faqA2").value
+        question: document.getElementById("faqQ2").value.trim(),
+        answer: document.getElementById("faqA2").value.trim()
       }
     ]
   };
 
   addProduct(product);
 }
+
+
+  
+
 
 // ======================
 // ADMIN PRODUCT MANAGEMENT
