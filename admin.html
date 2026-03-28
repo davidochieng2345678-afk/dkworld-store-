@@ -1,59 +1,121 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>DK World Kenya | Admin Panel</title>
-  <meta name="description" content="Admin panel to add new products to DK World Kenya.">
+  <script>
+// ====== HELPER FUNCTION ======
+function saveProducts(products){
+  localStorage.setItem("products", JSON.stringify(products));
+}
 
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+// ====== ADD PRODUCT FROM FORM ======
+function addProductFromForm(){
+  const name = document.getElementById("name").value.trim();
+  const price = parseFloat(document.getElementById("price").value);
+  const mainImage = document.getElementById("image").value.trim();
+  const extraImagesInput = document.getElementById("images").value.trim();
+  const images = extraImagesInput ? extraImagesInput.split(",").map(url => url.trim()) : [];
+  if(mainImage) images.unshift(mainImage); // main image comes first
+  const video = document.getElementById("video").value.trim();
+  const sku = document.getElementById("sku").value.trim();
+  const stock = parseInt(document.getElementById("stock").value) || 0;
+  const category = document.getElementById("category").value;
+  const description = document.getElementById("description").value.trim();
 
-<header>
-  <h1>DK World Kenya 🌍 - Admin Panel</h1>
-  <nav>
-    <div class="menu-toggle" id="menu-toggle">☰</div>
-    <ul class="menu" id="menu">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="cart.html">Cart 🛒</a></li>
-    </ul>
-  </nav>
-</header>
+  // FAQs
+  const faq = [];
+  const faqQ1 = document.getElementById("faqQ1").value.trim();
+  const faqA1 = document.getElementById("faqA1").value.trim();
+  if(faqQ1 && faqA1) faq.push({question: faqQ1, answer: faqA1});
 
-<main style="padding: 20px; max-width: 800px; margin: auto;">
+  const faqQ2 = document.getElementById("faqQ2").value.trim();
+  const faqA2 = document.getElementById("faqA2").value.trim();
+  if(faqQ2 && faqA2) faq.push({question: faqQ2, answer: faqA2});
 
-  <h2>Add Product</h2>
+  // Validate required fields
+  if(!name || !price || images.length === 0 || !description){
+    alert("Please fill in all required fields: Name, Price, Main Image, Description");
+    return;
+  }
 
-  <input id="name" placeholder="Product Name"><br><br>
-  <input id="price" type="number" placeholder="Price (KES)"><br><br>
-  <input id="image" placeholder="Main Image URL"><br><br>
-  <input id="images" placeholder="Extra Images (comma separated URLs)"><br><br>
-  <input id="video" placeholder="YouTube Video Link (optional)"><br><br>
-  <input id="sku" placeholder="SKU (e.g ECOM-001)"><br><br>
-  <input id="stock" type="number" placeholder="Stock Quantity"><br><br>
+  const newProduct = { name, price, images, video, sku, stock, category, description, faq };
 
-  <select id="category">
-    <option value="Websites">Websites</option>
-    <option value="Digital Products">Digital Products</option>
-  </select><br><br>
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  products.push(newProduct);
+  saveProducts(products);
 
-  <textarea id="description" placeholder="Product Description"></textarea><br><br>
+  alert(`✅ Product "${name}" added successfully!`);
+  displayExistingProducts();
 
-  <h3>FAQs</h3>
-  <input id="faqQ1" placeholder="Question 1"><br>
-  <input id="faqA1" placeholder="Answer 1"><br><br>
+  // Optional: reset form inputs
+  const form = document.getElementById("form");
+  if(form) form.reset();
+}
 
-  <input id="faqQ2" placeholder="Question 2"><br>
-  <input id="faqA2" placeholder="Answer 2"><br><br>
+// ====== REMOVE PRODUCT ======
+function removeProduct(index){
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  if(!products[index]) return;
+  if(!confirm(`Are you sure you want to delete "${products[index].name}"?`)) return;
 
-  <button onclick="addProductFromForm()">Add Product</button>
+  products.splice(index, 1);
+  saveProducts(products);
+  displayExistingProducts();
+}
 
-  <h2>Existing Products</h2>
-<div id="existingProducts"></div>
-</main>
+// ====== DISPLAY EXISTING PRODUCTS ======
+function displayExistingProducts(){
+  const container = document.getElementById("existingProducts");
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  container.innerHTML = "";
 
-<script src="js/main.js"></script>
-</body>
-</html>
+  if(products.length === 0){
+    container.innerHTML = "<p>No products added yet.</p>";
+    return;
+  }
+
+  products.forEach((p, index) => {
+    // Container div
+    const div = document.createElement("div");
+    div.style.display = "flex";
+    div.style.justifyContent = "space-between";
+    div.style.alignItems = "center";
+    div.style.border = "1px solid #ccc";
+    div.style.borderRadius = "6px";
+    div.style.padding = "10px";
+    div.style.marginBottom = "10px";
+
+    // Left: product link and details
+    const leftDiv = document.createElement("div");
+
+    const link = document.createElement("a");
+    link.href = `product.html?name=${encodeURIComponent(p.name)}`;
+    link.target = "_blank";
+    link.style.textDecoration = "none";
+    link.style.color = "#000";
+    link.innerHTML = `<strong>${p.name}</strong> (${p.category}) - KES ${p.price} - Stock: ${p.stock}`;
+
+    const skuText = document.createElement("small");
+    skuText.textContent = ` SKU: ${p.sku}`;
+    skuText.style.marginLeft = "8px";
+
+    leftDiv.appendChild(link);
+    leftDiv.appendChild(skuText);
+
+    // Right: delete button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.style.background = "#EF4444";
+    deleteBtn.style.color = "white";
+    deleteBtn.style.border = "none";
+    deleteBtn.style.padding = "4px 10px";
+    deleteBtn.style.borderRadius = "4px";
+    deleteBtn.style.cursor = "pointer";
+    deleteBtn.onclick = () => removeProduct(index);
+
+    div.appendChild(leftDiv);
+    div.appendChild(deleteBtn);
+
+    container.appendChild(div);
+  });
+}
+
+// ====== INITIALIZE ======
+document.addEventListener("DOMContentLoaded", displayExistingProducts);
+</script>
