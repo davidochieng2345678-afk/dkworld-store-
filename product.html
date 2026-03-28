@@ -213,7 +213,48 @@ if(product){
       </div>
     </div>
   `;
+  
+<script>
+// ======================
+// CART COUNT & ADD TO CART
+// ======================
 
+// Update cart count badge
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  document.getElementById("cartCount").textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+// Initialize cart count on page load
+document.addEventListener("DOMContentLoaded", updateCartCount);
+
+// Add product to cart with quantity
+window.addToCartAdvanced = function() {
+  let qty = parseInt(document.getElementById("qty").value) || 1;
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const existing = cart.find(item => item.name === product.name);
+
+  if (existing) {
+    existing.quantity += qty; // Increase quantity if product already in cart
+  } else {
+    cart.push({
+      name: product.name,
+      price: product.price,
+      quantity: qty
+    });
+  }
+
+  // Save updated cart to localStorage
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  // Update the badge immediately
+  updateCartCount();
+
+  alert("✅ Added to cart!");
+};
+</script>
   // ======================
   // FUNCTIONS
   // ======================
