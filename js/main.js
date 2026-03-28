@@ -59,32 +59,47 @@ function displayProducts(containerId) {
   const products = getProducts();
   container.innerHTML = "";
 
-  // Remove old schema
+  // Remove old JSON-LD scripts
   document.querySelectorAll('script[type="application/ld+json"]').forEach(el => el.remove());
 
+  let html = "";
+
   products.forEach(p => {
-    container.innerHTML += `
-      <div class="product">
-        <img src="${p.images?.[0] || p.image}" alt="${p.name}">
+    const productImages = (p.images && p.images.length > 0) ? p.images : [p.image];
+    const stockColor = p.stock > 0 ? 'green' : 'red';
+    const stockText = p.stock > 0 ? 'In Stock' : 'Out of Stock';
+
+    // Convert YouTube link to embed URL if exists
+    let videoEmbed = "";
+    if (p.video) {
+      const videoId = p.video.split("v=")[1]?.split("&")[0] || "";
+      if (videoId) {
+        videoEmbed = `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen style="margin-bottom:10px; border-radius:8px;"></iframe>`;
+      }
+    }
+
+    html += `
+      <div class="product" style="border:1px solid #ddd; padding:15px; margin-bottom:15px; border-radius:10px; position:relative;">
+        <img src="${productImages[0]}" alt="${p.name}" style="width:100%; max-width:300px; display:block; margin-bottom:10px; border-radius:8px;">
+        ${videoEmbed}
         <h3>${p.name}</h3>
         <p><strong>KES ${p.price}</strong></p>
-<p style="color: ${p.stock > 0 ? 'green' : 'red'};">
-  ${p.stock > 0 ? 'In Stock' : 'Out of Stock'}
-</p>
-<p style="font-size: 14px;">${p.description || ""}</p>
-        <button onclick="addToCart(${p.id})">Add to Cart</button>
+        <p style="color:${stockColor};">${stockText}</p>
+        <p style="font-size:14px;">${p.description || ""}</p>
+        <button onclick="addToCart(${p.id})" ${p.stock === 0 ? "disabled" : ""}>Add to Cart</button>
         <br><br>
         <a href="product.html?id=${p.id}">View</a>
       </div>
     `;
 
+    // Add JSON-LD schema
     const schema = {
       "@context": "https://schema.org/",
       "@type": "Product",
       "name": p.name,
       "sku": p.sku || "",
       "description": p.description || "",
-      "image": p.images || [p.image],
+      "image": productImages,
       "offers": {
         "@type": "Offer",
         "priceCurrency": "KES",
@@ -100,7 +115,11 @@ function displayProducts(containerId) {
     script.text = JSON.stringify(schema);
     document.head.appendChild(script);
   });
+
+  container.innerHTML = html;
 }
+
+
 
 // ======================
 // PRODUCT PAGE
