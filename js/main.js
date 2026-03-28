@@ -414,4 +414,57 @@ function resetForm() {
 
 // Call displayAdminProducts whenever the admin page loads
 document.addEventListener("DOMContentLoaded", displayAdminProducts);
-        
+
+
+// ======================
+// PRODUCT FILTERS
+// ======================
+const searchInput = document.getElementById("searchInput");
+const categoryFilter = document.getElementById("categoryFilter");
+
+function filterAndDisplayProducts() {
+  const allProducts = getProducts();
+  const searchText = searchInput.value.toLowerCase();
+  const selectedCategory = categoryFilter.value;
+
+  const filtered = allProducts.filter(p => {
+    const matchesSearch = p.name.toLowerCase().includes(searchText) || (p.description || "").toLowerCase().includes(searchText);
+    const matchesCategory = selectedCategory ? p.category === selectedCategory : true;
+    return matchesSearch && matchesCategory;
+  });
+
+  displayProductsFiltered("productsContainer", filtered);
+}
+
+// New display function that accepts filtered products
+function displayProductsFiltered(containerId, products) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  products.forEach(p => {
+    container.innerHTML += `
+      <div class="product">
+        <img src="${p.images?.[0] || p.image}" alt="${p.name}">
+        <h3>${p.name}</h3>
+        <p><strong>KES ${p.price}</strong></p>
+        <p style="color: ${p.stock > 0 ? 'green' : 'red'};">
+          ${p.stock > 0 ? 'In Stock' : 'Out of Stock'}
+        </p>
+        <p style="font-size: 14px;">${p.description || ""}</p>
+        <button onclick="addToCart(${p.id})">Add to Cart</button>
+        <br><br>
+        <a href="product.html?id=${p.id}">View</a>
+      </div>
+    `;
+  });
+}
+
+// Event listeners
+searchInput.addEventListener("input", filterAndDisplayProducts);
+categoryFilter.addEventListener("change", filterAndDisplayProducts);
+
+// Optional: show all products on page load using filter function
+document.addEventListener("DOMContentLoaded", filterAndDisplayProducts);
+
