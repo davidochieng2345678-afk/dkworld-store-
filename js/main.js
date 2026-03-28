@@ -372,13 +372,10 @@ function addProductFromForm() {
   addProduct(product);
 }
 
-
-  
-
-
 // ======================
 // ADMIN PRODUCT MANAGEMENT
 // ======================
+
 function displayAdminProducts() {
   const container = document.getElementById("existingProducts");
   if (!container) return;
@@ -389,9 +386,8 @@ function displayAdminProducts() {
   products.forEach(product => {
     container.innerHTML += `
       <div class="product-admin" style="border:1px solid #ddd; padding:15px; margin-bottom:15px; border-radius:10px;">
-        
         <div style="display:flex; gap:15px; align-items:center; flex-wrap:wrap;">
-          
+
           <!-- IMAGE -->
           <img src="${product.images?.[0] || product.image}" 
                style="width:80px; height:80px; object-fit:cover; border-radius:8px;">
@@ -399,9 +395,8 @@ function displayAdminProducts() {
           <!-- VIDEO -->
           ${product.video ? `
             <iframe width="120" height="80"
-              src="${convertToEmbedURL(product.video)}"
-              frameborder="0"
-              allowfullscreen>
+                    src="${convertToEmbedURL(product.video)}"
+                    frameborder="0" allowfullscreen>
             </iframe>
           ` : ""}
 
@@ -416,18 +411,14 @@ function displayAdminProducts() {
           <!-- ACTION BUTTONS -->
           <div>
             <button onclick="editProduct(${product.id})">Edit</button>
-            <button onclick="deleteProduct(${product.id})" style="background-color:#EF4444;">Delete</button>
+            <button onclick="deleteProduct(${product.id})" style="background-color:#EF4444; color:white;">Delete</button>
           </div>
 
         </div>
-
       </div>
     `;
   });
 }
-
-
-
 
 // Delete a product
 function deleteProduct(id) {
@@ -442,34 +433,33 @@ function deleteProduct(id) {
 
 // Edit a product
 function editProduct(id) {
-  const products = getProducts();
-  const product = products.find(p => p.id === id);
+  const product = getProducts().find(p => p.id === id);
   if (!product) return alert("Product not found!");
 
-  // Prefill the form with existing values
-  document.getElementById("name").value = product.name;
-  document.getElementById("price").value = product.price;
-  document.getElementById("image").value = product.image;
-  document.getElementById("images").value = product.images ? product.images.join(",") : "";
-  document.getElementById("video").value = product.video || "";
-  document.getElementById("sku").value = product.sku;
-  document.getElementById("stock").value = product.stock;
-  document.getElementById("category").value = product.category;
-  document.getElementById("description").value = product.description || "";
-  document.getElementById("faqQ1").value = product.faq?.[0]?.question || "";
-  document.getElementById("faqA1").value = product.faq?.[0]?.answer || "";
-  document.getElementById("faqQ2").value = product.faq?.[1]?.question || "";
-  document.getElementById("faqA2").value = product.faq?.[1]?.answer || "";
+  // Prefill form
+  [
+    ["name", product.name],
+    ["price", product.price],
+    ["image", product.image],
+    ["images", product.images?.join(",") || ""],
+    ["video", product.video || ""],
+    ["sku", product.sku],
+    ["stock", product.stock],
+    ["category", product.category],
+    ["description", product.description || ""],
+    ["faqQ1", product.faq?.[0]?.question || ""],
+    ["faqA1", product.faq?.[0]?.answer || ""],
+    ["faqQ2", product.faq?.[1]?.question || ""],
+    ["faqA2", product.faq?.[1]?.answer || ""]
+  ].forEach(([id, value]) => document.getElementById(id).value = value);
 
-  // Temporarily override addProductFromForm to update
+  // Override Add button
   const addBtn = document.querySelector("button[onclick='addProductFromForm()']");
   addBtn.textContent = "Update Product";
-  addBtn.onclick = function() {
-    updateProductFromForm(id);
-  };
+  addBtn.onclick = () => updateProductFromForm(id);
 }
 
-// Update product after editing
+// Update product
 function updateProductFromForm(id) {
   const products = getProducts();
   const index = products.findIndex(p => p.id === id);
@@ -489,7 +479,7 @@ function updateProductFromForm(id) {
     faq: [
       { question: document.getElementById("faqQ1").value, answer: document.getElementById("faqA1").value },
       { question: document.getElementById("faqQ2").value, answer: document.getElementById("faqA2").value }
-    ],
+    ]
   };
 
   saveProducts(products);
@@ -498,29 +488,23 @@ function updateProductFromForm(id) {
   displayAdminProducts();
 }
 
-// Reset form to default
+// Reset form
 function resetForm() {
-  document.getElementById("name").value = "";
-  document.getElementById("price").value = "";
-  document.getElementById("image").value = "";
-  document.getElementById("images").value = "";
-  document.getElementById("video").value = "";
-  document.getElementById("sku").value = "";
-  document.getElementById("stock").value = "";
-  document.getElementById("category").value = "Websites";
-  document.getElementById("description").value = "";
-  document.getElementById("faqQ1").value = "";
-  document.getElementById("faqA1").value = "";
-  document.getElementById("faqQ2").value = "";
-  document.getElementById("faqA2").value = "";
+  [
+    "name","price","image","images","video","sku","stock","category","description",
+    "faqQ1","faqA1","faqQ2","faqA2"
+  ].forEach(id => {
+    document.getElementById(id).value = id === "category" ? "Websites" : "";
+  });
 
   const addBtn = document.querySelector("button[onclick]");
   addBtn.textContent = "Add Product";
   addBtn.setAttribute("onclick", "addProductFromForm()");
 }
 
-// Call displayAdminProducts whenever the admin page loads
+// Initialize
 document.addEventListener("DOMContentLoaded", displayAdminProducts);
+  
 
 
 // ======================
