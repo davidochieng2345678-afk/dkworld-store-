@@ -3,50 +3,55 @@
 // ======================
 document.addEventListener("DOMContentLoaded", () => {
   initMenu();
-  displayProducts("productsContainer");
-  loadProductPage();
+  displayProducts("productsContainer"); // Show all products
+  loadProductPage();                     // Load individual product if on product page
 });
 
 // ======================
-// MENU
+// MENU TOGGLE
 // ======================
 function initMenu() {
   const toggle = document.getElementById("menu-toggle");
   const menu = document.getElementById("menu");
 
-  if (toggle && menu) {
-    toggle.addEventListener("click", () => {
-      if (menu.style.display === "flex") {
-        menu.style.display = "none";
-      } else {
-        menu.style.display = "flex";
-        menu.style.flexDirection = "column";
-      }
-    });
-  }
+  if (!toggle || !menu) return;
+
+  toggle.addEventListener("click", () => {
+    const isVisible = menu.style.display === "flex";
+    menu.style.display = isVisible ? "none" : "flex";
+    if (!isVisible) menu.style.flexDirection = "column";
+  });
 }
 
 // ======================
-// STORAGE
+// STORAGE HELPERS
 // ======================
 function getProducts() {
-  return JSON.parse(localStorage.getItem("products")) || [];
+  try {
+    return JSON.parse(localStorage.getItem("products")) || [];
+  } catch (e) {
+    console.error("Failed to parse products from localStorage", e);
+    return [];
+  }
 }
 
 function saveProducts(products) {
   localStorage.setItem("products", JSON.stringify(products));
 }
 
+// ======================
+// ADD PRODUCT
+// ======================
 function addProduct(product) {
-  let products = getProducts();
+  const products = getProducts();
 
-  product.id = Date.now();
-  product.createdAt = new Date().toISOString();
+  product.id = Date.now();                  // Unique ID
+  product.createdAt = new Date().toISOString(); // Timestamp
 
   products.push(product);
   saveProducts(products);
 
-  alert("Product added successfully!");
+  alert("✅ Product added successfully!");
 }
 
 // ======================
