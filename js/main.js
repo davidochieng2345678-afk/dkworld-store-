@@ -559,104 +559,76 @@ categoryFilter.addEventListener("change", filterAndDisplayProducts);
 // Optional: show all products on page load using filter function
 document.addEventListener("DOMContentLoaded", filterAndDisplayProducts);
 
-
 // ======================
 // FILTER & SEARCH
 // ======================
 const searchInput = document.getElementById("searchInput");
 const categoryFilter = document.getElementById("categoryFilter");
 const clearFiltersBtn = document.getElementById("clearFilters");
+const productsContainer = document.getElementById("productsContainer");
 
 function filterAndDisplayProducts() {
+  if (!productsContainer) return;
+
   const searchTerm = searchInput.value.toLowerCase();
   const selectedCategory = categoryFilter.value;
-  const container = document.getElementById("productsContainer");
 
-  if (!container) return;
-
-  const products = getProducts().filter(p => {
-    const matchesSearch = p.name.toLowerCase().includes(searchTerm) || (p.description || "").toLowerCase().includes(searchTerm);
+  const filtered = getProducts().filter(p => {
+    const matchesSearch = p.name.toLowerCase().includes(searchTerm) ||
+                          (p.description || "").toLowerCase().includes(searchTerm);
     const matchesCategory = selectedCategory ? p.category === selectedCategory : true;
     return matchesSearch && matchesCategory;
   });
 
-  container.innerHTML = "";
-
-  products.forEach(p => {
-    container.innerHTML += `
-      <div class="product" style="border:1px solid #ddd; padding:15px; margin-bottom:15px; border-radius:10px; position:relative;">
-        <img src="${p.images?.[0] || p.image}" alt="${p.name}" style="width:100%; max-width:300px; display:block; margin-bottom:10px; border-radius:8px;">
-        
-        ${p.video ? `
-          <iframe width="100%" height="200" src="${convertToEmbedURL(p.video)}" frameborder="0" allowfullscreen style="margin-bottom:10px; border-radius:8px;"></iframe>
-        ` : ""}
-
-        <h3>${p.name}</h3>
-        <p><strong>KES ${p.price}</strong></p>
-        <p style="color:${p.stock > 0 ? 'green' : 'red'};">
-          ${p.stock > 0 ? 'In Stock' : 'Out of Stock'}
-        </p>
-        <p>${p.description || ""}</p>
-        <button onclick="addToCart(${p.id})" ${p.stock === 0 ? "disabled" : ""}>Add to Cart</button>
-        <br><br>
-        <a href="product.html?id=${p.id}">View</a>
-      </div>
-    `;
-  });
+  productsContainer.innerHTML = filtered.map(p => `
+    <div class="product" style="border:1px solid #ddd; padding:15px; margin-bottom:15px; border-radius:10px; position:relative;">
+      <img src="${p.images?.[0] || p.image}" alt="${p.name}" style="width:100%; max-width:300px; display:block; margin-bottom:10px; border-radius:8px;">
+      ${p.video ? `<iframe width="100%" height="200" src="${convertToEmbedURL(p.video)}" frameborder="0" allowfullscreen style="margin-bottom:10px; border-radius:8px;"></iframe>` : ""}
+      <h3>${p.name}</h3>
+      <p><strong>KES ${p.price}</strong></p>
+      <p style="color:${p.stock > 0 ? 'green' : 'red'};">${p.stock > 0 ? 'In Stock' : 'Out of Stock'}</p>
+      <p>${p.description || ""}</p>
+      <button onclick="addToCart(${p.id})" ${p.stock === 0 ? "disabled" : ""}>Add to Cart</button>
+      <br><br>
+      <a href="product.html?id=${p.id}">View</a>
+    </div>
+  `).join("");
 }
 
-// Update products on search or category change
-searchInput.addEventListener("input", filterAndDisplayProducts);
-categoryFilter.addEventListener("change", filterAndDisplayProducts);
-
-// Clear filters
-clearFiltersBtn.addEventListener("click", () => {
+// Event listeners
+searchInput?.addEventListener("input", filterAndDisplayProducts);
+categoryFilter?.addEventListener("change", filterAndDisplayProducts);
+clearFiltersBtn?.addEventListener("click", () => {
   searchInput.value = "";
   categoryFilter.value = "";
   filterAndDisplayProducts();
 });
 
-// Call once on page load
-filterAndDisplayProducts();
-
-function updateCartCount(){
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  let total = 0;
-  cart.forEach(item => total += item.quantity);
-
-  const el = document.getElementById("cartCount");
-  if(el) el.innerText = total;
-}
-
-// Run on every page load
-document.addEventListener("DOMContentLoaded", updateCartCount);
-
-// Update cart count badge
+// ======================
+// CART MANAGEMENT
+// ======================
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  document.getElementById("cartCount").textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const badge = document.getElementById("cartCount");
+  if (badge) badge.textContent = total;
 }
 
-// Display cart with Jumia-style quantity controls
 function displayCart(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  container.innerHTML = "";
-
   if (cart.length === 0) {
     container.innerHTML = `<p class="empty">Your cart is empty.</p>`;
+    updateCartCount();
     return;
   }
 
   let total = 0;
-
-  cart.forEach((item, index) => {
+  container.innerHTML = cart.map((item, index) => {
     total += item.price * item.quantity;
-
-    container.innerHTML += `
+    return `
       <div class="cart-item">
         <img src="${item.image || item.images?.[0]}" alt="${item.name}">
         <div class="cart-info">
@@ -671,7 +643,7 @@ function displayCart(containerId) {
         </div>
       </div>
     `;
-  });
+  }).join("");
 
   container.innerHTML += `
     <div class="total">Total: KES ${total}</div>
@@ -681,54 +653,65 @@ function displayCart(containerId) {
   updateCartCount();
 }
 
-// Update quantity
 function updateQuantity(index, change) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
   cart[index].quantity += change;
   if (cart[index].quantity <= 0) cart.splice(index, 1);
   localStorage.setItem("cart", JSON.stringify(cart));
   displayCart("cartContainer");
 }
 
-// Remove item
 function removeFromCart(index) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
   cart.splice(index, 1);
   localStorage.setItem("cart", JSON.stringify(cart));
   displayCart("cartContainer");
 }
 
-// Checkout via WhatsApp
+// ======================
+// WHATSAPP CHECKOUT
+// ======================
 function checkoutWhatsApp() {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  if (cart.length === 0) return alert("Your cart is empty!");
+  if (!cart.length) return showToast("Your cart is empty!");
 
   let message = "Hello DK World Kenya,%0A%0AI want to order:%0A";
-  let total = 0;
-
-  cart.forEach(item => {
+  const total = cart.reduce((sum, item) => {
     message += `- ${item.name} × ${item.quantity} (KES ${item.price * item.quantity})%0A`;
-    total += item.price * item.quantity;
-  });
+    return sum + item.price * item.quantity;
+  }, 0);
 
   message += `%0ATotal: KES ${total}%0A%0APlease guide me on payment and delivery.`;
-  const phoneNumber = "254710346425"; // WhatsApp number
+  const phoneNumber = "254710346425";
   window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
 }
-function showToast(msg){
-  let toast = document.createElement("div");
+
+// ======================
+// TOAST NOTIFICATIONS
+// ======================
+function showToast(msg) {
+  const toast = document.createElement("div");
   toast.innerText = msg;
-
-  toast.style.position = "fixed";
-  toast.style.bottom = "20px";
-  toast.style.right = "20px";
-  toast.style.background = "#000";
-  toast.style.color = "#fff";
-  toast.style.padding = "10px 15px";
-  toast.style.borderRadius = "5px";
-
+  Object.assign(toast.style, {
+    position: "fixed",
+    bottom: "20px",
+    right: "20px",
+    background: "#000",
+    color: "#fff",
+    padding: "10px 15px",
+    borderRadius: "5px",
+    zIndex: 1000
+  });
   document.body.appendChild(toast);
-
   setTimeout(() => toast.remove(), 2000);
 }
+
+// ======================
+// INITIALIZE
+// ======================
+document.addEventListener("DOMContentLoaded", () => {
+  filterAndDisplayProducts();
+  updateCartCount();
+});
+
 
