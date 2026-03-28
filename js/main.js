@@ -120,7 +120,75 @@ function displayProducts(containerId) {
 }
 
 
+// ======================
+// PRODUCT PAGE
+// ======================
+function loadProductPage() {
+  const container = document.getElementById("product");
+  if (!container) return;
 
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const product = getProducts().find(p => p.id == id);
+
+  if (!product) {
+    container.innerHTML = "<p style='color:red;'>Product not found</p>";
+    return;
+  }
+
+  // Product HTML
+  container.innerHTML = `
+    <div class="product-page" style="background:white; padding:20px; border-radius:12px;">
+      <h2>${product.name}</h2>
+
+      ${product.images?.length
+        ? product.images.map(img => `<img src="${img}" width="200" style="margin:5px; border-radius:8px;">`).join("")
+        : `<img src="${product.image}" width="200" style="margin:5px; border-radius:8px;">`
+      }
+
+      ${product.video ? `
+        <div class="video" style="margin:10px 0;">
+          <iframe width="100%" height="300" src="${product.video}" frameborder="0" allowfullscreen></iframe>
+        </div>
+      ` : ""}
+
+      <p><strong>Price:</strong> KES ${product.price}</p>
+      <p><strong>SKU:</strong> ${product.sku || "N/A"}</p>
+      <p><strong>Stock:</strong> <span style="color:${product.stock > 0 ? 'green':'red'};">${product.stock > 0 ? 'In Stock':'Out of Stock'}</span></p>
+
+      <p>${product.description || ""}</p>
+      <button onclick="addToCart(${product.id})">Add to Cart</button>
+
+      ${product.faq?.length ? `
+        <h3>FAQs</h3>
+        ${product.faq.map(f => `<p><strong>${f.question}</strong><br>${f.answer}</p>`).join("")}
+      ` : ""}
+    </div>
+  `;
+
+  // Schema.org structured data
+  document.querySelectorAll('script[type="application/ld+json"]').forEach(el => el.remove());
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "sku": product.sku || "",
+    "description": product.description || "",
+    "image": product.images || [product.image],
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "KES",
+      "price": product.price,
+      "availability": product.stock > 0
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock"
+    }
+  };
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.text = JSON.stringify(schema);
+  document.head.appendChild(script);
+}
 
 
 
