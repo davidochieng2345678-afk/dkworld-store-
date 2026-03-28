@@ -237,3 +237,30 @@ function checkoutWhatsApp() {
 
   window.open(url, "_blank");
 }
+
+
+function addProductFromForm() {
+  const product = {
+    name: document.getElementById("name").value,
+    price: Number(document.getElementById("price").value),
+    image: document.getElementById("image").value,
+    images: document.getElementById("images").value.split(","),
+    video: document.getElementById("video").value,
+    sku: document.getElementById("sku").value,
+    stock: Number(document.getElementById("stock").value),
+    category: document.getElementById("category").value,
+    description: document.getElementById("description").value,
+    faq: [
+      {
+        question: document.getElementById("faqQ1").value,
+        answer: document.getElementById("faqA1").value
+      },
+      {
+        question: document.getElementById("faqQ2").value,
+        answer: document.getElementById("faqA2").value
+      }
+    ]
+  };
+
+  addProduct(product);
+}
