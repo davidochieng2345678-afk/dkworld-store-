@@ -144,6 +144,33 @@
       padding: 30px 0;
       font-size: 16px;
     }
+
+    /* ===== TOAST STYLE ===== */
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      animation: fadein 0.3s, fadeout 0.3s 2.2s;
+    }
+
+    @keyframes fadein {
+      from { bottom: 10px; opacity: 0; }
+      to { bottom: 30px; opacity: 1; }
+    }
+
+    @keyframes fadeout {
+      from { bottom: 30px; opacity: 1; }
+      to { bottom: 50px; opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -160,11 +187,109 @@
     <div id="cartContainer"></div>
   </div>
 
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast"></div>
+
   <script src="js/main.js"></script>
   <script>
-    // Display cart items and update cart count
-    displayCart("cartContainer");
-    updateCartCount();
+    // ====== TOAST FUNCTION ======
+    function showToast(msg){
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.style.display = "block";
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 2500);
+    }
+
+    // ====== CART FUNCTIONS ======
+    function updateCartCount(){
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      document.getElementById("cartCount").textContent = cart.reduce((sum,item)=>sum+item.quantity,0);
+    }
+
+    function displayCart(containerId){
+      const container = document.getElementById(containerId);
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      container.innerHTML = "";
+
+      if(cart.length === 0){
+        container.innerHTML = `<p class="empty">Your cart is empty.</p>`;
+        return;
+      }
+
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        total += item.price * item.quantity;
+
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `
+          <img src="${item.image || 'images/product-placeholder.png'}" alt="${item.name}">
+          <div class="cart-info">
+            <h4>${item.name}</h4>
+            <p>KES ${item.price} x ${item.quantity} = KES ${item.price * item.quantity}</p>
+            <div class="cart-actions">
+              <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
+              <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+              <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      const totalDiv = document.createElement("div");
+      totalDiv.className = "total";
+      totalDiv.textContent = `Total: KES ${total}`;
+      container.appendChild(totalDiv);
+
+      const checkoutBtn = document.createElement("button");
+      checkoutBtn.className = "checkout-btn";
+      checkoutBtn.textContent = "Checkout via WhatsApp";
+      checkoutBtn.onclick = checkoutCart;
+      container.appendChild(checkoutBtn);
+    }
+
+    function changeQty(index, delta){
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart[index].quantity += delta;
+      if(cart[index].quantity < 1) cart[index].quantity = 1;
+      localStorage.setItem("cart", JSON.stringify(cart));
+      displayCart("cartContainer");
+      updateCartCount();
+      showToast("✅ Quantity updated");
+    }
+
+    function removeItem(index){
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      displayCart("cartContainer");
+      updateCartCount();
+      showToast("❌ Item removed");
+    }
+
+    function checkoutCart(){
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      if(cart.length === 0) return showToast("Your cart is empty");
+
+      let message = `Hello DK World Kenya,%0A%0AI want to order:%0A`;
+      cart.forEach(item => {
+        message += `- ${item.name} x ${item.quantity} (KES ${item.price * item.quantity})%0A`;
+      });
+
+      const phone = "254710346425";
+      window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
+    }
+
+    // ====== INITIALIZE ======
+    document.addEventListener("DOMContentLoaded", () => {
+      displayCart("cartContainer");
+      updateCartCount();
+    });
   </script>
+
 </body>
 </html>
