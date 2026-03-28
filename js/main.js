@@ -611,3 +611,16 @@ clearFiltersBtn.addEventListener("click", () => {
 
 // Call once on page load
 filterAndDisplayProducts();
+
+function updateCartCount(){
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  let total = 0;
+  cart.forEach(item => total += item.quantity);
+
+  const el = document.getElementById("cartCount");
+  if(el) el.innerText = total;
+}
+
+// Run on every page load
+document.addEventListener("DOMContentLoaded", updateCartCount);
