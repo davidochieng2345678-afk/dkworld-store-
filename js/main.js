@@ -67,7 +67,11 @@ function displayProducts(containerId) {
       <div class="product">
         <img src="${p.images?.[0] || p.image}" alt="${p.name}">
         <h3>${p.name}</h3>
-        <p>KES ${p.price}</p>
+        <p><strong>KES ${p.price}</strong></p>
+<p style="color: ${p.stock > 0 ? 'green' : 'red'};">
+  ${p.stock > 0 ? 'In Stock' : 'Out of Stock'}
+</p>
+<p style="font-size: 14px;">${p.description || ""}</p>
         <button onclick="addToCart(${p.id})">Add to Cart</button>
         <br><br>
         <a href="product.html?id=${p.id}">View</a>
