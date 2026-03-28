@@ -269,7 +269,6 @@ function addProductFromForm() {
   addProduct(product);
 }
 
-
 // ======================
 // ADMIN PRODUCT MANAGEMENT
 // ======================
@@ -282,15 +281,46 @@ function displayAdminProducts() {
 
   products.forEach(product => {
     container.innerHTML += `
-      <div class="product-admin" style="border:1px solid #ddd; padding:10px; margin-bottom:10px; border-radius:8px;">
-        <h3>${product.name} (KES ${product.price})</h3>
-        <p>SKU: ${product.sku || "N/A"} | Stock: ${product.stock}</p>
-        <button onclick="editProduct(${product.id})">Edit</button>
-        <button onclick="deleteProduct(${product.id})" style="background-color:#EF4444;">Delete</button>
+      <div class="product-admin" style="border:1px solid #ddd; padding:15px; margin-bottom:15px; border-radius:10px;">
+        
+        <div style="display:flex; gap:15px; align-items:center; flex-wrap:wrap;">
+          
+          <!-- IMAGE -->
+          <img src="${product.images?.[0] || product.image}" 
+               style="width:80px; height:80px; object-fit:cover; border-radius:8px;">
+
+          <!-- VIDEO -->
+          ${product.video ? `
+            <iframe width="120" height="80"
+              src="${convertToEmbedURL(product.video)}"
+              frameborder="0"
+              allowfullscreen>
+            </iframe>
+          ` : ""}
+
+          <!-- DETAILS -->
+          <div style="flex:1;">
+            <h3>${product.name}</h3>
+            <p><strong>KES ${product.price}</strong></p>
+            <p>SKU: ${product.sku || "N/A"}</p>
+            <p>Stock: ${product.stock}</p>
+          </div>
+
+          <!-- ACTION BUTTONS -->
+          <div>
+            <button onclick="editProduct(${product.id})">Edit</button>
+            <button onclick="deleteProduct(${product.id})" style="background-color:#EF4444;">Delete</button>
+          </div>
+
+        </div>
+
       </div>
     `;
   });
 }
+
+
+
 
 // Delete a product
 function deleteProduct(id) {
