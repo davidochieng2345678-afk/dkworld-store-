@@ -624,3 +624,87 @@ function updateCartCount(){
 
 // Run on every page load
 document.addEventListener("DOMContentLoaded", updateCartCount);
+
+// Update cart count badge
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  document.getElementById("cartCount").textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+// Display cart with Jumia-style quantity controls
+function displayCart(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  container.innerHTML = "";
+
+  if (cart.length === 0) {
+    container.innerHTML = `<p class="empty">Your cart is empty.</p>`;
+    return;
+  }
+
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    total += item.price * item.quantity;
+
+    container.innerHTML += `
+      <div class="cart-item">
+        <img src="${item.image || item.images?.[0]}" alt="${item.name}">
+        <div class="cart-info">
+          <h4>${item.name}</h4>
+          <p>KES ${item.price} × ${item.quantity} = KES ${item.price * item.quantity}</p>
+        </div>
+        <div class="cart-actions">
+          <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
+          <span>${item.quantity}</span>
+          <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+          <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML += `
+    <div class="total">Total: KES ${total}</div>
+    <button class="checkout-btn" onclick="checkoutWhatsApp()">Checkout via WhatsApp</button>
+  `;
+
+  updateCartCount();
+}
+
+// Update quantity
+function updateQuantity(index, change) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart[index].quantity += change;
+  if (cart[index].quantity <= 0) cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  displayCart("cartContainer");
+}
+
+// Remove item
+function removeFromCart(index) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  displayCart("cartContainer");
+}
+
+// Checkout via WhatsApp
+function checkoutWhatsApp() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  if (cart.length === 0) return alert("Your cart is empty!");
+
+  let message = "Hello DK World Kenya,%0A%0AI want to order:%0A";
+  let total = 0;
+
+  cart.forEach(item => {
+    message += `- ${item.name} × ${item.quantity} (KES ${item.price * item.quantity})%0A`;
+    total += item.price * item.quantity;
+  });
+
+  message += `%0ATotal: KES ${total}%0A%0APlease guide me on payment and delivery.`;
+  const phoneNumber = "254710346425"; // WhatsApp number
+  window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
+}
