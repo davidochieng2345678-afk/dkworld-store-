@@ -177,42 +177,49 @@ function loadProductPage() {
   document.head.appendChild(script);
 }
 
+
+
+
 // ======================
 // CART
 // ======================
-function addToCart(productId) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const product = getProducts().find(p => p.id == productId);
-
-  if (!product) return alert("Product not found!");
-
-  cart.push({
-    id: product.id,
-    name: product.name,
-    price: product.price
-  });
-
-  localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Added to cart!");
-}
-
 function displayCart(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
   container.innerHTML = "";
+
+  if (cart.length === 0) {
+    container.innerHTML = "<p>Your cart is empty.</p>";
+    return;
+  }
 
   let total = 0;
 
-  cart.forEach(item => {
+  cart.forEach((item, index) => {
     total += item.price;
-    container.innerHTML += `<p>${item.name} - KES ${item.price}</p>`;
+
+    container.innerHTML += `
+      <div class="cart-item" style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #ddd;">
+        <span>${item.name} - KES ${item.price}</span>
+        <button style="background-color:#EF4444; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;"
+                onclick="removeFromCart(${index})">Remove</button>
+      </div>
+    `;
   });
 
-  container.innerHTML += `<h3>Total: KES ${total}</h3>`;
+  container.innerHTML += `<h3 style="margin-top:15px;">Total: KES ${total}</h3>`;
+  container.innerHTML += `<button onclick="checkoutWhatsApp()" style="padding:10px 15px; margin-top:10px; background-color:#25D366; color:white; border:none; border-radius:5px; cursor:pointer;">Checkout via WhatsApp</button>`;
 }
 
+// Remove an item from cart by index
+function removeFromCart(index) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.splice(index, 1); // remove item at index
+  localStorage.setItem("cart", JSON.stringify(cart));
+  displayCart("cartContainer"); // refresh cart display
+}
 // ======================
 // WHATSAPP CHECKOUT
 // ======================
