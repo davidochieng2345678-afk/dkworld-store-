@@ -1,33 +1,57 @@
-<h2>Add Product</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>DK World Kenya | Admin Panel</title>
+  <meta name="description" content="Admin panel to add new products to DK World Kenya.">
 
-<input id="name" placeholder="Product Name"><br><br>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-<input id="price" type="number" placeholder="Price (KES)"><br><br>
+<header>
+  <h1>DK World Kenya 🌍 - Admin Panel</h1>
+  <nav>
+    <div class="menu-toggle" id="menu-toggle">☰</div>
+    <ul class="menu" id="menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="cart.html">Cart 🛒</a></li>
+    </ul>
+  </nav>
+</header>
 
-<input id="image" placeholder="Main Image URL"><br><br>
+<main style="padding: 20px; max-width: 800px; margin: auto;">
 
-<input id="images" placeholder="Extra Images (comma separated URLs)"><br><br>
+  <h2>Add Product</h2>
 
-<input id="video" placeholder="YouTube Video Link (optional)"><br><br>
+  <input id="name" placeholder="Product Name"><br><br>
+  <input id="price" type="number" placeholder="Price (KES)"><br><br>
+  <input id="image" placeholder="Main Image URL"><br><br>
+  <input id="images" placeholder="Extra Images (comma separated URLs)"><br><br>
+  <input id="video" placeholder="YouTube Video Link (optional)"><br><br>
+  <input id="sku" placeholder="SKU (e.g ECOM-001)"><br><br>
+  <input id="stock" type="number" placeholder="Stock Quantity"><br><br>
 
-<input id="sku" placeholder="SKU (e.g ECOM-001)"><br><br>
+  <select id="category">
+    <option value="Websites">Websites</option>
+    <option value="Digital Products">Digital Products</option>
+  </select><br><br>
 
-<input id="stock" type="number" placeholder="Stock Quantity"><br><br>
+  <textarea id="description" placeholder="Product Description"></textarea><br><br>
 
-<select id="category">
-  <option value="Websites">Websites</option>
-  <option value="Digital Products">Digital Products</option>
-</select><br><br>
+  <h3>FAQs</h3>
+  <input id="faqQ1" placeholder="Question 1"><br>
+  <input id="faqA1" placeholder="Answer 1"><br><br>
 
-<textarea id="description" placeholder="Product Description"></textarea><br><br>
+  <input id="faqQ2" placeholder="Question 2"><br>
+  <input id="faqA2" placeholder="Answer 2"><br><br>
 
-<h3>FAQs</h3>
+  <button onclick="addProductFromForm()">Add Product</button>
 
-<input id="faqQ1" placeholder="Question 1"><br>
-<input id="faqA1" placeholder="Answer 1"><br><br>
+</main>
 
-<input id="faqQ2" placeholder="Question 2"><br>
-<input id="faqA2" placeholder="Answer 2"><br><br>
-
-<button onclick="addProductFromForm()">Add Product</button>
-
+<script src="js/main.js"></script>
+</body>
+</html>
