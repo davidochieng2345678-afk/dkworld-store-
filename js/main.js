@@ -468,3 +468,62 @@ categoryFilter.addEventListener("change", filterAndDisplayProducts);
 // Optional: show all products on page load using filter function
 document.addEventListener("DOMContentLoaded", filterAndDisplayProducts);
 
+
+// ======================
+// FILTER & SEARCH
+// ======================
+const searchInput = document.getElementById("searchInput");
+const categoryFilter = document.getElementById("categoryFilter");
+const clearFiltersBtn = document.getElementById("clearFilters");
+
+function filterAndDisplayProducts() {
+  const searchTerm = searchInput.value.toLowerCase();
+  const selectedCategory = categoryFilter.value;
+  const container = document.getElementById("productsContainer");
+
+  if (!container) return;
+
+  const products = getProducts().filter(p => {
+    const matchesSearch = p.name.toLowerCase().includes(searchTerm) || (p.description || "").toLowerCase().includes(searchTerm);
+    const matchesCategory = selectedCategory ? p.category === selectedCategory : true;
+    return matchesSearch && matchesCategory;
+  });
+
+  container.innerHTML = "";
+
+  products.forEach(p => {
+    container.innerHTML += `
+      <div class="product" style="border:1px solid #ddd; padding:15px; margin-bottom:15px; border-radius:10px; position:relative;">
+        <img src="${p.images?.[0] || p.image}" alt="${p.name}" style="width:100%; max-width:300px; display:block; margin-bottom:10px; border-radius:8px;">
+        
+        ${p.video ? `
+          <iframe width="100%" height="200" src="${convertToEmbedURL(p.video)}" frameborder="0" allowfullscreen style="margin-bottom:10px; border-radius:8px;"></iframe>
+        ` : ""}
+
+        <h3>${p.name}</h3>
+        <p><strong>KES ${p.price}</strong></p>
+        <p style="color:${p.stock > 0 ? 'green' : 'red'};">
+          ${p.stock > 0 ? 'In Stock' : 'Out of Stock'}
+        </p>
+        <p>${p.description || ""}</p>
+        <button onclick="addToCart(${p.id})" ${p.stock === 0 ? "disabled" : ""}>Add to Cart</button>
+        <br><br>
+        <a href="product.html?id=${p.id}">View</a>
+      </div>
+    `;
+  });
+}
+
+// Update products on search or category change
+searchInput.addEventListener("input", filterAndDisplayProducts);
+categoryFilter.addEventListener("change", filterAndDisplayProducts);
+
+// Clear filters
+clearFiltersBtn.addEventListener("click", () => {
+  searchInput.value = "";
+  categoryFilter.value = "";
+  filterAndDisplayProducts();
+});
+
+// Call once on page load
+filterAndDisplayProducts();
