@@ -1,18 +1,33 @@
 <h2>Add Product</h2>
 
-<input id="name" placeholder="Name"><br>
-<input id="price" placeholder="Price"><br>
-<input id="image" placeholder="Image URL"><br>
+<input id="name" placeholder="Product Name"><br><br>
 
-<button onclick="add()">Add</button>
+<input id="price" type="number" placeholder="Price (KES)"><br><br>
 
-<script src="js/main.js"></script>
-<script>
-function add(){
-  saveProduct(
-    document.getElementById("name").value,
-    document.getElementById("price").value,
-    document.getElementById("image").value
-  );
-}
-</script>
+<input id="image" placeholder="Main Image URL"><br><br>
+
+<input id="images" placeholder="Extra Images (comma separated URLs)"><br><br>
+
+<input id="video" placeholder="YouTube Video Link (optional)"><br><br>
+
+<input id="sku" placeholder="SKU (e.g ECOM-001)"><br><br>
+
+<input id="stock" type="number" placeholder="Stock Quantity"><br><br>
+
+<select id="category">
+  <option value="Websites">Websites</option>
+  <option value="Digital Products">Digital Products</option>
+</select><br><br>
+
+<textarea id="description" placeholder="Product Description"></textarea><br><br>
+
+<h3>FAQs</h3>
+
+<input id="faqQ1" placeholder="Question 1"><br>
+<input id="faqA1" placeholder="Answer 1"><br><br>
+
+<input id="faqQ2" placeholder="Question 2"><br>
+<input id="faqA2" placeholder="Answer 2"><br><br>
+
+<button onclick="addProductFromForm()">Add Product</button>
+
