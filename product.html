@@ -1,6 +1,133 @@
-<div id="product"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Product Details</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: #f9f9f9;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Layout */
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media(max-width:768px){
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Images */
+.main-image {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.thumbnail {
+  width: 70px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid transparent;
+}
+
+.thumbnail:hover {
+  border: 2px solid #333;
+}
+
+/* Buttons */
+.btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-cart {
+  background: #000;
+  color: #fff;
+}
+
+.btn-buy {
+  background: #25D366;
+  color: #fff;
+}
+
+/* Qty */
+.qty-box {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.qty-box button {
+  padding: 5px 10px;
+  font-size: 18px;
+}
+
+.qty-box input {
+  width: 50px;
+  text-align: center;
+}
+
+/* Tabs */
+.tabs {
+  margin-top: 30px;
+}
+
+.tab-btn {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active {
+  border-color: #000;
+  font-weight: bold;
+}
+
+.tab-content {
+  display: none;
+  padding: 10px 0;
+}
+
+.tab-content.active {
+  display: block;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div id="product"></div>
+
+  <!-- Related Products -->
+  <h3>Related Products</h3>
+  <div id="relatedProducts" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
+</div>
 
 <script src="js/main.js"></script>
+
 <script>
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
@@ -9,48 +136,143 @@ const products = JSON.parse(localStorage.getItem("products")) || [];
 const product = products.find(p => p.name === name);
 
 if(product){
-  document.getElementById("product").innerHTML = `
-    <h2>${product.name}</h2>
-    <img src="${product.images[0]}" width="300" alt="${product.name}">
-    ${product.video ? `<div class="video"><iframe width="400" height="225" src="${product.video}" frameborder="0" allowfullscreen></iframe></div>` : ""}
-    <p><strong>Price:</strong> KES ${product.price}</p>
-    <p><strong>SKU:</strong> ${product.sku || "N/A"}</p>
-    <p><strong>Category:</strong> ${product.category}</p>
-    <p><strong>Stock:</strong> ${product.stock > 0 ? "In Stock" : "Out of Stock"}</p>
-    <p>${product.description}</p>
-    <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
 
-    ${product.faq && product.faq.length > 0 ? `<h3>FAQs</h3>
-      <ul>
-        ${product.faq.map(f => `<li><strong>${f.question}</strong><br>${f.answer}</li>`).join('')}
-      </ul>` : ""}
+  let qty = 1;
+
+  document.getElementById("product").innerHTML = `
+    <div class="product-grid">
+      
+      <!-- IMAGE SECTION -->
+      <div>
+        <img id="mainImage" src="${product.images[0]}" class="main-image">
+
+        <div>
+          ${product.images.map(img => `
+            <img src="${img}" class="thumbnail" onclick="changeImage('${img}')">
+          `).join("")}
+        </div>
+
+        ${product.video ? `
+          <div style="margin-top:15px;">
+            <iframe width="100%" height="250" src="${product.video}" frameborder="0" allowfullscreen></iframe>
+          </div>
+        ` : ""}
+      </div>
+
+      <!-- DETAILS -->
+      <div>
+        <h2>${product.name}</h2>
+        <p><strong>KES ${product.price}</strong></p>
+
+        <p>${product.stock > 0 ? "✅ In Stock" : "❌ Out of Stock"}</p>
+
+        <!-- Quantity -->
+        <div class="qty-box">
+          <button onclick="updateQty(-1)">-</button>
+          <input id="qty" value="1">
+          <button onclick="updateQty(1)">+</button>
+        </div>
+
+        <button class="btn btn-cart" onclick="addToCartAdvanced()">Add to Cart</button>
+        <button class="btn btn-buy" onclick="buyNow()">Buy via WhatsApp</button>
+
+        <!-- Tabs -->
+        <div class="tabs">
+          <div>
+            <span class="tab-btn active" onclick="openTab('desc')">Description</span>
+            <span class="tab-btn" onclick="openTab('faq')">FAQs</span>
+          </div>
+
+          <div id="desc" class="tab-content active">
+            <p>${product.description}</p>
+          </div>
+
+          <div id="faq" class="tab-content">
+            ${product.faq && product.faq.length > 0 ? `
+              <ul>
+                ${product.faq.map(f => `<li><strong>${f.question}</strong><br>${f.answer}</li>`).join('')}
+              </ul>
+            ` : "No FAQs available"}
+          </div>
+        </div>
+
+      </div>
+    </div>
   `;
 
-  // Add JSON-LD schema for SEO
-  const schema = {
-    "@context": "https://schema.org/",
-    "@type": "Product",
-    "name": product.name,
-    "sku": product.sku,
-    "description": product.description,
-    "image": product.images,
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "KES",
-      "price": product.price,
-      "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      "url": window.location.href
-    },
-    "review": product.faq && product.faq.length > 0 ? {
-      "@type": "Review",
-      "reviewRating": { "@type": "Rating", "ratingValue": 5, "bestRating": 5 },
-      "author": { "@type": "Person", "name": "Happy Customer" }
-    } : undefined
-  };
+  // ======================
+  // FUNCTIONS
+  // ======================
 
-  const script = document.createElement("script");
-  script.type = "application/ld+json";
-  script.text = JSON.stringify(schema);
-  document.head.appendChild(script);
+  window.changeImage = function(src){
+    document.getElementById("mainImage").src = src;
+  }
+
+  window.updateQty = function(change){
+    let input = document.getElementById("qty");
+    let value = parseInt(input.value) || 1;
+    value += change;
+    if(value < 1) value = 1;
+    input.value = value;
+  }
+
+  window.addToCartAdvanced = function(){
+    let qty = parseInt(document.getElementById("qty").value) || 1;
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const existing = cart.find(item => item.name === product.name);
+
+    if(existing){
+      existing.quantity += qty;
+    } else {
+      cart.push({
+        name: product.name,
+        price: product.price,
+        quantity: qty
+      });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Added to cart!");
+  }
+
+  window.buyNow = function(){
+    let qty = parseInt(document.getElementById("qty").value) || 1;
+
+    let message = `Hello DK World Kenya,%0A%0AI want to order:%0A- ${product.name} x ${qty} (KES ${product.price * qty})%0A`;
+
+    const phone = "254710346425";
+    window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
+  }
+
+  window.openTab = function(tab){
+    document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+
+    document.getElementById(tab).classList.add("active");
+    event.target.classList.add("active");
+  }
+
+  // ======================
+  // RELATED PRODUCTS
+  // ======================
+  const related = products.filter(p => p.category === product.category && p.name !== product.name);
+
+  const relatedContainer = document.getElementById("relatedProducts");
+
+  related.slice(0,4).forEach(p => {
+    relatedContainer.innerHTML += `
+      <div style="width:150px; background:#fff; padding:10px; border-radius:8px;">
+        <img src="${p.images[0]}" width="100%">
+        <p>${p.name}</p>
+        <small>KES ${p.price}</small>
+      </div>
+    `;
+  });
+
 }
 </script>
+
+</body>
+</html>
