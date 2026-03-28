@@ -708,3 +708,20 @@ function checkoutWhatsApp() {
   const phoneNumber = "254710346425"; // WhatsApp number
   window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
 }
+function showToast(msg){
+  let toast = document.createElement("div");
+  toast.innerText = msg;
+
+  toast.style.position = "fixed";
+  toast.style.bottom = "20px";
+  toast.style.right = "20px";
+  toast.style.background = "#000";
+  toast.style.color = "#fff";
+  toast.style.padding = "10px 15px";
+  toast.style.borderRadius = "5px";
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => toast.remove(), 2000);
+}
+
