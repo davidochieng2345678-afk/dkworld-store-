@@ -1,2 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - DK World Store</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
+<header>
+  <h1>DK World Admin</h1>
+  <span class="menu-toggle" id="menu-toggle">&#9776;</span>
+</header>
+
+<div style="padding:30px; max-width:600px; margin:auto;">
+
+  <h2>Add / Edit Product</h2>
+  <input type="text" id="name" placeholder="Product Name"><br><br>
+  <input type="number" id="price" placeholder="Price"><br><br>
+  <input type="text" id="image" placeholder="Main Image URL"><br><br>
+  <input type="text" id="images" placeholder="Additional Images (comma separated)"><br><br>
+  <input type="text" id="video" placeholder="YouTube Video URL"><br><br>
+  <input type="text" id="sku" placeholder="SKU"><br><br>
+  <input type="number" id="stock" placeholder="Stock Quantity"><br><br>
+  <input type="text" id="category" placeholder="Category"><br><br>
+  <textarea id="description" placeholder="Description"></textarea><br><br>
+  <input type="text" id="faqQ1" placeholder="FAQ 1 Question">
+  <input type="text" id="faqA1" placeholder="FAQ 1 Answer"><br><br>
+  <input type="text" id="faqQ2" placeholder="FAQ 2 Question">
+  <input type="text" id="faqA2" placeholder="FAQ 2 Answer"><br><br>
+  <button onclick="addProductFromForm()">Add Product</button>
+  <button onclick="resetForm()">Reset</button>
+
+  <h2 style="margin-top:30px;">Existing Products</h2>
+  <div id="existingProducts"></div>
+
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
 
