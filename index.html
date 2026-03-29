@@ -243,6 +243,152 @@
   });
 </script>
 
+
+  <script>
+// ===== SIMULATED JSON STORAGE =====
+const PRODUCTS_KEY = "dkworld_products";
+
+function loadProducts() {
+  return JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+}
+
+function saveProducts(products) {
+  localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
+}
+
+// ===== ADMIN FUNCTIONS =====
+let editIndex = null;
+
+function resetForm() {
+  ["name","price","image","images","video","sku","stock","category","description","faqQ1","faqA1","faqQ2","faqA2"]
+    .forEach(id => document.getElementById(id)?.value = "");
+  document.getElementById("addUpdateBtn")?.textContent = "Add Product";
+  editIndex = null;
+}
+
+function addOrUpdateProduct() {
+  const name = document.getElementById("name")?.value.trim();
+  const price = parseFloat(document.getElementById("price")?.value);
+  const imagesInput = document.getElementById("images")?.value.trim();
+  const images = imagesInput ? imagesInput.split(",").map(i=>i.trim()) : [];
+  const mainImage = document.getElementById("image")?.value.trim();
+  if(mainImage) images.unshift(mainImage);
+
+  if(!name || !price || images.length === 0) {
+    alert("Fill in name, price, and at least one image!");
+    return;
+  }
+
+  const product = {
+    name,
+    price,
+    images,
+    video: document.getElementById("video")?.value.trim(),
+    sku: document.getElementById("sku")?.value.trim(),
+    stock: parseInt(document.getElementById("stock")?.value) || 0,
+    category: document.getElementById("category")?.value,
+    description: document.getElementById("description")?.value.trim(),
+    faq: [
+      { question: document.getElementById("faqQ1")?.value, answer: document.getElementById("faqA1")?.value },
+      { question: document.getElementById("faqQ2")?.value, answer: document.getElementById("faqA2")?.value }
+    ].filter(f=>f.question && f.answer)
+  };
+
+  const products = loadProducts();
+  if(editIndex !== null){
+    products[editIndex] = product;
+    alert("✅ Product updated!");
+  } else {
+    products.push(product);
+    alert("✅ Product added!");
+  }
+
+  saveProducts(products);
+  displayProducts();
+  resetForm();
+}
+
+function editProduct(index) {
+  const products = loadProducts();
+  const p = products[index];
+  editIndex = index;
+
+  document.getElementById("name").value = p.name;
+  document.getElementById("price").value = p.price;
+  document.getElementById("image").value = p.images[0] || "";
+  document.getElementById("images").value = p.images.slice(1).join(", ");
+  document.getElementById("video").value = p.video;
+  document.getElementById("sku").value = p.sku;
+  document.getElementById("stock").value = p.stock;
+  document.getElementById("category").value = p.category;
+  document.getElementById("description").value = p.description;
+  document.getElementById("faqQ1").value = p.faq[0]?.question || "";
+  document.getElementById("faqA1").value = p.faq[0]?.answer || "";
+  document.getElementById("faqQ2").value = p.faq[1]?.question || "";
+  document.getElementById("faqA2").value = p.faq[1]?.answer || "";
+
+  document.getElementById("addUpdateBtn").textContent = "Save Changes";
+}
+
+function deleteProduct(index) {
+  const products = loadProducts();
+  if(confirm(`Delete "${products[index].name}"?`)) {
+    products.splice(index,1);
+    saveProducts(products);
+    displayProducts();
+  }
+}
+
+// ===== DISPLAY PRODUCTS =====
+function displayProducts() {
+  const container = document.getElementById("existingProducts") || document.getElementById("productsContainer");
+  if(!container) return;
+
+  const products = loadProducts();
+  container.innerHTML = "";
+  if(products.length === 0) {
+    container.innerHTML = "<p>No products yet.</p>";
+    return;
+  }
+
+  products.forEach((p,index)=>{
+    const div = document.createElement("div");
+    div.className = "product-card";
+
+    div.innerHTML = `
+      <h3>${p.name}</h3>
+      <p>${p.category} | KES ${p.price} | Stock: ${p.stock}</p>
+      <p>${p.description}</p>
+      ${(!document.getElementById("existingProducts") && p.images[0]) ? `<img src="${p.images[0]}" alt="${p.name}" style="max-width:200px;">` : ""}
+    `;
+
+    if(document.getElementById("existingProducts")){
+      const btnDiv = document.createElement("div");
+      btnDiv.style.display="flex"; btnDiv.style.gap="5px";
+
+      const editBtn = document.createElement("button");
+      editBtn.textContent="Edit"; editBtn.className="edit-btn";
+      editBtn.onclick = ()=>editProduct(index);
+
+      const delBtn = document.createElement("button");
+      delBtn.textContent="Delete"; delBtn.className="delete-btn";
+      delBtn.onclick = ()=>deleteProduct(index);
+
+      btnDiv.appendChild(editBtn); btnDiv.appendChild(delBtn);
+      div.appendChild(btnDiv);
+    }
+
+    container.appendChild(div);
+  });
+}
+
+// ===== INIT =====
+document.addEventListener("DOMContentLoaded", ()=>{
+  displayProducts();
+  document.getElementById("addUpdateBtn")?.addEventListener("click", addOrUpdateProduct);
+});
+</script>
+
 </body>
 </html>
 
