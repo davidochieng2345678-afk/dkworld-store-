@@ -154,17 +154,26 @@ function saveProducts(products) {
 const STORAGE_KEY = "dkworld_products";
 let editIndex = null;
 
+
+  // ===== LOCAL STORAGE CENTRAL =====
+const localCentralStore = "dkworld_products"; // centralized storage key
+let editIndex = null;
+
 // ===== STORAGE =====
-function loadProducts() { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-function saveProducts(products) { localStorage.setItem(STORAGE_KEY, JSON.stringify(products)); }
+function loadProducts() {
+  return JSON.parse(localStorage.getItem(localCentralStore)) || [];
+}
+
+function saveProducts(products) {
+  localStorage.setItem(localCentralStore, JSON.stringify(products));
+}
 
 // ===== DISPLAY PRODUCTS =====
-function displayProducts(forAdmin = false, products = null) {
-  const container = document.getElementById(forAdmin ? "existingProducts" : "productsContainer");
+function renderProducts(containerId, products, forAdmin=false) {
+  const container = document.getElementById(containerId);
   if (!container) return;
-  if (!products) products = loadProducts();
-  container.innerHTML = "";
 
+  container.innerHTML = "";
   if (products.length === 0) {
     container.innerHTML = `<p>${forAdmin ? "No products yet." : "No products available."}</p>`;
     return;
@@ -178,9 +187,9 @@ function displayProducts(forAdmin = false, products = null) {
     div.style.marginBottom = "10px";
     div.style.borderRadius = "6px";
 
-    let imagesHTML = (!forAdmin && p.images[0]) ? `<img src="${p.images[0]}" style="max-width:200px; margin-top:10px;">` : "";
-    let videoHTML = (!forAdmin && p.video) ? `<iframe width="200" height="113" src="${p.video}" frameborder="0" allowfullscreen style="margin-top:10px;"></iframe>` : "";
-    let orderBtn = (!forAdmin) ? `<a href="https://wa.me/254710346425?text=I%20want%20to%20order%20${encodeURIComponent(p.name)}" target="_blank"><button style="margin-top:10px;">Order via WhatsApp</button></a>` : "";
+    let imagesHTML = (!forAdmin && p.images.length > 0) ? `<img src="${p.images[0]}" style="max-width:200px;">` : "";
+    let videoHTML = (!forAdmin && p.video) ? `<iframe width="200" height="113" src="${p.video}" frameborder="0" allowfullscreen></iframe>` : "";
+    let orderBtn = (!forAdmin) ? `<a href="https://wa.me/254710346425?text=I%20want%20to%20order%20${encodeURIComponent(p.name)}" target="_blank"><button>Order via WhatsApp</button></a>` : "";
 
     div.innerHTML = `
       <h3>${p.name}</h3>
