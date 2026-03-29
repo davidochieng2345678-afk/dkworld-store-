@@ -214,6 +214,55 @@ function displayProductsContainer(products) {
   });
 }
 
+<!-- ===== SEARCH & FILTER ===== -->
+<div id="productFilters">
+  <input type="text" id="searchInput" placeholder="Search products...">
+  <select id="categoryFilter">
+    <option value="">All Categories</option>
+    <option value="Electronics">Electronics</option>
+    <option value="Clothing">Clothing</option>
+    <option value="Books">Books</option>
+  </select>
+  <button id="clearFilters">Clear Filters</button>
+</div>
+
+<!-- ===== HOMEPAGE PRODUCTS ===== -->
+<section id="productsContainer" class="products"></section>
+
+<!-- ===== ADMIN PANEL ===== -->
+<h2>Admin Panel: Add / Edit Products</h2>
+<form id="adminForm">
+  <input type="text" id="name" placeholder="Product Name"><br>
+  <input type="number" id="price" placeholder="Price (KES)"><br>
+  <input type="text" id="image" placeholder="Main Image URL"><br>
+  <input type="text" id="images" placeholder="Other Images (comma separated)"><br>
+  <input type="text" id="video" placeholder="YouTube Video URL"><br>
+  <input type="text" id="sku" placeholder="SKU"><br>
+  <input type="number" id="stock" placeholder="Stock"><br>
+  <input type="text" id="category" placeholder="Category"><br>
+  <textarea id="description" placeholder="Description"></textarea><br>
+  <input type="text" id="faqQ1" placeholder="FAQ Question 1"><br>
+  <input type="text" id="faqA1" placeholder="FAQ Answer 1"><br>
+  <input type="text" id="faqQ2" placeholder="FAQ Question 2"><br>
+  <input type="text" id="faqA2" placeholder="FAQ Answer 2"><br>
+  <button type="button" id="addUpdateBtn">Add Product</button>
+</form>
+
+<h3>Existing Products</h3>
+<div id="existingProducts"></div>
+
+<!-- ===== WHATSAPP FLOAT ===== -->
+<a href="https://wa.me/254710346425" target="_blank" class="whatsapp-float">
+  <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+</a>
+
+
+
+<!-- ===== YOUR PRODUCT JS GOES HERE ===== -->
+<script src="products.js"></script> 
+
+    
+
 // ===== ADMIN FUNCTIONS =====
 function resetForm() {
   ["name","price","image","images","video","sku","stock","category","description","faqQ1","faqA1","faqQ2","faqA2"]
