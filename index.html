@@ -11,4 +11,54 @@
 <body>
 
 
+<header>
+  <h1>DK World Store</h1>
+  <span class="menu-toggle" id="menu-toggle">&#9776;</span>
+  <nav>
+    <ul class="menu" id="menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="cart.html">Cart (<span id="cartCount">0</span>)</a></li>
+      <li class="dropdown">
+        <a href="#">Categories</a>
+        <ul class="dropdown-content" id="categoryFilterDropdown">
+          <li><a href="#" onclick="filterCategory('Websites')">Websites</a></li>
+          <li><a href="#" onclick="filterCategory('SEO')">SEO</a></li>
+          <li><a href="#" onclick="filterCategory('Other')">Other</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<div class="hero">
+  <h2>Sell your business online with DK World</h2>
+  <p>Dynamic, SEO-optimized websites ready to convert.</p>
+  <button onclick="window.location.href='admin.html'">Add Products</button>
+</div>
+
+<!-- Search & Filter -->
+<div style="text-align:center; margin:20px;">
+  <input type="text" id="searchInput" placeholder="Search products...">
+  <select id="categoryFilter">
+    <option value="">All Categories</option>
+    <option value="Websites">Websites</option>
+    <option value="SEO">SEO</option>
+    <option value="Other">Other</option>
+  </select>
+  <button id="clearFilters" onclick="clearFilters()">Clear</button>
+</div>
+
+<!-- Products -->
+<div class="products" id="productsContainer"></div>
+
+<!-- WhatsApp Button -->
+<div class="whatsapp-float">
+  <a href="https://wa.me/254710346425" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+  </a>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
 
