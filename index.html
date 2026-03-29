@@ -155,37 +155,60 @@ function displayProducts(products) {
   });
 }
 
-// ===== SEARCH FILTER =====
-document.getElementById("searchInput").addEventListener("input", (e) => {
-  const searchValue = e.target.value.toLowerCase();
-  const products = JSON.parse(localStorage.getItem("dkworld_products")) || [];
-  const filtered = products.filter(p =>
-    p.name.toLowerCase().includes(searchValue) ||
-    p.description.toLowerCase().includes(searchValue)
-  );
-  displayProducts(filtered);
-});
 
-// ===== CATEGORY FILTER =====
-document.getElementById("categoryFilter").addEventListener("change", (e) => {
-  const category = e.target.value;
-  const products = JSON.parse(localStorage.getItem("dkworld_products")) || [];
-  const filtered = category ? products.filter(p => p.category === category) : products;
-  displayProducts(filtered);
-});
+  // ===== SEARCH & FILTER =====
+function filterProducts() {
+  const searchValue = document.getElementById("searchInput")?.value.toLowerCase() || "";
+  const categoryValue = document.getElementById("categoryFilter")?.value || "";
 
-// ===== CLEAR FILTERS =====
-document.getElementById("clearFilters").addEventListener("click", () => {
+  const products = loadProducts();
+  const container = document.getElementById("productsContainer");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const filtered = products.filter(p => {
+    const matchesSearch =
+      p.name.toLowerCase().includes(searchValue) ||
+      p.description.toLowerCase().includes(searchValue);
+
+    const matchesCategory =
+      categoryValue === "" || p.category === categoryValue;
+
+    return matchesSearch && matchesCategory;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = "<p>No products found.</p>";
+    return;
+  }
+
+  filtered.forEach(p => {
+    const div = document.createElement("div");
+    div.className = "product-card";
+
+    div.innerHTML = `
+      <h3>${p.name}</h3>
+      <p>${p.category} | KES ${p.price} | Stock: ${p.stock}</p>
+      <p>${p.description}</p>
+      ${p.images[0] ? `<img src="${p.images[0]}" style="max-width:200px;">` : ""}
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+// ===== EVENTS =====
+document.getElementById("searchInput")?.addEventListener("input", filterProducts);
+document.getElementById("categoryFilter")?.addEventListener("change", filterProducts);
+
+document.getElementById("clearFilters")?.addEventListener("click", () => {
   document.getElementById("searchInput").value = "";
   document.getElementById("categoryFilter").value = "";
-  loadProducts();
+  displayProducts(); // reset to all products
 });
 
-// ===== INIT =====
-document.addEventListener("DOMContentLoaded", () => {
-  loadProducts();
-});
-</script>
+
 // ===== ADMIN FUNCTIONS =====
 let editIndex = null;
 
