@@ -271,59 +271,70 @@ function deleteProduct(index) {
   }
 }
 
-
-
-
-// ===== DISPLAY PRODUCTS =====
+<!-- ===== DISPLAY PRODUCTS ===== -->
+<script>
 function displayProducts() {
-const container = document.getElementById("existingProducts") || document.getElementById("productsContainer");
-if(!container) return;
+  // Determine container: admin or homepage
+  const container = document.getElementById("existingProducts") || document.getElementById("productsContainer");
+  if (!container) return;
 
-const products = loadProducts();
-container.innerHTML = "";
-if(products.length === 0) {
-container.innerHTML = "<p>No products yet.</p>";
-return;
-}
+  // Load products from consistent storage key
+  const products = JSON.parse(localStorage.getItem("dkworld_products")) || [];
+  container.innerHTML = "";
 
-products.forEach((p,index)=>{
-const div = document.createElement("div");
-div.className = "product-card";
+  if (products.length === 0) {
+    container.innerHTML = "<p>No products available yet.</p>";
+    return;
+  }
 
-div.innerHTML = `    
-  <h3>${p.name}</h3>    
-  <p>${p.category} | KES ${p.price} | Stock: ${p.stock}</p>    
-  <p>${p.description}</p>    
-  ${(!document.getElementById("existingProducts") && p.images[0]) ? `<img src="${p.images[0]}" alt="${p.name}" style="max-width:200px;">` : ""}    
-`;    
+  products.forEach((p, index) => {
+    const div = document.createElement("div");
+    div.className = "product-card";
 
-if(document.getElementById("existingProducts")){    
-  const btnDiv = document.createElement("div");    
-  btnDiv.style.display="flex"; btnDiv.style.gap="5px";    
+    // Product card content
+    let imagesHTML = "";
+    if (!document.getElementById("existingProducts") && p.images && p.images[0]) {
+      imagesHTML = `<img src="${p.images[0]}" alt="${p.name}" style="max-width:200px;">`;
+    }
 
-  const editBtn = document.createElement("button");    
-  editBtn.textContent="Edit"; editBtn.className="edit-btn";    
-  editBtn.onclick = ()=>editProduct(index);    
+    div.innerHTML = `
+      <h3>${p.name}</h3>
+      <p>${p.category} | KES ${p.price} | Stock: ${p.stock}</p>
+      <p>${p.description}</p>
+      ${imagesHTML}
+    `;
 
-  const delBtn = document.createElement("button");    
-  delBtn.textContent="Delete"; delBtn.className="delete-btn";    
-  delBtn.onclick = ()=>deleteProduct(index);    
+    // Admin buttons: Edit & Delete
+    if (document.getElementById("existingProducts")) {
+      const btnDiv = document.createElement("div");
+      btnDiv.style.display = "flex";
+      btnDiv.style.gap = "5px";
 
-  btnDiv.appendChild(editBtn); btnDiv.appendChild(delBtn);    
-  div.appendChild(btnDiv);    
-}    
+      const editBtn = document.createElement("button");
+      editBtn.textContent = "Edit";
+      editBtn.className = "edit-btn";
+      editBtn.onclick = () => editProduct(index);
 
-container.appendChild(div);
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "Delete";
+      delBtn.className = "delete-btn";
+      delBtn.onclick = () => deleteProduct(index);
 
-});
+      btnDiv.appendChild(editBtn);
+      btnDiv.appendChild(delBtn);
+      div.appendChild(btnDiv);
+    }
+
+    container.appendChild(div);
+  });
 }
 
 // ===== INIT =====
-document.addEventListener("DOMContentLoaded", ()=>{
-displayProducts();
-document.getElementById("addUpdateBtn")?.addEventListener("click", addOrUpdateProduct);
+document.addEventListener("DOMContentLoaded", () => {
+  displayProducts();
+  document.getElementById("addUpdateBtn")?.addEventListener("click", addOrUpdateProduct);
 });
-</script> 
+</script>
   
 </body>
 </html>    
