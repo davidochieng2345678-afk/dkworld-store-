@@ -81,19 +81,6 @@
     </div>    
   </div>    
 
-<!-- ================= PRODUCT FILTERS ================= -->
-<section class="product-filters" style="margin:20px 0;">
-  <input type="text" id="searchInput" placeholder="Search products..." style="padding:10px; width:100%; margin-bottom:10px; border-radius:6px; border:1px solid #ccc;">
-
-  <select id="categoryFilter" style="padding:10px; width:100%; margin-bottom:10px; border-radius:6px; border:1px solid #ccc;">
-    <option value="">All Categories</option>
-    <option value="Websites">Websites</option>
-    <option value="Digital Products">Digital Products</option>
-  </select>
-
-  <button id="clearFilters" style="padding:10px; width:100%; margin-bottom:20px;">Clear Filters</button>
-</section>
-
 <!-- ================= PRODUCTS CONTAINER ================= -->
 <section id="productsContainer" class="products"></section>
 
@@ -108,34 +95,52 @@
   <span id="cartCount" style="position:absolute; top:-10px; right:-10px; background:red; color:white; border-radius:50%; padding:3px 7px; font-size:12px;">0</span>
 </div>
 
-<!-- ================= JS: LOAD, SEARCH & FILTER PRODUCTS ================= -->
+<!-- ================= JS: PRODUCTS, ADMIN, FILTER ================= -->
 <script>
-// ===== LOAD PRODUCTS =====
+const STORAGE_KEY = "dkworld_products";
+let editIndex = null;
+
+// ===== STORAGE =====
 function loadProducts() {
-  const products = JSON.parse(localStorage.getItem("dkworld_products")) || [];
-  displayProducts(products);
-  return products;
+  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+}
+
+function saveProducts(products) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
 }
 
 // ===== DISPLAY PRODUCTS =====
-function displayProducts(products) {
-  const container = document.getElementById("productsContainer");
+function displayProducts(forAdmin = false) {
+  const container = document.getElementById(forAdmin ? "existingProducts" : "productsContainer");
+  if (!container) return;
+
+  const products = loadProducts();
   container.innerHTML = "";
 
   if (products.length === 0) {
-    container.innerHTML = "<p>No products available yet.</p>";
+    container.innerHTML = "<p>No products available.</p>";
     return;
   }
 
-  products.forEach(p => {
+  products.forEach((p, index) => {
     const div = document.createElement("div");
     div.className = "product-card";
 
     let imagesHTML = "";
-    if (p.images) {
-      p.images.forEach(img => {
-        imagesHTML += `<img src="${img}" alt="${p.name}" style="max-width:100px; margin-right:10px;">`;
-      });
+    if (!forAdmin && p.images[0]) {
+      imagesHTML = `<img src="${p.images[0]}" alt="${p.name}" style="max-width:200px; margin-top:10px;">`;
+    }
+
+    let videoHTML = "";
+    if (!forAdmin && p.video) {
+      videoHTML = `<iframe width="200" height="113" src="${p.video}" frameborder="0" allowfullscreen style="margin-top:10px;"></iframe>`;
+    }
+
+    let orderBtn = "";
+    if (!forAdmin) {
+      orderBtn = `<a href="https://wa.me/254710346425?text=I%20want%20to%20order%20${encodeURIComponent(p.name)}" target="_blank">
+                    <button style="margin-top:10px;">Order via WhatsApp</button>
+                  </a>`;
     }
 
     div.innerHTML = `
@@ -144,75 +149,72 @@ function displayProducts(products) {
       <p><strong>Stock:</strong> ${p.stock}</p>
       <p><strong>Category:</strong> ${p.category}</p>
       <p>${p.description}</p>
-      ${imagesHTML}
-      ${p.video ? `<iframe width="200" height="113" src="${p.video}" frameborder="0" allowfullscreen></iframe>` : ""}
-      <a href="https://wa.me/254710346425?text=I%20want%20to%20order%20${encodeURIComponent(p.name)}" target="_blank">
-        <button style="margin-top:10px;">Order via WhatsApp</button>
-      </a>
+      ${imagesHTML} ${videoHTML} ${orderBtn}
     `;
+
+    // Admin buttons
+    if (forAdmin) {
+      const btnDiv = document.createElement("div");
+      btnDiv.style.display = "flex";
+      btnDiv.style.gap = "5px";
+
+      const editBtn = document.createElement("button");
+      editBtn.className = "edit-btn";
+      editBtn.textContent = "Edit";
+      editBtn.onclick = () => editProduct(index);
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "delete-btn";
+      deleteBtn.textContent = "Delete";
+      deleteBtn.onclick = () => deleteProduct(index);
+
+      btnDiv.appendChild(editBtn);
+      btnDiv.appendChild(deleteBtn);
+      div.appendChild(btnDiv);
+    }
 
     container.appendChild(div);
   });
 }
 
-
-  // ===== SEARCH & FILTER =====
+// ===== FILTER PRODUCTS =====
 function filterProducts() {
   const searchValue = document.getElementById("searchInput")?.value.toLowerCase() || "";
   const categoryValue = document.getElementById("categoryFilter")?.value || "";
-
   const products = loadProducts();
-  const container = document.getElementById("productsContainer");
-  if (!container) return;
-
-  container.innerHTML = "";
 
   const filtered = products.filter(p => {
-    const matchesSearch =
-      p.name.toLowerCase().includes(searchValue) ||
-      p.description.toLowerCase().includes(searchValue);
-
-    const matchesCategory =
-      categoryValue === "" || p.category === categoryValue;
-
+    const matchesSearch = p.name.toLowerCase().includes(searchValue) || p.description.toLowerCase().includes(searchValue);
+    const matchesCategory = categoryValue === "" || p.category === categoryValue;
     return matchesSearch && matchesCategory;
   });
 
-  if (filtered.length === 0) {
+  displayProductsContainer(filtered);
+}
+
+function displayProductsContainer(products) {
+  const container = document.getElementById("productsContainer");
+  container.innerHTML = "";
+
+  if (products.length === 0) {
     container.innerHTML = "<p>No products found.</p>";
     return;
   }
 
-  filtered.forEach(p => {
+  products.forEach(p => {
     const div = document.createElement("div");
     div.className = "product-card";
-
     div.innerHTML = `
       <h3>${p.name}</h3>
       <p>${p.category} | KES ${p.price} | Stock: ${p.stock}</p>
       <p>${p.description}</p>
       ${p.images[0] ? `<img src="${p.images[0]}" style="max-width:200px;">` : ""}
     `;
-
     container.appendChild(div);
   });
 }
 
-// ===== EVENTS =====
-document.getElementById("searchInput")?.addEventListener("input", filterProducts);
-document.getElementById("categoryFilter")?.addEventListener("change", filterProducts);
-
-document.getElementById("clearFilters")?.addEventListener("click", () => {
-  document.getElementById("searchInput").value = "";
-  document.getElementById("categoryFilter").value = "";
-  displayProducts(); // reset to all products
-});
-
-
 // ===== ADMIN FUNCTIONS =====
-let editIndex = null;
-
-// Reset form to default state
 function resetForm() {
   ["name","price","image","images","video","sku","stock","category","description","faqQ1","faqA1","faqQ2","faqA2"]
     .forEach(id => document.getElementById(id)?.value = "");
@@ -220,14 +222,13 @@ function resetForm() {
   editIndex = null;
 }
 
-// Add new product or update existing one
 function addOrUpdateProduct() {
   const name = document.getElementById("name")?.value.trim();
   const price = parseFloat(document.getElementById("price")?.value);
   const imagesInput = document.getElementById("images")?.value.trim();
   const images = imagesInput ? imagesInput.split(",").map(i => i.trim()) : [];
   const mainImage = document.getElementById("image")?.value.trim();
-  if(mainImage) images.unshift(mainImage);
+  if (mainImage) images.unshift(mainImage);
 
   if(!name || !price || images.length === 0) {
     alert("Fill in name, price, and at least one image!");
@@ -249,7 +250,7 @@ function addOrUpdateProduct() {
     ].filter(f => f.question && f.answer)
   };
 
-  const products = JSON.parse(localStorage.getItem("dkworld_products")) || [];
+  const products = loadProducts();
   if(editIndex !== null){
     products[editIndex] = product;
     alert("✅ Product updated!");
@@ -258,14 +259,13 @@ function addOrUpdateProduct() {
     alert("✅ Product added!");
   }
 
-  localStorage.setItem("dkworld_products", JSON.stringify(products));
-  displayProducts();
+  saveProducts(products);
+  displayProducts(true); // Admin view
   resetForm();
 }
 
-// Edit a product
 function editProduct(index) {
-  const products = JSON.parse(localStorage.getItem("dkworld_products")) || [];
+  const products = loadProducts();
   const p = products[index];
   editIndex = index;
 
@@ -286,88 +286,32 @@ function editProduct(index) {
   document.getElementById("addUpdateBtn").textContent = "Save Changes";
 }
 
-// Delete a product
 function deleteProduct(index) {
-  const products = JSON.parse(localStorage.getItem("dkworld_products")) || [];
+  const products = loadProducts();
   if(confirm(`Delete "${products[index].name}"?`)) {
     products.splice(index, 1);
-    localStorage.setItem("dkworld_products", JSON.stringify(products));
-    displayProducts();
+    saveProducts(products);
+    displayProducts(true);
   }
 }
-// ===== STORAGE =====
-const STORAGE_KEY = "dkworld_products";
 
-// ===== LOAD & SAVE PRODUCTS =====
-function loadProducts() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-}
-
-function saveProducts(products) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-}
-
-// ===== DISPLAY PRODUCTS (FOR ADMIN & HOMEPAGE) =====
-function displayProducts() {
-  const container = document.getElementById("existingProducts") || document.getElementById("productsContainer");
-  if (!container) return;
-
-  const products = loadProducts();
-  container.innerHTML = "";
-
-  if (products.length === 0) {
-    container.innerHTML = "<p>No products yet.</p>";
-    return;
-  }
-
-  products.forEach((p, index) => {
-    const div = document.createElement("div");
-    div.className = "product-card";
-
-    // Images HTML (first image only for homepage)
-    const imagesHTML = (!document.getElementById("existingProducts") && p.images[0])
-      ? `<img src="${p.images[0]}" alt="${p.name}" style="max-width:200px;">`
-      : "";
-
-    div.innerHTML = `
-      <h3>${p.name}</h3>
-      <p>${p.category} | KES ${p.price} | Stock: ${p.stock}</p>
-      <p>${p.description}</p>
-      ${imagesHTML}
-    `;
-
-    // Admin buttons
-    if (document.getElementById("existingProducts")) {
-      const btnDiv = document.createElement("div");
-      btnDiv.style.display = "flex";
-      btnDiv.style.gap = "5px";
-
-      const editBtn = document.createElement("button");
-      editBtn.textContent = "Edit";
-      editBtn.className = "edit-btn";
-      editBtn.onclick = () => editProduct(index);
-
-      const delBtn = document.createElement("button");
-      delBtn.textContent = "Delete";
-      delBtn.className = "delete-btn";
-      delBtn.onclick = () => deleteProduct(index);
-
-      btnDiv.appendChild(editBtn);
-      btnDiv.appendChild(delBtn);
-      div.appendChild(btnDiv);
-    }
-
-    container.appendChild(div);
-  });
-}
-
-// ===== INIT =====
+// ===== EVENTS =====
 document.addEventListener("DOMContentLoaded", () => {
-  displayProducts();
-  document.getElementById("addUpdateBtn")?.addEventListener("click", addOrUpdateProduct);
-});
-  
+  displayProducts(true); // Admin view
+  displayProducts(false); // Homepage view
 
+  document.getElementById("addUpdateBtn")?.addEventListener("click", addOrUpdateProduct);
+  document.getElementById("searchInput")?.addEventListener("input", filterProducts);
+  document.getElementById("categoryFilter")?.addEventListener("change", filterProducts);
+  document.getElementById("clearFilters")?.addEventListener("click", () => {
+    document.getElementById("searchInput").value = "";
+    document.getElementById("categoryFilter").value = "";
+    displayProducts(false);
+  });
+});
+</script>
+  
+    
   
 </body>
 </html>    
