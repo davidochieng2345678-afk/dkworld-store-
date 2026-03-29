@@ -1,31 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DK World Kenya | Admin Panel</title>
-  <meta name="description" content="Admin panel to add, edit, and manage products for DK World Kenya.">
-  <link rel="stylesheet" href="css/style.css">
-  <style>
-    main { max-width: 900px; margin: 40px auto; padding: 0 20px; font-family: sans-serif; }
-    input, textarea, select, button { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border:1px solid #ccc; font-size:1rem; }
-    textarea { min-height:80px; resize:vertical; }
-    button { background:#1E3A8A; color:white; border:none; cursor:pointer; font-weight:bold; transition:0.3s; }
-    button:hover { background:#111E6C; }
-    .product-card { background:white; border-radius:12px; padding:15px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 3px 10px rgba(0,0,0,0.05); }
-    .product-card a { color:#1E3A8A; font-weight:500; text-decoration:none; }
-    .delete-btn { background:#EF4444; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; transition:0.3s; }
-    .delete-btn:hover { background:#C22E2E; }
-    .edit-btn { background:#3B82F6; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; transition:0.3s; }
-    .edit-btn:hover { background:#1E40AF; }
-    h2 { color:#1E3A8A; margin-bottom:15px; }
-    h3 { margin-top:25px; color:#111827; }
-    .faq-section { display:flex; gap:10px; flex-wrap:wrap; }
-    .faq-section input { flex:1; min-width:200px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="jaR9slJ6xqPv5YMNdIkxbD9R2tcEGJbkZMON0Wegpe0" />
+<title>DK World Kenya | Admin Panel & Products</title>
+<meta name="description" content="Admin panel to add, edit, and manage products for DK World Kenya. Includes full homepage layout for preview.">
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* ===== Admin Panel Styles ===== */
+.admin-panel { max-width: 900px; margin: 40px auto; padding: 0 20px; font-family: sans-serif; background:#f9f9f9; border-radius:12px; padding:30px; box-shadow:0 5px 20px rgba(0,0,0,0.05);}
+.admin-panel h2 { color:#1E3A8A; margin-bottom:15px; }
+.admin-panel h3 { margin-top:25px; color:#111827; }
+.admin-panel input, .admin-panel textarea, .admin-panel select, .admin-panel button { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border:1px solid #ccc; font-size:1rem; }
+.admin-panel textarea { min-height:80px; resize:vertical; }
+.admin-panel button { background:#1E3A8A; color:white; border:none; cursor:pointer; font-weight:bold; transition:0.3s; }
+.admin-panel button:hover { background:#111E6C; }
+.product-card { background:white; border-radius:12px; padding:15px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 3px 10px rgba(0,0,0,0.05); }
+.product-card a { color:#1E3A8A; font-weight:500; text-decoration:none; }
+.delete-btn { background:#EF4444; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; transition:0.3s; }
+.delete-btn:hover { background:#C22E2E; }
+.edit-btn { background:#3B82F6; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; transition:0.3s; }
+.edit-btn:hover { background:#1E40AF; }
+.faq-section { display:flex; gap:10px; flex-wrap:wrap; }
+.faq-section input { flex:1; min-width:200px; }
+
+/* ===== WhatsApp Float ===== */
+.whatsapp-float { position:fixed; bottom:20px; right:20px; z-index:1000; }
+.whatsapp-float img { height:60px; width:60px; }
+</style>
 </head>
 <body>
 
+<!-- ================= HEADER ================= -->
 <header>
   <h1>DK World Kenya 🌍 - Admin Panel</h1>
   <nav>
@@ -33,13 +40,89 @@
     <ul class="menu" id="menu">
       <li><a href="index.html">Home</a></li>
       <li><a href="cart.html">Cart 🛒</a></li>
+      <li><a href="checkout.html">Checkout</a></li>
     </ul>
   </nav>
 </header>
 
-<main>
-  <h2>Add Product</h2>
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <h1>Launch Your Online Business Today 🚀</h1>
+  <p>Buy ready-made websites and digital products in Kenya. No coding, no stress — just launch and start earning.</p>
+  <a href="#productsContainer"><button>Browse Products</button></a>
+</section>
 
+<!-- ================= CATEGORIES ================= -->
+<section class="categories">
+  <h2>Our Categories</h2>
+  <div class="category-list">
+    <div class="category">
+      <h3>Websites</h3>
+      <p>Get fully functional websites ready to launch your online business in minutes.</p>
+    </div>
+    <div class="category">
+      <h3>Digital Products</h3>
+      <p>Download high-quality templates, tools, and digital assets instantly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRUST SECTION ================= -->
+<section class="trust">
+  <h2>Why Choose DK World Kenya?</h2>
+  <div class="trust-box">
+    <p>✅ Instant Delivery</p>
+    <p>✅ Secure Payments</p>
+    <p>✅ Beginner Friendly</p>
+    <p>✅ Affordable Pricing</p>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="how-it-works">
+  <h2>How It Works</h2>
+  <div class="steps">
+    <div class="step">
+      <h3>1. Choose Your Website</h3>
+      <p>Browse our ready-made websites and pick the one that fits your business.</p>
+    </div>
+    <div class="step">
+      <h3>2. Order via WhatsApp</h3>
+      <p>Click checkout and send your order instantly via WhatsApp.</p>
+    </div>
+    <div class="step">
+      <h3>3. Pay via M-Pesa</h3>
+      <p>We guide you through secure payment after confirming your order.</p>
+    </div>
+    <div class="step">
+      <h3>4. Get Your Website</h3>
+      <p>We set it up for you and deliver within 24 hours — ready to start selling.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section class="testimonials">
+  <h2>What Our Clients Say</h2>
+  <div class="testimonial-box">
+    <div class="testimonial">
+      <p>"I got my website in less than a day and started receiving orders immediately!"</p>
+      <h4>- Brian, Nairobi</h4>
+    </div>
+    <div class="testimonial">
+      <p>"Very easy to use. I didn’t need any tech skills. Highly recommend DK World Kenya."</p>
+      <h4>- Mercy, Mombasa</h4>
+    </div>
+    <div class="testimonial">
+      <p>"Best investment for my online business. Clean design and fast delivery."</p>
+      <h4>- Kevin, Kisumu</h4>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ADMIN PANEL ================= -->
+<section class="admin-panel">
+  <h2>Admin Panel: Add / Edit Products</h2>
   <input id="name" placeholder="Product Name" required>
   <input id="price" type="number" placeholder="Price (KES)" required>
   <input id="image" placeholder="Main Image URL" required>
@@ -69,17 +152,38 @@
 
   <h2>Existing Products</h2>
   <div id="existingProducts"></div>
-</main>
+</section>
 
+<!-- ================= PRODUCT FILTERS ================= -->
+<section class="product-filters" style="margin:20px 0;">
+  <input type="text" id="searchInput" placeholder="Search products..." style="padding:10px; width:100%; margin-bottom:10px; border-radius:6px; border:1px solid #ccc;">
+  <select id="categoryFilter" style="padding:10px; width:100%; margin-bottom:10px; border-radius:6px; border:1px solid #ccc;">
+    <option value="">All Categories</option>
+    <option value="Websites">Websites</option>
+    <option value="Digital Products">Digital Products</option>
+  </select>
+  <button id="clearFilters" style="padding:10px; width:100%; margin-bottom:20px;">Clear Filters</button>
+</section>
+
+<section id="productsContainer" class="products"></section>
+
+<!-- ================= WHATSAPP FLOAT ================= -->
+<a href="https://wa.me/254710346425" target="_blank" class="whatsapp-float">
+  <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+</a>
+
+<!-- ================= CART COUNT ================= -->
+<div style="position:relative;">
+  <a href="cart.html">🛒 Cart</a>
+  <span id="cartCount" style="position:absolute; top:-10px; right:-10px; background:red; color:white; border-radius:50%; padding:3px 7px; font-size:12px;">0</span>
+</div>
+
+<!-- ================= JS ================= -->
 <script>
+// ===== ADMIN FUNCTIONALITY =====
 let editIndex = null;
 
-// ===== SAVE PRODUCTS =====
-function saveProducts(products){
-  localStorage.setItem("products", JSON.stringify(products));
-}
-
-// ===== RESET FORM =====
+function saveProducts(products){ localStorage.setItem("products", JSON.stringify(products)); }
 function resetForm(){
   document.getElementById("name").value = "";
   document.getElementById("price").value = "";
@@ -94,12 +198,11 @@ function resetForm(){
   document.getElementById("faqA1").value = "";
   document.getElementById("faqQ2").value = "";
   document.getElementById("faqA2").value = "";
-  document.querySelector("h2").textContent = "Add Product";
+  document.querySelector(".admin-panel h2").textContent = "Admin Panel: Add / Edit Products";
   document.getElementById("addUpdateBtn").textContent = "Add Product";
   editIndex = null;
 }
 
-// ===== ADD OR UPDATE PRODUCT =====
 function addOrUpdateProduct(){
   const name = document.getElementById("name").value.trim();
   const price = parseFloat(document.getElementById("price").value);
@@ -121,105 +224,96 @@ function addOrUpdateProduct(){
   const faqA2 = document.getElementById("faqA2").value.trim();
   if(faqQ2 && faqA2) faq.push({question: faqQ2, answer: faqA2});
 
-  if(!name || !price || images.length === 0 || !description){
-    alert("Please fill in all required fields (name, price, main image, description).");
-    return;
-  }
+  if(!name || !price || images.length===0 || !description){ alert("Please fill in all required fields."); return; }
 
   const product = { name, price, images, video, sku, stock, category, description, faq };
   const products = JSON.parse(localStorage.getItem("products")) || [];
 
-  if(editIndex !== null){
-    products[editIndex] = product;
-    alert("✅ Product updated successfully!");
-  } else {
-    products.push(product);
-    alert("✅ Product added successfully!");
-  }
+  if(editIndex!==null){ products[editIndex] = product; alert("✅ Product updated successfully!"); }
+  else{ products.push(product); alert("✅ Product added successfully!"); }
 
   saveProducts(products);
   displayExistingProducts();
   resetForm();
 }
 
-// ===== DISPLAY PRODUCTS =====
 function displayExistingProducts(){
   const container = document.getElementById("existingProducts");
   const products = JSON.parse(localStorage.getItem("products")) || [];
   container.innerHTML = "";
-
-  if(products.length === 0){
-    container.innerHTML = "<p>No products added yet.</p>";
-    return;
-  }
-
+  if(products.length===0){ container.innerHTML = "<p>No products added yet.</p>"; return; }
   products.forEach((p,index)=>{
-    const div = document.createElement("div");
-    div.className = "product-card";
-
+    const div = document.createElement("div"); div.className="product-card";
     const link = document.createElement("a");
     link.href = `product.html?name=${encodeURIComponent(p.name)}`;
-    link.target = "_blank";
-    link.textContent = `${p.name} (${p.category}) - KES ${p.price} - Stock: ${p.stock}`;
-
-    const editBtn = document.createElement("button");
-    editBtn.className = "edit-btn";
-    editBtn.textContent = "Edit";
-    editBtn.onclick = ()=>editProduct(index);
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.className = "delete-btn";
-    deleteBtn.textContent = "Delete";
-    deleteBtn.onclick = ()=>removeProduct(index);
-
-    const btnDiv = document.createElement("div");
-    btnDiv.style.display = "flex";
-    btnDiv.style.gap = "5px";
-    btnDiv.appendChild(editBtn);
-    btnDiv.appendChild(deleteBtn);
-
-    div.appendChild(link);
-    div.appendChild(btnDiv);
-    container.appendChild(div);
+    link.target="_blank"; link.textContent = `${p.name} (${p.category}) - KES ${p.price} - Stock: ${p.stock}`;
+    const editBtn=document.createElement("button"); editBtn.className="edit-btn"; editBtn.textContent="Edit"; editBtn.onclick=()=>editProduct(index);
+    const deleteBtn=document.createElement("button"); deleteBtn.className="delete-btn"; deleteBtn.textContent="Delete"; deleteBtn.onclick=()=>removeProduct(index);
+    const btnDiv=document.createElement("div"); btnDiv.style.display="flex"; btnDiv.style.gap="5px"; btnDiv.appendChild(editBtn); btnDiv.appendChild(deleteBtn);
+    div.appendChild(link); div.appendChild(btnDiv); container.appendChild(div);
   });
 }
 
-// ===== EDIT PRODUCT =====
 function editProduct(index){
   const products = JSON.parse(localStorage.getItem("products")) || [];
-  const p = products[index];
-  editIndex = index;
-
-  document.getElementById("name").value = p.name;
-  document.getElementById("price").value = p.price;
-  document.getElementById("image").value = p.images[0] || "";
-  document.getElementById("images").value = p.images.slice(1).join(", ");
-  document.getElementById("video").value = p.video;
-  document.getElementById("sku").value = p.sku;
-  document.getElementById("stock").value = p.stock;
-  document.getElementById("category").value = p.category;
-  document.getElementById("description").value = p.description;
-  document.getElementById("faqQ1").value = p.faq[0]?.question || "";
-  document.getElementById("faqA1").value = p.faq[0]?.answer || "";
-  document.getElementById("faqQ2").value = p.faq[1]?.question || "";
-  document.getElementById("faqA2").value = p.faq[1]?.answer || "";
-
-  document.querySelector("h2").textContent = "Edit Product";
-  document.getElementById("addUpdateBtn").textContent = "Save Changes";
+  const p = products[index]; editIndex=index;
+  document.getElementById("name").value=p.name;
+  document.getElementById("price").value=p.price;
+  document.getElementById("image").value=p.images[0]||"";
+  document.getElementById("images").value=p.images.slice(1).join(", ");
+  document.getElementById("video").value=p.video;
+  document.getElementById("sku").value=p.sku;
+  document.getElementById("stock").value=p.stock;
+  document.getElementById("category").value=p.category;
+  document.getElementById("description").value=p.description;
+  document.getElementById("faqQ1").value=p.faq[0]?.question||"";
+  document.getElementById("faqA1").value=p.faq[0]?.answer||"";
+  document.getElementById("faqQ2").value=p.faq[1]?.question||"";
+  document.getElementById("faqA2").value=p.faq[1]?.answer||"";
+  document.querySelector(".admin-panel h2").textContent="Edit Product";
+  document.getElementById("addUpdateBtn").textContent="Save Changes";
 }
 
-// ===== DELETE PRODUCT =====
 function removeProduct(index){
-  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const products=JSON.parse(localStorage.getItem("products"))||[];
   if(!confirm(`Are you sure you want to delete "${products[index].name}"?`)) return;
   products.splice(index,1);
   saveProducts(products);
   displayExistingProducts();
 }
 
+// ===== WHATSAPP CHAT & FOOTER =====
+function createFooter(){
+  const footer=document.createElement("footer");
+  footer.style.background="#111"; footer.style.color="#fff"; footer.style.padding="50px 20px"; footer.style.fontFamily="sans-serif"; footer.style.width="100%";
+  footer.innerHTML=`
+<div style="max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-around;gap:40px;">
+<div style="flex:1;min-width:250px;"><h3 style="color:#fff;">DK World Kenya</h3><p>© 2026 DK World Kenya</p><p>Top-quality web products & services across Kenya.</p></div>
+<div style="flex:1;min-width:250px;">
+<h4 style="color:#fff;">Follow & Chat</h4>
+<div style="display:flex;gap:15px;margin-top:15px;">
+<a href="https://facebook.com" target="_blank"><img src="https://i.imgur.com/1Q4YyXc.png" alt="Facebook" style="height:40px;"></a>
+<a href="https://instagram.com" target="_blank"><img src="https://i.imgur.com/Zp4Fr8K.png" alt="Instagram" style="height:40px;"></a>
+<a href="https://twitter.com" target="_blank"><img src="https://i.imgur.com/qxQXh0p.png" alt="Twitter" style="height:40px;"></a>
+<a href="https://wa.me/254710346425" target="_blank"><img src="https://i.imgur.com/8y9wQhT.png" alt="WhatsApp" style="height:40px;"></a>
+</div>
+<button onclick="openWhatsAppChat()" style="margin-top:20px;background:#25D366;color:#fff;border:none;padding:12px 20px;border-radius:6px;cursor:pointer;">Chat on WhatsApp</button>
+</div></div>
+<div style="text-align:center;margin-top:40px;border-top:1px solid #444;padding-top:20px;font-size:14px;color:#aaa;">Built with ❤️ by DK World Kenya | All Rights Reserved</div>`;
+  document.body.appendChild(footer);
+}
+function openWhatsAppChat(){
+  const phone="254710346425";
+  const message=encodeURIComponent("Hello DK World Kenya! I want to inquire about your products.");
+  window.open(`https://wa.me/${phone}?text=${message}`,"_blank");
+}
+
 // ===== INITIALIZE =====
-document.addEventListener("DOMContentLoaded", displayExistingProducts);
-document.getElementById("addUpdateBtn").addEventListener("click", addOrUpdateProduct);
+document.addEventListener("DOMContentLoaded", ()=>{
+  displayExistingProducts();
+  createFooter();
+  document.getElementById("addUpdateBtn").addEventListener("click", addOrUpdateProduct);
+});
 </script>
 
 </body>
