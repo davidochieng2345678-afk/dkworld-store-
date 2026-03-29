@@ -148,52 +148,86 @@ function loadProducts() {
 }
 </script>
 
-// ===== SEARCH & FILTER =====
-function displayFilteredProducts(products){
-const container = document.getElementById("productsContainer");
-container.innerHTML = "";
-if(products.length === 0){
-container.innerHTML = "<p>No products found.</p>";
-return;
+  // ===== SEARCH & FILTER =====
+function displayFilteredProducts(products) {
+  const container = document.getElementById("productsContainer");
+  container.innerHTML = "";
+  if(products.length === 0){
+    container.innerHTML = "<p>No products found.</p>";
+    return;
+  }
+  products.forEach(p => {
+    const div = document.createElement("div");
+    div.className = "product-card";
+
+    // Images HTML
+    let imagesHTML = "";
+    if(p.images) {
+      p.images.forEach(img => {
+        imagesHTML += `<img src="${img}" alt="${p.name}" style="max-width:100px; margin-right:10px;">`;
+      });
+    }
+
+    // Product card content
+    div.innerHTML = `
+      <h3>${p.name}</h3>
+      <p><strong>Price:</strong> KES ${p.price}</p>
+      <p><strong>Stock:</strong> ${p.stock}</p>
+      <p><strong>Category:</strong> ${p.category}</p>
+      <p>${p.description}</p>
+      ${imagesHTML}
+      ${p.video ? `<iframe width="200" height="113" src="${p.video}" frameborder="0" allowfullscreen></iframe>` : ""}
+      <a href="https://wa.me/254710346425?text=I%20want%20to%20order%20${encodeURIComponent(p.name)}" target="_blank">
+        <button style="margin-top:10px;">Order via WhatsApp</button>
+      </a>
+    `;
+    container.appendChild(div);
+  });
 }
-products.forEach(p => {
-const div = document.createElement("div");
-div.className = "product-card";
-div.innerHTML = <h3>${p.name}</h3><p>Price: KES ${p.price}</p><p>${p.description}</p>;
-container.appendChild(div);
-});
-}
 
-document.getElementById("searchInput").addEventListener("input", (e)=>{
-const searchValue = e.target.value.toLowerCase();
-const products = JSON.parse(localStorage.getItem("products")) || [];
-const filtered = products.filter(p => p.name.toLowerCase().includes(searchValue) || p.description.toLowerCase().includes(searchValue));
-displayFilteredProducts(filtered);
+// ===== SEARCH INPUT =====
+document.getElementById("searchInput").addEventListener("input", (e) => {
+  const searchValue = e.target.value.toLowerCase();
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const filtered = products.filter(p =>
+    p.name.toLowerCase().includes(searchValue) ||
+    p.description.toLowerCase().includes(searchValue)
+  );
+  displayFilteredProducts(filtered);
 });
 
-document.getElementById("categoryFilter").addEventListener("change", (e)=>{
-const category = e.target.value;
-const products = JSON.parse(localStorage.getItem("products")) || [];
-const filtered = category ? products.filter(p => p.category === category) : products;
-displayFilteredProducts(filtered);
+// ===== CATEGORY FILTER =====
+document.getElementById("categoryFilter").addEventListener("change", (e) => {
+  const category = e.target.value;
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const filtered = category ? products.filter(p => p.category === category) : products;
+  displayFilteredProducts(filtered);
 });
 
-document.getElementById("clearFilters").addEventListener("click", ()=>{
-document.getElementById("searchInput").value = "";
-document.getElementById("categoryFilter").value = "";
-loadProducts();
+// ===== CLEAR FILTERS =====
+document.getElementById("clearFilters").addEventListener("click", () => {
+  document.getElementById("searchInput").value = "";
+  document.getElementById("categoryFilter").value = "";
+  loadProducts(); // reload all products
 });
 
-// ===== SIMULATED JSON STORAGE =====
-const PRODUCTS_KEY = "dkworld_products";
-
+// ===== LOAD & SAVE PRODUCTS =====
 function loadProducts() {
-return JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  displayFilteredProducts(products);
+  return products;
 }
 
 function saveProducts(products) {
-localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
+  localStorage.setItem("products", JSON.stringify(products));
 }
+
+// ===== INIT =====
+document.addEventListener("DOMContentLoaded", () => {
+  loadProducts();
+});
+
+
 
 // ===== ADMIN FUNCTIONS =====
 let editIndex = null;
