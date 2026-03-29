@@ -109,119 +109,13 @@ function saveProducts(products) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
 }
 
-// ===== DISPLAY PRODUCTS =====
-function displayProducts(forAdmin = false) {
-  const container = document.getElementById(forAdmin ? "existingProducts" : "productsContainer");
-  if (!container) return;
-
-  const products = loadProducts();
-  container.innerHTML = "";
-
-  if (products.length === 0) {
-    container.innerHTML = "<p>No products available.</p>";
-    return;
-  }
-
-  products.forEach((p, index) => {
-    const div = document.createElement("div");
-    div.className = "product-card";
-
-    let imagesHTML = "";
-    if (!forAdmin && p.images[0]) {
-      imagesHTML = `<img src="${p.images[0]}" alt="${p.name}" style="max-width:200px; margin-top:10px;">`;
-    }
-
-    let videoHTML = "";
-    if (!forAdmin && p.video) {
-      videoHTML = `<iframe width="200" height="113" src="${p.video}" frameborder="0" allowfullscreen style="margin-top:10px;"></iframe>`;
-    }
-
-    let orderBtn = "";
-    if (!forAdmin) {
-      orderBtn = `<a href="https://wa.me/254710346425?text=I%20want%20to%20order%20${encodeURIComponent(p.name)}" target="_blank">
-                    <button style="margin-top:10px;">Order via WhatsApp</button>
-                  </a>`;
-    }
-
-    div.innerHTML = `
-      <h3>${p.name}</h3>
-      <p><strong>Price:</strong> KES ${p.price}</p>
-      <p><strong>Stock:</strong> ${p.stock}</p>
-      <p><strong>Category:</strong> ${p.category}</p>
-      <p>${p.description}</p>
-      ${imagesHTML} ${videoHTML} ${orderBtn}
-    `;
-
-    // Admin buttons
-    if (forAdmin) {
-      const btnDiv = document.createElement("div");
-      btnDiv.style.display = "flex";
-      btnDiv.style.gap = "5px";
-
-      const editBtn = document.createElement("button");
-      editBtn.className = "edit-btn";
-      editBtn.textContent = "Edit";
-      editBtn.onclick = () => editProduct(index);
-
-      const deleteBtn = document.createElement("button");
-      deleteBtn.className = "delete-btn";
-      deleteBtn.textContent = "Delete";
-      deleteBtn.onclick = () => deleteProduct(index);
-
-      btnDiv.appendChild(editBtn);
-      btnDiv.appendChild(deleteBtn);
-      div.appendChild(btnDiv);
-    }
-
-    container.appendChild(div);
-  });
-}
-
-// ===== FILTER PRODUCTS =====
-function filterProducts() {
-  const searchValue = document.getElementById("searchInput")?.value.toLowerCase() || "";
-  const categoryValue = document.getElementById("categoryFilter")?.value || "";
-  const products = loadProducts();
-
-  const filtered = products.filter(p => {
-    const matchesSearch = p.name.toLowerCase().includes(searchValue) || p.description.toLowerCase().includes(searchValue);
-    const matchesCategory = categoryValue === "" || p.category === categoryValue;
-    return matchesSearch && matchesCategory;
-  });
-
-  displayProductsContainer(filtered);
-}
-
-function displayProductsContainer(products) {
-  const container = document.getElementById("productsContainer");
-  container.innerHTML = "";
-
-  if (products.length === 0) {
-    container.innerHTML = "<p>No products found.</p>";
-    return;
-  }
-
-  products.forEach(p => {
-    const div = document.createElement("div");
-    div.className = "product-card";
-    div.innerHTML = `
-      <h3>${p.name}</h3>
-      <p>${p.category} | KES ${p.price} | Stock: ${p.stock}</p>
-      <p>${p.description}</p>
-      ${p.images[0] ? `<img src="${p.images[0]}" style="max-width:200px;">` : ""}
-    `;
-    container.appendChild(div);
-  });
-}
-
-  <!-- ===== SEARCH & FILTER ===== -->
-<section class="product-filters" style="margin:20px 0;">
-  <input type="text" id="searchInput" placeholder="Search products..." style="padding:10px; width:100%; margin-bottom:10px; border-radius:6px; border:1px solid #ccc;">
-  <select id="categoryFilter" style="padding:10px; width:100%; margin-bottom:10px; border-radius:6px; border:1px solid #ccc;">
+<!-- ===== SEARCH & FILTER ===== -->
+<section id="productFilters" style="margin:20px 0;">
+  <input type="text" id="searchInput" placeholder="Search products..." style="padding:10px; width:100%; margin-bottom:10px;">
+  <select id="categoryFilter" style="padding:10px; width:100%; margin-bottom:10px;">
     <option value="">All Categories</option>
-    <option value="Electronics">Electronics</option>
-    <option value="Clothing">Clothing</option>
-    <option value="Books">Books</option>
+    <option value="Websites">Websites</option>
+    <option value="Digital Products">Digital Products</option>
   </select>
   <button id="clearFilters" style="padding:10px; width:100%; margin-bottom:20px;">Clear Filters</button>
 </section>
@@ -230,7 +124,7 @@ function displayProductsContainer(products) {
 <section id="productsContainer" class="products"></section>
 
 <!-- ===== ADMIN PANEL ===== -->
-<h2>Admin Panel: Add / Edit Products</h2>
+<h2>Admin Panel</h2>
 <form id="adminForm">
   <input type="text" id="name" placeholder="Product Name"><br>
   <input type="number" id="price" placeholder="Price (KES)"><br>
@@ -257,23 +151,17 @@ function displayProductsContainer(products) {
 </a>
 
 <script>
-// ===== STORAGE =====
 const STORAGE_KEY = "dkworld_products";
 let editIndex = null;
 
-function loadProducts() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-}
-
-function saveProducts(products) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-}
+// ===== STORAGE =====
+function loadProducts() { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+function saveProducts(products) { localStorage.setItem(STORAGE_KEY, JSON.stringify(products)); }
 
 // ===== DISPLAY PRODUCTS =====
 function displayProducts(forAdmin = false, products = null) {
   const container = document.getElementById(forAdmin ? "existingProducts" : "productsContainer");
   if (!container) return;
-
   if (!products) products = loadProducts();
   container.innerHTML = "";
 
@@ -290,22 +178,9 @@ function displayProducts(forAdmin = false, products = null) {
     div.style.marginBottom = "10px";
     div.style.borderRadius = "6px";
 
-    let imagesHTML = "";
-    if (!forAdmin && p.images[0]) {
-      imagesHTML = `<img src="${p.images[0]}" alt="${p.name}" style="max-width:200px; margin-top:10px;">`;
-    }
-
-    let videoHTML = "";
-    if (!forAdmin && p.video) {
-      videoHTML = `<iframe width="200" height="113" src="${p.video}" frameborder="0" allowfullscreen style="margin-top:10px;"></iframe>`;
-    }
-
-    let orderBtn = "";
-    if (!forAdmin) {
-      orderBtn = `<a href="https://wa.me/254710346425?text=I%20want%20to%20order%20${encodeURIComponent(p.name)}" target="_blank">
-                    <button style="margin-top:10px;">Order via WhatsApp</button>
-                  </a>`;
-    }
+    let imagesHTML = (!forAdmin && p.images[0]) ? `<img src="${p.images[0]}" style="max-width:200px; margin-top:10px;">` : "";
+    let videoHTML = (!forAdmin && p.video) ? `<iframe width="200" height="113" src="${p.video}" frameborder="0" allowfullscreen style="margin-top:10px;"></iframe>` : "";
+    let orderBtn = (!forAdmin) ? `<a href="https://wa.me/254710346425?text=I%20want%20to%20order%20${encodeURIComponent(p.name)}" target="_blank"><button style="margin-top:10px;">Order via WhatsApp</button></a>` : "";
 
     div.innerHTML = `
       <h3>${p.name}</h3>
@@ -316,7 +191,6 @@ function displayProducts(forAdmin = false, products = null) {
       ${imagesHTML} ${videoHTML} ${orderBtn}
     `;
 
-    // Admin buttons
     if (forAdmin) {
       const btnDiv = document.createElement("div");
       btnDiv.style.display = "flex";
@@ -324,17 +198,15 @@ function displayProducts(forAdmin = false, products = null) {
       btnDiv.style.marginTop = "10px";
 
       const editBtn = document.createElement("button");
-      editBtn.className = "edit-btn";
       editBtn.textContent = "Edit";
       editBtn.onclick = () => editProduct(index);
 
-      const deleteBtn = document.createElement("button");
-      deleteBtn.className = "delete-btn";
-      deleteBtn.textContent = "Delete";
-      deleteBtn.onclick = () => deleteProduct(index);
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "Delete";
+      delBtn.onclick = () => deleteProduct(index);
 
       btnDiv.appendChild(editBtn);
-      btnDiv.appendChild(deleteBtn);
+      btnDiv.appendChild(delBtn);
       div.appendChild(btnDiv);
     }
 
@@ -346,21 +218,18 @@ function displayProducts(forAdmin = false, products = null) {
 function filterProducts() {
   const searchValue = document.getElementById("searchInput")?.value.toLowerCase() || "";
   const categoryValue = document.getElementById("categoryFilter")?.value || "";
-  const products = loadProducts();
-
-  const filtered = products.filter(p => {
+  const products = loadProducts().filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(searchValue) || p.description.toLowerCase().includes(searchValue);
     const matchesCategory = categoryValue === "" || p.category === categoryValue;
     return matchesSearch && matchesCategory;
   });
-
-  displayProducts(false, filtered);
+  displayProducts(false, products);
 }
 
 // ===== ADMIN FUNCTIONS =====
 function resetForm() {
   ["name","price","image","images","video","sku","stock","category","description","faqQ1","faqA1","faqQ2","faqA2"]
-    .forEach(id => document.getElementById(id)?.value = "");
+  .forEach(id => document.getElementById(id)?.value = "");
   document.getElementById("addUpdateBtn").textContent = "Add Product";
   editIndex = null;
 }
@@ -373,15 +242,10 @@ function addOrUpdateProduct() {
   const mainImage = document.getElementById("image")?.value.trim();
   if (mainImage) images.unshift(mainImage);
 
-  if(!name || !price || images.length === 0) {
-    alert("Fill in name, price, and at least one image!");
-    return;
-  }
+  if (!name || !price || images.length === 0) { alert("Fill in name, price, and at least one image!"); return; }
 
   const product = {
-    name,
-    price,
-    images,
+    name, price, images,
     video: document.getElementById("video")?.value.trim(),
     sku: document.getElementById("sku")?.value.trim(),
     stock: parseInt(document.getElementById("stock")?.value) || 0,
@@ -394,23 +258,17 @@ function addOrUpdateProduct() {
   };
 
   const products = loadProducts();
-  if(editIndex !== null){
-    products[editIndex] = product;
-    alert("✅ Product updated!");
-  } else {
-    products.push(product);
-    alert("✅ Product added!");
-  }
+  if (editIndex !== null) { products[editIndex] = product; alert("✅ Product updated!"); }
+  else { products.push(product); alert("✅ Product added!"); }
 
   saveProducts(products);
-  displayProducts(true); // admin
-  displayProducts(false); // homepage
+  displayProducts(true);
+  displayProducts(false);
   resetForm();
 }
 
 function editProduct(index) {
-  const products = loadProducts();
-  const p = products[index];
+  const p = loadProducts()[index];
   editIndex = index;
 
   document.getElementById("name").value = p.name;
@@ -432,7 +290,7 @@ function editProduct(index) {
 
 function deleteProduct(index) {
   const products = loadProducts();
-  if(confirm(`Delete "${products[index].name}"?`)) {
+  if (confirm(`Delete "${products[index].name}"?`)) {
     products.splice(index, 1);
     saveProducts(products);
     displayProducts(true);
@@ -455,8 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
-
-
+  
     
   
 </body>
