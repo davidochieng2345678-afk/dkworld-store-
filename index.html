@@ -166,29 +166,6 @@ document.getElementById("categoryFilter").value = "";
 loadProducts();
 });
 
-// ===== FOOTER =====
-function createFooter(){
-const footer = document.createElement("footer");
-footer.style.background = "#111";
-footer.style.color = "#fff";
-footer.style.padding = "50px 20px";
-footer.style.fontFamily = "sans-serif";
-footer.style.width = "100%";
-footer.innerHTML =     <div style="max-width:1200px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:space-around; gap:40px;">     <div style="flex:1; min-width:250px;">     <h3 style="color:#fff;">DK World Kenya</h3>     <p>© 2026 DK World Kenya</p>     <p>Top-quality web products & services across Kenya.</p>     </div>     <div style="flex:1; min-width:250px;">     <h4 style="color:#fff;">Follow & Chat</h4>     <div style="display:flex; gap:15px; margin-top:15px;">     <a href="https://facebook.com" target="_blank"><img src="https://i.imgur.com/1Q4YyXc.png" alt="Facebook" style="height:40px;"></a>     <a href="https://instagram.com" target="_blank"><img src="https://i.imgur.com/Zp4Fr8K.png" alt="Instagram" style="height:40px;"></a>     <a href="https://twitter.com" target="_blank"><img src="https://i.imgur.com/qxQXh0p.png" alt="Twitter" style="height:40px;"></a>     <a href="https://wa.me/254710346425" target="_blank"><img src="https://i.imgur.com/8y9wQhT.png" alt="WhatsApp" style="height:40px;"></a>     </div>     <button onclick="openWhatsAppChat()" style="margin-top:20px; background:#25D366; color:#fff; border:none; padding:12px 20px; border-radius:6px; cursor:pointer;">Chat on WhatsApp</button>     </div>     </div>     <div style="text-align:center; margin-top:40px; border-top:1px solid #444; padding-top:20px; font-size:14px; color:#aaa;">     Built with ❤️ by DK World Kenya | All Rights Reserved     </div>    ;
-document.body.appendChild(footer);
-}
-
-function openWhatsAppChat(){
-const phone = "254710346425";
-const message = encodeURIComponent("Hello DK World Kenya! I want to inquire about your products.");
-window.open(https://wa.me/${phone}?text=${message}, "_blank");
-}
-
-document.addEventListener("DOMContentLoaded", ()=>{
-loadProducts();
-createFooter();
-});
-</script>    <script>
 // ===== SIMULATED JSON STORAGE =====
 const PRODUCTS_KEY = "dkworld_products";
 
