@@ -186,11 +186,10 @@ document.addEventListener("DOMContentLoaded", () => {
   loadProducts();
 });
 </script>
-
-
-  // ===== ADMIN FUNCTIONS =====
+// ===== ADMIN FUNCTIONS =====
 let editIndex = null;
 
+// Reset form to default state
 function resetForm() {
   ["name","price","image","images","video","sku","stock","category","description","faqQ1","faqA1","faqQ2","faqA2"]
     .forEach(id => document.getElementById(id)?.value = "");
@@ -198,6 +197,7 @@ function resetForm() {
   editIndex = null;
 }
 
+// Add new product or update existing one
 function addOrUpdateProduct() {
   const name = document.getElementById("name")?.value.trim();
   const price = parseFloat(document.getElementById("price")?.value);
@@ -226,7 +226,7 @@ function addOrUpdateProduct() {
     ].filter(f => f.question && f.answer)
   };
 
-  const products = loadProducts();
+  const products = JSON.parse(localStorage.getItem("dkworld_products")) || [];
   if(editIndex !== null){
     products[editIndex] = product;
     alert("✅ Product updated!");
@@ -235,13 +235,14 @@ function addOrUpdateProduct() {
     alert("✅ Product added!");
   }
 
-  saveProducts(products);
+  localStorage.setItem("dkworld_products", JSON.stringify(products));
   displayProducts();
   resetForm();
 }
 
+// Edit a product
 function editProduct(index) {
-  const products = loadProducts();
+  const products = JSON.parse(localStorage.getItem("dkworld_products")) || [];
   const p = products[index];
   editIndex = index;
 
@@ -262,14 +263,17 @@ function editProduct(index) {
   document.getElementById("addUpdateBtn").textContent = "Save Changes";
 }
 
+// Delete a product
 function deleteProduct(index) {
-  const products = loadProducts();
+  const products = JSON.parse(localStorage.getItem("dkworld_products")) || [];
   if(confirm(`Delete "${products[index].name}"?`)) {
     products.splice(index, 1);
-    saveProducts(products);
+    localStorage.setItem("dkworld_products", JSON.stringify(products));
     displayProducts();
   }
 }
+
+  
 
 <!-- ===== DISPLAY PRODUCTS ===== -->
 <script>
