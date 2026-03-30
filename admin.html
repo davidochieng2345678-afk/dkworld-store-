@@ -10,27 +10,7 @@
 <link rel="canonical" href="https://dkworldkenya.online/admin.html">
 <meta name="robots" content="noindex, nofollow">
 
-  const policySelect = document.getElementById("policySelect");
-const policyText = document.getElementById("policyText");
-
-// Load selected policy
-policySelect.addEventListener("change", loadPolicy);
-
-function loadPolicy() {
-  const policies = JSON.parse(localStorage.getItem("policies")) || {};
-  policyText.value = policies[policySelect.value] || "";
-}
-
-// Save policy
-function savePolicy() {
-  const policies = JSON.parse(localStorage.getItem("policies")) || {};
-  policies[policySelect.value] = policyText.value;
-  localStorage.setItem("policies", JSON.stringify(policies));
-  alert("Policy saved successfully!");
-}
-
-// Load default on page load
-loadPolicy();
+  
 <style>
   body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:0; background:#f5f5f5; }
   nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
@@ -106,6 +86,28 @@ loadPolicy();
 </footer>
 
 <script>
+const policySelect = document.getElementById("policySelect");
+const policyText = document.getElementById("policyText");
+
+// Load selected policy
+policySelect.addEventListener("change", loadPolicy);
+
+function loadPolicy() {
+  const policies = JSON.parse(localStorage.getItem("policies")) || {};
+  policyText.value = policies[policySelect.value] || "";
+}
+
+// Save policy
+function savePolicy() {
+  const policies = JSON.parse(localStorage.getItem("policies")) || {};
+  policies[policySelect.value] = policyText.value;
+  localStorage.setItem("policies", JSON.stringify(policies));
+  alert("Policy saved successfully!");
+}
+
+// Load default on page load
+loadPolicy();
+  
 let products = JSON.parse(localStorage.getItem("products")) || [];
 const form = document.getElementById("productForm");
 const tableBody = document.querySelector("#productTable tbody");
