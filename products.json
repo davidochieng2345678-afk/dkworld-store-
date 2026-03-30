@@ -1,0 +1,24 @@
+[
+  {
+    "id": "1",
+    "name": "E-commerce Website",
+    "description": "Fully functional online store ready in 24 hours.",
+    "price": 20000,
+    "category": "Websites",
+    "stock": 20,
+    "sku": "DK-ECOM-001",
+    "image": "https://via.placeholder.com/300",
+    "video": ""
+  },
+  {
+    "id": "2",
+    "name": "Business Website",
+    "description": "Professional website for your business.",
+    "price": 15000,
+    "category": "Websites",
+    "stock": 10,
+    "sku": "DK-BIZ-002",
+    "image": "https://via.placeholder.com/300",
+    "video": ""
+  }
+]
