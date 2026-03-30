@@ -202,6 +202,19 @@ style="width:100%;padding:12px;border-radius:8px;border:1px solid #ccc;margin-bo
   // Display all products by default
   displayProducts(products);
 
+  const searchInput = document.getElementById("searchInput");
+
+if(searchInput){
+  searchInput.addEventListener("input", function(){
+    const value = this.value.toLowerCase();
+    const filtered = products.filter(p =>
+      p.name.toLowerCase().includes(value) ||
+      p.category.toLowerCase().includes(value)
+    );
+    displayProducts(filtered);
+  });
+}
+
   // Highlight active nav link
   const navLinks = document.querySelectorAll("nav a");
   navLinks.forEach(link => { if(link.href === window.location.href) link.classList.add("active"); });
