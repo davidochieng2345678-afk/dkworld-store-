@@ -1,33 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cart - DK World Store</title>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SEO Services Cart | DK Digital SEO</title>
+<meta name="description" content="Add SEO services to your cart, review, and request checkout. Manage quantities and get a free SEO consultation.">
+
+<style>
+body {
+  font-family:'Inter',sans-serif;
+  margin:0;
+  background:#f3f4f6;
+  color:#111827;
+  line-height:1.7;
+}
+
+/* HERO */
+.hero {
+  text-align:center;
+  padding:60px 20px;
+  background:linear-gradient(135deg,#eef2ff,#f9fafb);
+}
+
+.hero h1 { font-size:2.5rem; margin-bottom:10px; }
+.hero p { font-size:1.2rem; margin-bottom:20px; }
+.btn {
+  display:inline-block;
+  background:#f39c12;
+  color:#fff;
+  padding:12px 25px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:bold;
+  transition:0.3s;
+}
+.btn:hover { background:#e67e22; }
+
+/* CART */
+.cart-section { max-width:900px; margin:auto; padding:40px 20px; }
+.cart-table { width:100%; border-collapse:collapse; margin-bottom:20px; }
+.cart-table th, .cart-table td { padding:12px 10px; border-bottom:1px solid #ddd; text-align:left; }
+.cart-table th { background:#f3f4f6; }
+.quantity-control { display:flex; align-items:center; gap:5px; }
+.quantity-control button { padding:4px 8px; cursor:pointer; background:#f39c12; color:#fff; border:none; border-radius:4px; font-weight:bold; }
+.quantity-control button:hover { background:#e67e22; }
+
+/* TOTAL & CHECKOUT */
+.cart-total { text-align:right; font-size:1.2rem; margin-bottom:20px; }
+.checkout-form { background:#fff; padding:25px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.1); }
+.checkout-form input, .checkout-form textarea { width:100%; padding:12px 10px; border:1px solid #ccc; border-radius:6px; margin-bottom:15px; font-size:1rem; }
+.checkout-form button { background:#f39c12; color:#fff; border:none; padding:14px 0; border-radius:6px; font-weight:bold; font-size:1rem; cursor:pointer; width:100%; transition:0.3s; }
+.checkout-form button:hover { background:#e67e22; }
+#successMessage { display:none; color:#27ae60; font-weight:bold; text-align:center; margin-top:15px; }
+</style>
 </head>
 <body>
-<header>
-  <h1>DK World Store</h1>
-  <span id="menu-toggle" class="menu-toggle">&#9776;</span>
-  <nav>
-    <ul id="menu" class="menu">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="cart.html">Cart (<span id="cartCount">0</span>)</a></li>
-      <li><a href="admin.html">Admin</a></li>
-    </ul>
-  </nav>
-</header>
 
-<section id="cartContainer">
-  <!-- Cart items will be displayed here -->
+<!-- HERO -->
+<section class="hero">
+<h1>Your SEO Services Cart</h1>
+<p>Add SEO services to your cart, adjust quantities, and request a consultation.</p>
 </section>
 
-<!-- WhatsApp Button -->
-<a href="https://wa.me/254710346425" target="_blank" class="whatsapp-float">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-</a>
+<!-- CART -->
+<section class="cart-section">
+<h2 style="margin-bottom:20px;">Cart Items</h2>
+<table class="cart-table" id="cartTable">
+<thead>
+<tr>
+<th>Service</th>
+<th>Price (KES)</th>
+<th>Quantity</th>
+<th>Subtotal</th>
+<th>Remove</th>
+</tr>
+</thead>
+<tbody>
+<!-- Items will appear here -->
+</tbody>
+</table>
 
-<script src="js/main.js"></script>
+<div class="cart-total">
+<strong>Total: KES <span id="cartTotal">0</span></strong>
+</div>
+
+<h2 style="margin-bottom:20px;">Checkout</h2>
+<form id="checkoutForm" class="checkout-form" action="https://formsubmit.co/davidochieng99@gmail.com" method="POST">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_next" value="https://dkdigitalseo.online/thank-you.html">
+
+<label for="name">Your Name</label>
+<input type="text" name="name" id="name" required>
+
+<label for="email">Your Email</label>
+<input type="email" name="email" id="email" required>
+
+<label for="message">Additional Notes</label>
+<textarea name="message" id="message" rows="4" placeholder="Optional notes about your SEO requirements"></textarea>
+
+<button type="submit">Submit Request</button>
+<p id="successMessage">Thank you! Your request has been received. We’ll contact you shortly.</p>
+</form>
+</section>
+
+<!-- ================= JS ================= -->
+<script>
+// Sample services list
+const services = [
+  { id:1, name:"Off-Page SEO Package", price:15000 },
+  { id:2, name:"Local SEO Citation Package", price:10000 },
+  { id:3, name:"Guest Posting & Outreach", price:20000 },
+  { id:4, name:"Digital PR & Brand Mentions", price:18000 }
+];
+
+let cart = [];
+
+// Add service to cart (for demo purposes, you can attach to service buttons)
+function addToCart(serviceId){
+  const service = services.find(s=>s.id===serviceId);
+  const cartItem = cart.find(i=>i.id===serviceId);
+  if(cartItem){
+    cartItem.quantity++;
+  } else {
+    cart.push({...service, quantity:1});
+  }
+  renderCart();
+}
+
+// Remove item
+function removeFromCart(serviceId){
+  cart = cart.filter(i=>i.id!==serviceId);
+  renderCart();
+}
+
+// Change quantity
+function changeQuantity(serviceId, delta){
+  const item = cart.find(i=>i.id===serviceId);
+  if(item){
+    item.quantity += delta;
+    if(item.quantity<1) removeFromCart(serviceId);
+  }
+  renderCart();
+}
+
+// Render cart
+function renderCart(){
+  const tbody = document.querySelector("#cartTable tbody");
+  tbody.innerHTML="";
+  let total =0;
+  cart.forEach(item=>{
+    const subtotal = item.price * item.quantity;
+    total += subtotal;
+    const tr = document.createElement("tr");
+    tr.innerHTML=`
+      <td>${item.name}</td>
+      <td>${item.price.toLocaleString()}</td>
+      <td>
+        <div class="quantity-control">
+          <button onclick="changeQuantity(${item.id},-1)">-</button>
+          <span>${item.quantity}</span>
+          <button onclick="changeQuantity(${item.id},1)">+</button>
+        </div>
+      </td>
+      <td>${subtotal.toLocaleString()}</td>
+      <td><button onclick="removeFromCart(${item.id})" style="background:red;color:#fff;padding:5px 10px;border:none;border-radius:4px;cursor:pointer;">X</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+  document.getElementById("cartTotal").textContent = total.toLocaleString();
+}
+
+// FORM SUBMISSION
+const checkoutForm = document.getElementById('checkoutForm');
+const successMsg = document.getElementById('successMessage');
+checkoutForm.addEventListener('submit', function(e){
+  e.preventDefault();
+  if(cart.length===0){
+    alert("Your cart is empty!");
+    return;
+  }
+  // Add cart details to message field
+  const cartDetails = cart.map(i=>`${i.name} x${i.quantity} = KES ${i.price*i.quantity}`).join("\n");
+  checkoutForm.message.value = checkoutForm.message.value + "\n\nSelected Services:\n" + cartDetails;
+
+  const formData = new FormData(checkoutForm);
+  fetch(checkoutForm.action,{
+    method:'POST',
+    body:formData,
+    headers:{'Accept':'application/json'}
+  })
+  .then(resp=>{
+    if(resp.ok){
+      checkoutForm.style.display='none';
+      successMsg.style.display='block';
+      cart=[]; renderCart();
+    } else {
+      alert("Oops! There was a problem submitting your form.");
+    }
+  })
+  .catch(err=>alert("Oops! There was a problem submitting your form."));
+});
+
+// Demo: Pre-add services for demo, or link buttons to add
+addToCart(1);
+addToCart(2);
+</script>
 </body>
-  </html>
+</html>
