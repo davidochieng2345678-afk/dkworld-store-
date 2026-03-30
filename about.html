@@ -3,81 +3,151 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About DK World Kenya - E-commerce & Digital Products</title>
-<meta name="description" content="Learn about DK World Kenya, your trusted provider of e-commerce websites, digital products, and local HTML sites in Kenya.">
-<meta name="keywords" content="DK World Kenya, e-commerce Kenya, digital products, local websites, HTML sites">
+<title>About DK World Kenya – E-commerce Store Experts</title>
+<meta name="description" content="DK World Kenya specializes in building professional, SEO-friendly e-commerce stores for businesses in Kenya. Get your online store today.">
+<meta name="keywords" content="e-commerce store Kenya, online store Kenya, digital products Kenya, build online store, DK World Kenya">
 <meta name="author" content="David Ochieng">
 <link rel="canonical" href="https://dkworldkenya.online/about.html">
 <meta name="robots" content="index, follow">
 
 <style>
-  body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#111827; line-height:1.6; }
-  nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
-  nav a { color:white; text-decoration:none; font-weight:bold; }
-  nav a:hover, nav a.active { color:#25D366; }
+  /* ====== RESET & BASE ====== */
+  * { box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+  body { background:#f5f5f5; color:#111827; line-height:1.6; }
+  a { text-decoration:none; color:#111827; transition:0.3s; }
+  a:hover { color:#25D366; }
 
-  .container { max-width:900px; margin:auto; padding:30px; background:white; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.1); }
-  h1 { text-align:center; color:#111827; margin-bottom:20px; }
-  h2 { color:#111827; margin-top:20px; }
-  p { margin-bottom:15px; color:#555; }
+  /* ====== NAV ====== */
+  nav { background:#111827; display:flex; justify-content:center; flex-wrap:wrap; gap:20px; padding:15px; }
+  nav a { color:white; font-weight:bold; padding:5px 10px; border-radius:6px; }
+  nav a.active, nav a:hover { color:#25D366; background:rgba(255,255,255,0.1); }
 
+  /* ====== CONTAINER ====== */
+  .container { max-width:1000px; margin:40px auto; padding:30px; background:white; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.1); }
+
+  /* ====== HERO ====== */
+  .hero { text-align:center; padding:20px 10px; margin-bottom:30px; }
+  .hero h1 { font-size:2.2em; margin-bottom:10px; color:#111827; }
+  .hero p { font-size:1.1em; color:#555; }
+  .cta-button { display:inline-block; margin-top:15px; background:#25D366; color:white; font-weight:bold; padding:12px 25px; border-radius:8px; transition:0.3s; }
+  .cta-button:hover { background:#1ebe5e; }
+
+  /* ====== HEADINGS ====== */
+  h2 { color:#111827; margin-top:25px; margin-bottom:15px; border-bottom:2px solid #25D366; display:inline-block; padding-bottom:5px; }
+  h3 { color:#111827; margin-top:15px; margin-bottom:10px; }
+
+  /* ====== LISTS ====== */
+  ul, ol { margin-left:20px; margin-bottom:15px; }
+  li { margin-bottom:10px; color:#555; }
+
+  /* ====== FAQ ====== */
+  .faq-item { border-bottom:1px solid #eee; padding:10px 0; cursor:pointer; }
+  .faq-item h4 { font-size:1em; color:#111827; }
+  .faq-item p { display:none; color:#555; margin-top:5px; }
+
+  /* ====== FOOTER ====== */
   footer { text-align:center; padding:25px; color:#777; font-size:0.9em; margin-top:40px; }
+
+  /* ====== RESPONSIVE ====== */
+  @media(max-width:768px){ .hero h1{font-size:1.8em;} }
 </style>
 
 <!-- Structured Data -->
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "DK World Kenya",
-  "url": "https://dkworldkenya.online",
-  "logo": "https://via.placeholder.com/200x60?text=DK+World+Kenya",
-  "sameAs": [],
-  "description": "DK World Kenya provides e-commerce websites, digital products, and local HTML websites for businesses and individuals in Kenya."
+  "@context":"https://schema.org",
+  "@type":"LocalBusiness",
+  "name":"DK World Kenya",
+  "image":"https://via.placeholder.com/200x60?text=DK+World+Kenya",
+  "url":"https://dkworldkenya.online",
+  "telephone":"+254710346...",
+  "address": {
+    "@type":"PostalAddress",
+    "streetAddress":"Nairobi, Kenya",
+    "addressLocality":"Nairobi",
+    "addressCountry":"KE"
+  },
+  "openingHours":"Mo,Tu,We,Th,Fr 08:00-18:00",
+  "sameAs":["https://www.facebook.com/dkworldkenya","https://www.instagram.com/dkworldkenya"]
 }
 </script>
+
 </head>
 <body>
 
 <nav>
   <a href="index.html">Home</a>
-  <a href="about.html">About Us</a>
+  <a href="about.html" class="active">About Us</a>
   <a href="contact.html">Contact</a>
   <a href="admin.html">Admin</a>
 </nav>
 
 <div class="container">
-  <h1>About DK World Kenya</h1>
 
-  <p>Welcome to <strong>DK World Kenya</strong>, your trusted partner for building professional digital solutions in Kenya. We specialize in:</p>
+  <div class="hero">
+    <h1>We Build Professional E-commerce Stores in Kenya</h1>
+    <p>Fast, SEO-friendly, mobile-optimized online stores for businesses that want to sell online and grow.</p>
+    <a href="contact.html" class="cta-button">Get Your E-commerce Store Today</a>
+  </div>
 
-  <h2>E-commerce Websites</h2>
-  <p>We create fully functional e-commerce websites that help businesses sell products online easily. Our platforms are simple, dynamic, and optimized for mobile and search engines.</p>
-
-  <h2>Digital Products</h2>
-  <p>We offer a range of digital products, including guides, templates, and tools designed to help you grow your online presence and boost sales effectively.</p>
-
-  <h2>Local HTML Websites</h2>
-  <p>For businesses and individuals who need clean, professional, and lightweight HTML websites, we provide fully customizable local websites with easy management.</p>
-
-  <h2>Why Choose Us?</h2>
+  <h2>Our E-commerce Services</h2>
+  <p>DK World Kenya specializes in building complete e-commerce solutions for Kenyan businesses. Our stores are designed to:</p>
   <ul>
-    <li>Easy-to-manage products and websites</li>
-    <li>SEO-friendly structure for better search ranking</li>
-    <li>WhatsApp integration for instant checkout</li>
-    <li>Dynamic and mobile-optimized designs</li>
-    <li>Affordable solutions for all types of businesses</li>
+    <li>Boost online sales with SEO-optimized product pages</li>
+    <li>Mobile-friendly designs for smooth shopping on any device</li>
+    <li>WhatsApp integration for instant checkout and support</li>
+    <li>Easy-to-manage admin dashboards for products, orders, and inventory</li>
+    <li>Quick launch to start selling in days</li>
   </ul>
+
+  <h2>How We Work</h2>
+  <ol>
+    <li><strong>Consultation:</strong> We understand your business needs and goals.</li>
+    <li><strong>Custom Design:</strong> Tailored e-commerce store with responsive and SEO-optimized layout.</li>
+    <li><strong>Launch & Support:</strong> We go live and provide continuous support for smooth operations.</li>
+  </ol>
+
+  <h2>Why Choose DK World Kenya</h2>
+  <ul>
+    <li>50+ e-commerce stores built across Kenya</li>
+    <li>Affordable pricing suitable for startups and SMEs</li>
+    <li>Trusted by local businesses with proven results</li>
+    <li>Expertise in SEO, mobile optimization, and UX</li>
+  </ul>
+
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq-item">
+    <h4>How long does it take to build an e-commerce store?</h4>
+    <p>Typically 5–10 business days, depending on the complexity and number of products.</p>
+  </div>
+  <div class="faq-item">
+    <h4>Can I manage products myself?</h4>
+    <p>Yes! All stores come with an easy admin dashboard for product, order, and inventory management.</p>
+  </div>
+  <div class="faq-item">
+    <h4>Do you provide support after launch?</h4>
+    <p>Absolutely! We provide ongoing support and updates to ensure your store runs smoothly.</p>
+  </div>
+
 </div>
 
 <footer>
-  &copy; 2026 DK World Kenya | Built by David
+  &copy; 2026 DK World Kenya | Built by David | <a href="contact.html">Contact Us</a>
 </footer>
 
 <script>
   // Highlight active nav link
   const navLinks = document.querySelectorAll("nav a");
   navLinks.forEach(link => { if(link.href === window.location.href) link.classList.add("active"); });
+
+  // FAQ toggle
+  const faqs = document.querySelectorAll('.faq-item');
+  faqs.forEach(faq => {
+    faq.addEventListener('click', () => {
+      const p = faq.querySelector('p');
+      p.style.display = (p.style.display === 'block') ? 'none' : 'block';
+    });
+  });
 </script>
 
 </body>
