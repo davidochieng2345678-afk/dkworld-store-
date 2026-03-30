@@ -376,6 +376,82 @@ if(searchInput){
 <!-- Product Grid -->
 <section class="products" id="productsContainer"></section>
 
+
+
+<!-- Testimonials / Reviews -->
+<section class="reviews" style="padding:40px 20px; background:#f9f9f9; text-align:center;">
+  <h3>What Our Clients Say</h3>
+  <div class="review-slider" style="display:flex; overflow-x:auto; gap:20px; padding:20px 0; scrollbar-width:none; -ms-overflow-style:none;">
+    <div class="review-card" style="background:white; padding:20px; border-radius:15px; min-width:250px; box-shadow:0 6px 15px rgba(0,0,0,0.1);">
+      <p>“DK World Kenya created my online store quickly and professionally. Sales increased within days!”</p>
+      <strong>- Alice M.</strong>
+      <div>⭐⭐⭐⭐⭐</div>
+    </div>
+    <div class="review-card" style="background:white; padding:20px; border-radius:15px; min-width:250px; box-shadow:0 6px 15px rgba(0,0,0,0.1);">
+      <p>“Amazing service and quick response via WhatsApp. Highly recommend for digital products.”</p>
+      <strong>- Peter K.</strong>
+      <div>⭐⭐⭐⭐⭐</div>
+    </div>
+    <div class="review-card" style="background:white; padding:20px; border-radius:15px; min-width:250px; box-shadow:0 6px 15px rgba(0,0,0,0.1);">
+      <p>“Professional, fast, and reliable. My local HTML site looks perfect.”</p>
+      <strong>- Grace N.</strong>
+      <div>⭐⭐⭐⭐⭐</div>
+    </div>
+  </div>
+</section>
+
+<!-- Schema.org structured data for reviews -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "DK World Kenya",
+  "url": "https://dkworldkenya.online",
+  "sameAs": [
+    "https://www.facebook.com/",
+    "https://www.instagram.com/",
+    "https://wa.me/254710346789"
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "reviewCount": "3"
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "author": "Alice M.",
+      "datePublished": "2026-03-30",
+      "reviewBody": "DK World Kenya created my online store quickly and professionally. Sales increased within days!",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5"
+      }
+    },
+    {
+      "@type": "Review",
+      "author": "Peter K.",
+      "datePublished": "2026-03-28",
+      "reviewBody": "Amazing service and quick response via WhatsApp. Highly recommend for digital products.",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5"
+      }
+    },
+    {
+      "@type": "Review",
+      "author": "Grace N.",
+      "datePublished": "2026-03-25",
+      "reviewBody": "Professional, fast, and reliable. My local HTML site looks perfect.",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5"
+      }
+    }
+  ]
+}
+</script>
+  
 <!-- Footer -->
 <footer>
   <div class="footer-container">
