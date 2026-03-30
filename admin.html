@@ -161,6 +161,23 @@ form.addEventListener("submit", function(e){
 displayTable();
 </script>
 
+
+  <section style="margin-top:40px; padding:20px; background:#fff; border-radius:12px;">
+  <h2>Manage Policies</h2>
+
+  <select id="policySelect" style="padding:10px; margin-bottom:10px;">
+    <option value="terms">Terms of Service</option>
+    <option value="privacy">Privacy Policy</option>
+    <option value="refund">Refund Policy</option>
+    <option value="shipping">Shipping Policy</option>
+  </select>
+
+  <textarea id="policyText" rows="10" style="width:100%; padding:10px; border-radius:8px;"></textarea>
+
+  <button onclick="savePolicy()" style="margin-top:10px; padding:10px; background:#25D366; color:white; border:none; border-radius:8px;">
+    Save Policy
+  </button>
+</section>
 </body>
 </html>
 
