@@ -3,86 +3,127 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact DK World Kenya - WhatsApp Checkout</title>
-<meta name="description" content="Contact DK World Kenya for e-commerce websites, digital products, and local HTML sites. Reach us directly via WhatsApp.">
-<meta name="keywords" content="Contact DK World Kenya, WhatsApp, e-commerce Kenya, digital products, local websites">
-<meta name="author" content="David Ochieng">
+<title>Contact DK World Kenya - E-commerce & Digital Products</title>
+<meta name="description" content="Get in touch with DK World Kenya. We offer fast 24-hour installation of e-commerce websites, digital products, and local HTML sites. Contact us via WhatsApp, email, or our form.">
+<meta name="keywords" content="DK World Kenya contact, e-commerce Kenya, digital products Kenya, website support, WhatsApp sales Kenya">
+<meta name="author" content="David O. Kiruo">
 <link rel="canonical" href="https://dkworldkenya.online/contact.html">
 <meta name="robots" content="index, follow">
 
 <style>
-  body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#111827; line-height:1.6; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f5f5f5; margin:0; padding:0; color:#111827; }
   nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
   nav a { color:white; text-decoration:none; font-weight:bold; }
   nav a:hover, nav a.active { color:#25D366; }
-
-  .container { max-width:700px; margin:auto; padding:30px; background:white; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.1); }
-  h1 { text-align:center; margin-bottom:20px; color:#111827; }
-  form { display:flex; flex-direction:column; gap:12px; }
-  input, textarea { padding:10px; border-radius:8px; border:1px solid #ccc; width:100%; font-size:1em; }
-  button { padding:12px; border:none; border-radius:8px; background:#25D366; color:white; font-weight:bold; cursor:pointer; transition:0.3s; }
+  header { text-align:center; padding:30px 20px; background:#25D366; color:white; }
+  header h1 { margin:0; font-size:2em; }
+  header p { margin-top:10px; font-size:1.1em; }
+  .contact-container { max-width:900px; margin:40px auto; padding:20px; background:white; border-radius:12px; box-shadow:0 6px 15px rgba(0,0,0,0.1); }
+  h2 { text-align:center; color:#111827; margin-bottom:20px; }
+  form { display:flex; flex-direction:column; gap:15px; }
+  input, textarea { padding:12px; border-radius:8px; border:1px solid #ccc; width:100%; font-size:1em; }
+  button { background:#25D366; color:white; padding:12px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; transition:0.3s; }
   button:hover { background:#1DA851; }
-
-  footer { text-align:center; padding:25px; color:#777; font-size:0.9em; margin-top:40px; }
+  .contact-info { display:flex; flex-wrap:wrap; gap:20px; justify-content:space-around; margin-top:30px; text-align:center; }
+  .contact-info div { flex:1 1 200px; }
+  .contact-info a { color:#25D366; text-decoration:none; font-weight:bold; }
+  footer { text-align:center; padding:30px; background:#111827; color:white; margin-top:40px; font-size:0.9em; }
+  @media(max-width:600px){ .contact-info { flex-direction:column; } }
 </style>
 
-<!-- Structured Data -->
+<!-- Contact Page Schema -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "ContactPoint",
+  "@type": "LocalBusiness",
+  "name": "DK World Kenya",
+  "image": "https://dkworldkenya.online/logo.png",
+  "url": "https://dkworldkenya.online",
   "telephone": "+254710346789",
-  "contactType": "customer service",
-  "areaServed": "KE",
-  "availableLanguage": ["English"]
+  "email": "dkdigitalseo.info@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Nairobi",
+    "addressCountry": "Kenya"
+  },
+  "sameAs": [
+    "https://www.facebook.com/",
+    "https://www.instagram.com/",
+    "https://wa.me/254710346789"
+  ]
 }
 </script>
 </head>
+
 <body>
 
+<!-- Navigation -->
 <nav>
   <a href="index.html">Home</a>
   <a href="about.html">About Us</a>
-  <a href="contact.html">Contact</a>
+  <a href="contact.html" class="active">Contact</a>
   <a href="admin.html">Admin</a>
 </nav>
 
-<div class="container">
+<!-- Header -->
+<header>
   <h1>Contact DK World Kenya</h1>
-  <p>Have a question or want to order a product? Fill out the form below and reach us directly via WhatsApp.</p>
+  <p>We deliver e-commerce, digital products, and local websites fast and ready to sell!</p>
+</header>
 
-  <form id="contactForm">
-    <input type="text" id="name" placeholder="Your Name" required>
-    <input type="email" id="email" placeholder="Your Email" required>
-    <textarea id="message" placeholder="Your Message / Product Inquiry" rows="4" required></textarea>
-    <button type="submit">Send via WhatsApp</button>
+<!-- Contact Form & Info -->
+<div class="contact-container">
+  <h2>Get in Touch With Us</h2>
+
+  <form action="https://formsubmit.co/dkdigitalseo.info@gmail.com" method="POST">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="text" name="name" placeholder="Your Full Name" required>
+    <input type="email" name="email" placeholder="Your Email Address" required>
+    <input type="tel" name="phone" placeholder="Phone Number or WhatsApp" required>
+    <textarea name="message" rows="5" placeholder="Your Message / Inquiry" required></textarea>
+    <button type="submit">Send Message</button>
   </form>
+
+  <div class="contact-info">
+    <div>
+      <h4>Email</h4>
+      <p><a href="mailto:dkdigitalseo.info@gmail.com">dkdigitalseo.info@gmail.com</a></p>
+    </div>
+    <div>
+      <h4>WhatsApp</h4>
+      <p><a href="https://wa.me/254710346789" target="_blank">💬 Chat with us</a></p>
+    </div>
+    <div>
+      <h4>Phone</h4>
+      <p><a href="tel:+254710346789">+254 710 346 789</a></p>
+    </div>
+  </div>
+
+  <p style="text-align:center;margin-top:20px;font-weight:bold;color:#25D366;">
+    ⚡ Ready to Sell Your Store in 24 Hours!
+  </p>
 </div>
 
+<!-- Footer -->
 <footer>
-  &copy; 2026 DK World Kenya | Built by David
+  <p>
+    <a href="https://dkdigitalseo.online" target="_blank" style="color:#25D366;text-decoration:none;font-weight:bold;">
+      Built by David O. Kiruo | SEO & Web Expert in Kenya
+    </a>
+  </p>
+  <p>© 2026 DK World Kenya. All rights reserved.</p>
 </footer>
 
-<script>
-  // Highlight active nav link
-  const navLinks = document.querySelectorAll("nav a");
-  navLinks.forEach(link => { if(link.href === window.location.href) link.classList.add("active"); });
-
-  // WhatsApp form submission
-  const form = document.getElementById("contactForm");
-  form.addEventListener("submit", function(e){
-    e.preventDefault();
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const message = document.getElementById("message").value.trim();
-    if(!name || !email || !message) return alert("Please fill all fields");
-
-    const waMessage = `Hello, my name is ${encodeURIComponent(name)} (${encodeURIComponent(email)}). ${encodeURIComponent(message)}`;
-    const waURL = `https://wa.me/254710346789?text=${waMessage}`;
-    window.open(waURL, "_blank");
-    form.reset();
-  });
-</script>
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/254710346789" target="_blank"
+style="position:fixed;bottom:20px;right:20px;background:#25D366;color:white;
+padding:15px;border-radius:50%;font-size:20px;text-decoration:none;
+box-shadow:0 6px 15px rgba(0,0,0,0.2);z-index:1000;">
+💬
+</a>
 
 </body>
 </html>
+
+
+  
