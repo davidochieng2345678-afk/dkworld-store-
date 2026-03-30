@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Policy - DK World Kenya</title>
+
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background:#f5f5f5; margin:0; }
+  nav { background:#111827; padding:15px; display:flex; justify-content:center; gap:20px; }
+  nav a { color:white; text-decoration:none; font-weight:bold; }
+  nav a:hover { color:#25D366; }
+
+  header { background:#25D366; color:white; text-align:center; padding:30px 20px; }
+  header h1 { margin:0; }
+
+  .content {
+    max-width:900px;
+    margin:40px auto;
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 6px 15px rgba(0,0,0,0.1);
+  }
+
+  footer {
+    background:#111827;
+    color:white;
+    text-align:center;
+    padding:25px;
+    margin-top:40px;
+  }
+
+  a { color:#25D366; }
+</style>
+</head>
+
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<header>
+  <h1 id="policyTitle">Policy</h1>
+</header>
+
+<div class="content" id="policyContent">
+  Loading policy...
+</div>
+
+<footer>
+  <p>
+    <a href="https://dkdigitalseo.online" target="_blank" style="color:#25D366;font-weight:bold;">
+      Built by David O. Kiruo | SEO & Web Expert in Kenya
+    </a>
+  </p>
+  <p>© 2026 DK World Kenya</p>
+</footer>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const slug = urlParams.get('slug');
+
+const policies = JSON.parse(localStorage.getItem("policies")) || {};
+
+const titles = {
+  terms: "Terms of Service",
+  privacy: "Privacy Policy",
+  refund: "Refund Policy",
+  shipping: "Shipping & Delivery Policy"
+};
+
+document.getElementById("policyTitle").textContent = titles[slug] || "Policy";
+
+document.getElementById("policyContent").innerHTML =
+  policies[slug] || "<p>No policy found. Please add it in admin panel.</p>";
+</script>
+
+</body>
+</html>
