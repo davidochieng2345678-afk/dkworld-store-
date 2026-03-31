@@ -4,52 +4,41 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DK World Kenya - Product</title>
-<meta name="description" content="Product details from DK World Kenya. E-commerce websites, digital products, and local HTML sites.">
+<meta name="description" content="Loading product details...">
 <meta name="keywords" content="Kenya e-commerce, digital products Kenya, local websites, HTML sites, DK World Kenya">
 <meta name="author" content="David Ochieng">
 <link rel="canonical" href="https://dkworldkenya.online/">
 <meta name="robots" content="index, follow">
 
 <style>
-  body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:0; background:#f5f5f5; }
-  nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
-  nav a { color:white; text-decoration:none; font-weight:bold; }
-  nav a:hover, nav a.active { color:#25D366; }
+body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:0; background:#f5f5f5; }
+nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
+nav a { color:white; text-decoration:none; font-weight:bold; }
+nav a:hover, nav a.active { color:#25D366; }
 
-  .container { max-width:900px; margin:auto; padding:20px; background:white; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.1); }
-  .product-media { width:100%; max-height:400px; object-fit:cover; border-radius:12px; margin-bottom:20px; }
-  h1 { color:#111827; margin-bottom:10px; }
-  .category { color:#555; margin-bottom:10px; font-weight:bold; }
-  .price { font-weight:bold; font-size:1.3em; color:#111827; margin-bottom:15px; }
-  .stock { margin-bottom:15px; color:#777; }
-  p { line-height:1.6; color:#555; margin-bottom:15px; }
-  a.whatsapp { display:inline-block; padding:12px 25px; background:#25D366; color:white; border-radius:10px; text-decoration:none; font-weight:bold; transition:0.3s; }
-  a.whatsapp:hover { background:#1DA851; }
+.container { max-width:900px; margin:auto; padding:20px; background:white; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.1); }
+.product-media { width:100%; max-height:400px; object-fit:cover; border-radius:12px; margin-bottom:20px; }
+h1 { color:#111827; margin-bottom:10px; }
+.category { color:#555; margin-bottom:10px; font-weight:bold; }
+.price { font-weight:bold; font-size:1.3em; color:#111827; margin-bottom:15px; }
+.stock { margin-bottom:15px; color:#777; }
+p { line-height:1.6; color:#555; margin-bottom:15px; }
+a.whatsapp { display:inline-block; padding:12px 25px; background:#25D366; color:white; border-radius:10px; text-decoration:none; font-weight:bold; transition:0.3s; }
+a.whatsapp:hover { background:#1DA851; }
 
-  footer { text-align:center; padding:25px; color:#777; font-size:0.9em; margin-top:40px; }
+footer { text-align:center; padding:25px; color:#777; font-size:0.9em; margin-top:40px; }
 </style>
 
 <!-- Structured Data -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "",
-  "image": "",
-  "description": "",
-  "sku": "",
-  "offers": {
-    "@type": "Offer",
-    "url": "",
-    "priceCurrency": "KES",
-    "price": "",
-    "availability": ""
-  }
+  "@type": "Product"
 }
 </script>
 </head>
-
 <body>
+
 <nav>
   <a href="index.html">Home</a>
   <a href="about.html">About Us</a>
@@ -58,35 +47,52 @@
 </nav>
 
 <div class="container" id="productContainer">
-  <p>Loading product...</p>
+  <p>Loading product details...</p>
 </div>
 
 <footer>
   &copy; 2026 DK World Kenya | Built by David
 </footer>
 
-<script>
-  // Sample products array (should match admin)
-  let products = JSON.parse(localStorage.getItem("products")) || [
-    { name:"E-Commerce Starter Kit", description:"Complete e-commerce website ready for Kenya market.", category:"e-commerce", price:5000, stock:10, sku:"EC001", image:"https://via.placeholder.com/600x400", video:"" },
-    { name:"Digital Marketing Guide", description:"Step-by-step guide to marketing your products online.", category:"digital", price:1200, stock:50, sku:"DM001", image:"https://via.placeholder.com/600x400", video:"" },
-    { name:"Local Business HTML Site", description:"Professional local HTML website for small businesses.", category:"local", price:2500, stock:15, sku:"LB001", image:"https://via.placeholder.com/600x400", video:"" }
-  ];
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  const container = document.getElementById("productContainer");
+// Firebase config
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "XXXX",
+  appId: "XXXX"
+};
 
-  // Get SKU from URL
-  const params = new URLSearchParams(window.location.search);
-  const sku = params.get("sku");
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  const product = products.find(p => p.sku === sku);
+const container = document.getElementById("productContainer");
 
-  if(!product){
+// Get SKU from URL
+const params = new URLSearchParams(window.location.search);
+const sku = params.get("sku");
+
+async function loadProduct() {
+  const q = query(collection(db, "products"), where("sku", "==", sku));
+  const snapshot = await getDocs(q);
+
+  if (snapshot.empty) {
     container.innerHTML = "<p>Product not found. Check back later or visit our <a href='index.html'>homepage</a>.</p>";
-  } else {
-    // Display product
-    let media = product.video ? `<iframe class="product-media" src="${product.video}" frameborder="0" allowfullscreen></iframe>` 
-                              : `<img class="product-media" src="${product.image}" alt="${product.name}">`;
+    return;
+  }
+
+  snapshot.forEach(docSnap => {
+    const product = docSnap.data();
+
+    // Media
+    let media = product.video 
+      ? `<iframe class="product-media" src="${product.video}" frameborder="0" allowfullscreen></iframe>` 
+      : `<img class="product-media" src="${product.image}" alt="${product.name}">`;
 
     container.innerHTML = `
       ${media}
@@ -98,13 +104,13 @@
       <a class="whatsapp" target="_blank" href="https://wa.me/254710346789?text=I%20want%20to%20buy%20${encodeURIComponent(product.name)}%20SKU:${encodeURIComponent(product.sku)}">Buy on WhatsApp</a>
     `;
 
-    // Update SEO meta dynamically
+    // SEO meta
     document.title = `${product.name} - DK World Kenya`;
     document.querySelector('meta[name="description"]').setAttribute("content", product.description);
 
     // Structured data
     const sd = document.querySelector('script[type="application/ld+json"]');
-    const sdData = {
+    sd.textContent = JSON.stringify({
       "@context":"https://schema.org",
       "@type":"Product",
       "name": product.name,
@@ -118,36 +124,18 @@
         "price": product.price,
         "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
       }
-    };
-    sd.textContent = JSON.stringify(sdData);
-  }
+    });
+  });
+}
 
-  // Highlight active nav link
-  const navLinks = document.querySelectorAll("nav a");
-  navLinks.forEach(link => { if(link.href === window.location.href) link.classList.add("active"); });
-</script>
-  <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+loadProduct();
 
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "XXXX",
-  appId: "XXXX"
-};
-
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+// Highlight nav
+document.querySelectorAll("nav a").forEach(link => { if(link.href === window.location.href) link.classList.add("active"); });
 </script>
 
 </body>
-  </html>
-
-
-
+</html>
 
 
 
