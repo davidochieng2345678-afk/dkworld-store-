@@ -245,7 +245,99 @@ body {
   ]
 }
 </script>
+<!-- ===== HOMEPAGE POLICIES & BLOG POSTS ===== -->
+<section class="homepage-content">
+  <!-- Policies -->
+  <div class="homepage-policies">
+    <h3>Our Policies</h3>
+    <div id="policiesContainer">
+      <!-- Policies will load here -->
+    </div>
+  </div>
 
+  <!-- Blog Posts -->
+  <div class="homepage-blogs">
+    <h3>Latest Blog Posts</h3>
+    <div id="blogsContainer" class="blog-grid">
+      <!-- Blog posts will load here -->
+    </div>
+  </div>
+</section>
+
+<script>
+// ===== LOAD POLICIES =====
+const policiesContainer = document.getElementById("policiesContainer");
+const homepagePolicies = JSON.parse(localStorage.getItem("policies")) || {};
+
+function displayPoliciesHomepage() {
+  policiesContainer.innerHTML = "";
+  for (let key in homepagePolicies) {
+    const div = document.createElement("div");
+    div.classList.add("policy-item");
+    div.innerHTML = `
+      <h4>${key.charAt(0).toUpperCase() + key.slice(1)}</h4>
+      <div>${homepagePolicies[key]}</div>
+    `;
+    policiesContainer.appendChild(div);
+  }
+}
+displayPoliciesHomepage();
+
+// ===== LOAD BLOG POSTS =====
+const blogsContainer = document.getElementById("blogsContainer");
+const homepageBlogs = JSON.parse(localStorage.getItem("blogs")) || [];
+
+function displayBlogsHomepage() {
+  blogsContainer.innerHTML = "";
+  homepageBlogs.forEach(blog => {
+    const div = document.createElement("div");
+    div.classList.add("blog-item");
+    div.innerHTML = `
+      <h4>${blog.title}</h4>
+      <p><em>${blog.author} | ${blog.date}</em></p>
+      <div>${blog.content}</div>
+    `;
+    blogsContainer.appendChild(div);
+  });
+}
+displayBlogsHomepage();
+</script>
+
+<style>
+.homepage-content { padding: 20px; }
+
+.homepage-policies,
+.homepage-blogs { margin-bottom: 40px; }
+
+.homepage-policies h3,
+.homepage-blogs h3 { margin-bottom: 15px; color: #111827; }
+
+.policy-item {
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+}
+
+.policy-item h4 { margin-bottom: 8px; color: #1E3A8A; }
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.blog-item {
+  padding: 15px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.blog-item h4 { margin-bottom: 8px; color: #1E3A8A; }
+.blog-item p { font-size: 0.9em; color: #555; margin-bottom: 10px; }
+</style>
   
 <!-- Footer -->
 <footer>
