@@ -134,6 +134,23 @@ loadProduct();
 document.querySelectorAll("nav a").forEach(link => { if(link.href === window.location.href) link.classList.add("active"); });
 </script>
 
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyABCVM1b9FEdXlJWf1SoL7dwQL1EXPXwgA",
+  authDomain: "dkworld-kenya.firebaseapp.com",
+  projectId: "dkworld-kenya",
+  storageBucket: "dkworld-kenya.firebasestorage.app",
+  messagingSenderId: "263537160242",
+  appId: "1:263537160242:web:a07511fae26faabf584c2b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+</script>
+  
 </body>
 </html>
 
