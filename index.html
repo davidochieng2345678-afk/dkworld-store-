@@ -246,107 +246,47 @@ body {
 }
 </script>
 
-
-  <!-- ===== HOMEPAGE POLICIES & BLOG POSTS ===== -->
-<section class="homepage-content">
-
-  <!-- Policies Section -->
-  <div class="homepage-policies">
-    <h3>Our Policies</h3>
-    <div id="policiesContainer" class="policies-grid">
-      <!-- Policies loaded from admin panel -->
-    </div>
-  </div>
-
-  <!-- Blog Posts Section -->
-  <div class="homepage-blogs">
-    <h3>Latest Blog Posts</h3>
-    <div id="blogsContainer" class="blog-grid">
-      <!-- Blogs loaded from admin panel -->
-    </div>
-  </div>
-
-</section>
-
-<script>
-// ===== LOAD POLICIES FROM ADMIN =====
-const policiesContainer = document.getElementById("policiesContainer");
-const homepagePolicies = JSON.parse(localStorage.getItem("policies")) || {};
-
-function displayPoliciesHomepage() {
-  policiesContainer.innerHTML = "";
-  for (let key in homepagePolicies) {
-    const div = document.createElement("div");
-    div.classList.add("policy-item");
-    div.innerHTML = `
-      <h4>${key.charAt(0).toUpperCase() + key.slice(1)}</h4>
-      <div>${homepagePolicies[key]}</div>
-    `;
-    policiesContainer.appendChild(div);
-  }
-}
-displayPoliciesHomepage();
-
-// ===== LOAD BLOG POSTS FROM ADMIN =====
-const blogsContainer = document.getElementById("blogsContainer");
-const homepageBlogs = JSON.parse(localStorage.getItem("blogs")) || [];
+  <script>
+const BLOG_KEY = "blogs";
 
 function displayBlogsHomepage() {
-  blogsContainer.innerHTML = "";
-  homepageBlogs.forEach(blog => {
+  const container = document.getElementById("blogsContainer");
+  const posts = JSON.parse(localStorage.getItem(BLOG_KEY)) || [];
+
+  container.innerHTML = "";
+
+  if (posts.length === 0) {
+    container.innerHTML = "<p>No blog posts available.</p>";
+    return;
+  }
+
+  posts.slice(0, 6).forEach(blog => {
     const div = document.createElement("div");
     div.classList.add("blog-item");
+
     div.innerHTML = `
+      <img src="${blog.image || 'https://via.placeholder.com/400'}" alt="${blog.title}">
       <h4>${blog.title}</h4>
-      <p><em>${blog.author} | ${blog.date}</em></p>
-      <div>${blog.content}</div>
+      <p class="meta">${blog.author || 'Admin'} • ${blog.date}</p>
+      <p class="content">${blog.content.substring(0, 100)}...</p>
+      <button onclick="openBlog(${blog.id})">Read More</button>
     `;
-    blogsContainer.appendChild(div);
+
+    container.appendChild(div);
   });
 }
-displayBlogsHomepage();
+
+// OPEN FULL BLOG
+function openBlog(id) {
+  localStorage.setItem("selectedBlog", id);
+  window.location.href = "blog.html";
+}
+
+document.addEventListener("DOMContentLoaded", displayBlogsHomepage);
 </script>
 
-<style>
-.homepage-content { padding: 20px; }
 
-/* Policies */
-.homepage-policies, .homepage-blogs { margin-bottom: 40px; }
-.homepage-policies h3, .homepage-blogs h3 { margin-bottom: 15px; color: #111827; font-size: 1.5em; }
 
-.policies-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
-}
-
-.policy-item {
-  padding: 15px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-}
-
-.policy-item h4 { margin-bottom: 8px; color: #1E3A8A; }
-
-/* Blogs */
-.blog-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.blog-item {
-  padding: 15px;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-}
-
-.blog-item h4 { margin-bottom: 8px; color: #1E3A8A; }
-.blog-item p { font-size: 0.9em; color: #555; margin-bottom: 10px; }
-</style>
-  
 <!-- Footer -->
 <footer>
   <div class="footer-container">
