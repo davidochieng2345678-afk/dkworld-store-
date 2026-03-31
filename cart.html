@@ -1,2 +1,150 @@
->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopping Cart - DK World Kenya</title>
+<meta name="description" content="Review your cart and checkout via WhatsApp for DK World Kenya digital products, e-commerce, and local HTML sites. Fast, secure, ready to sell.">
+<style>
+  body { font-family: 'Segoe UI', sans-serif; margin:0; padding:0; background:#f5f5f5; }
+  nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
+  nav a { color:white; text-decoration:none; font-weight:bold; padding:5px 10px; border-radius:6px; }
+  nav a:hover, nav a.active { color:#25D366; background:rgba(255,255,255,0.1); }
+
+  .container { max-width:950px; margin:30px auto; padding:25px; background:white; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.1); }
+  h1 { text-align:center; margin-bottom:15px; color:#111827; }
+  h2, h3 { color:#111827; margin-top:20px; }
+
+  table { width:100%; border-collapse:collapse; margin-top:15px; }
+  th, td { padding:12px; border-bottom:1px solid #ddd; text-align:left; }
+  th { background:#111827; color:white; text-transform:uppercase; font-size:0.95em; }
+  td input { width:60px; text-align:center; }
+  
+  .remove-btn { background:#FF4B4B; color:white; font-weight:bold; padding:5px 10px; border-radius:6px; border:none; cursor:pointer; }
+  .remove-btn:hover { background:#e43d3d; }
+
+  .checkout-btn { background:#25D366; color:white; font-weight:bold; padding:12px 25px; border:none; border-radius:8px; cursor:pointer; font-size:1.1em; margin-top:15px; display:block; width:100%; }
+  .checkout-btn:hover { background:#1DA851; }
+
+  input { width:100%; padding:10px; border-radius:6px; border:1px solid #ccc; margin-top:10px; font-size:1em; }
+
+  .trust-badges { margin-top:15px; display:flex; justify-content:center; gap:20px; flex-wrap:wrap; font-size:0.9em; color:#111827; }
+  .trust-badges span { background:#e0f7e9; padding:8px 12px; border-radius:8px; display:flex; align-items:center; gap:5px; }
+
+  @media(max-width:768px){
+    th, td { font-size:0.85em; }
+    td input { width:50px; }
+    .checkout-btn { font-size:1em; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="contact.html">Contact</a>
+  <a href="cart.html" class="active">Cart</a>
+</nav>
+
+<div class="container">
+  <h1>Your Shopping Cart</h1>
+
+  <table id="cartTable">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price (KES)</th>
+        <th>Qty</th>
+        <th>Total</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Total: KES <span id="cartTotal">0</span></h2>
+
+  <h3>Fill your details to checkout via WhatsApp</h3>
+  <input type="text" id="customerName" placeholder="Your Full Name" required>
+  <input type="text" id="customerPhone" placeholder="Phone / WhatsApp Number" required>
+
+  <button class="checkout-btn" onclick="checkoutWhatsApp()">✅ Checkout via WhatsApp</button>
+
+  <div class="trust-badges">
+    <span>✅ Secure Payments</span>
+    <span>🚀 Fast Delivery</span>
+    <span>💬 WhatsApp Support</span>
+    <span>🕒 Live Stores Ready 24h</span>
+  </div>
+</div>
+
+<script>
+  // ======== CART LOGIC =========
+  let cart = JSON.parse(localStorage.getItem("dkCart")) || [];
+  const cartTableBody = document.querySelector("#cartTable tbody");
+  const cartTotalEl = document.getElementById("cartTotal");
+
+  function renderCart(){
+    cartTableBody.innerHTML = "";
+    let total = 0;
+    cart.forEach((item, index) => {
+      const itemTotal = item.price * item.quantity;
+      total += itemTotal;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${item.name}</td>
+        <td>${item.price}</td>
+        <td>
+          <input type="number" min="1" value="${item.quantity}" onchange="updateQty(${index}, this.value)">
+        </td>
+        <td>${itemTotal}</td>
+        <td><button class="remove-btn" onclick="removeItem(${index})">Remove</button></td>`;
+      cartTableBody.appendChild(tr);
+    });
+    cartTotalEl.innerText = total;
+  }
+
+  function updateQty(index, value){
+    cart[index].quantity = parseInt(value);
+    localStorage.setItem("dkCart", JSON.stringify(cart));
+    renderCart();
+  }
+
+  function removeItem(index){
+    cart.splice(index,1);
+    localStorage.setItem("dkCart", JSON.stringify(cart));
+    renderCart();
+  }
+
+  function checkoutWhatsApp(){
+    const name = document.getElementById("customerName").value.trim();
+    const phone = document.getElementById("customerPhone").value.trim();
+    if(!name || !phone){
+      alert("Please enter your name and phone number.");
+      return;
+    }
+    if(cart.length === 0){
+      alert("Your cart is empty.");
+      return;
+    }
+
+    let message = `🛒 New Order from DK World Kenya:%0A`;
+    cart.forEach(item => {
+      message += `\n- ${item.name} x${item.quantity} = KES ${item.price * item.quantity}`;
+    });
+    const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    message += `\n\n💰 Total: KES ${total}`;
+    message += `\n👤 Name: ${name}`;
+    message += `\n📱 Phone: ${phone}`;
+
+    const whatsappNumber = "+254710346789"; // Your WhatsApp number
+    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+  }
+
+  renderCart();
+</script>
+
+</body>
+</html>
 
