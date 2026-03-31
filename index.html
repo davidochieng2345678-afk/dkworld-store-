@@ -245,29 +245,29 @@ body {
   ]
 }
 </script>
-  <!-- ===== HORIZONTAL CAROUSEL SLIDERS (BLOG POSTS + POLICIES) ===== -->
+<!-- ===== HORIZONTAL CAROUSEL SLIDERS (BLOG POSTS + POLICIES) ===== -->
 <section class="featured" style="margin-top:40px;">
   <h3>Latest Blog Posts & Policies</h3>
   
   <!-- Blog Slider -->
   <div style="position:relative; margin-top:20px;">
-    <button class="carousel-btn left" style="position:absolute; left:0; top:50%; transform:translateY(-50%); z-index:10; background:#111827; color:white; border:none; border-radius:50%; width:35px; height:35px; cursor:pointer;">&#8249;</button>
+    <button class="carousel-btn left">&#8249;</button>
     <div class="slider" id="unifiedBlogSlider" style="display:flex; overflow-x:auto; gap:15px; scroll-behavior:smooth; padding:10px;"></div>
-    <button class="carousel-btn right" style="position:absolute; right:0; top:50%; transform:translateY(-50%); z-index:10; background:#111827; color:white; border:none; border-radius:50%; width:35px; height:35px; cursor:pointer;">&#8250;</button>
+    <button class="carousel-btn right">&#8250;</button>
   </div>
   
   <!-- Policies Slider -->
   <div style="position:relative; margin-top:30px;">
-    <button class="carousel-btn left" style="position:absolute; left:0; top:50%; transform:translateY(-50%); z-index:10; background:#111827; color:white; border:none; border-radius:50%; width:35px; height:35px; cursor:pointer;">&#8249;</button>
+    <button class="carousel-btn left">&#8249;</button>
     <div class="slider" id="unifiedPoliciesSlider" style="display:flex; overflow-x:auto; gap:15px; scroll-behavior:smooth; padding:10px;"></div>
-    <button class="carousel-btn right" style="position:absolute; right:0; top:50%; transform:translateY(-50%); z-index:10; background:#111827; color:white; border:none; border-radius:50%; width:35px; height:35px; cursor:pointer;">&#8250;</button>
+    <button class="carousel-btn right">&#8250;</button>
   </div>
 </section>
 
 <script>
 // ======== BLOG POSTS ========
 const unifiedBlogSlider = document.getElementById("unifiedBlogSlider");
-let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+const blogs = JSON.parse(localStorage.getItem("blogs")) || [];
 
 function createBlogCard(blog){
   const card = document.createElement("div");
@@ -287,7 +287,7 @@ function createBlogCard(blog){
   card.innerHTML = `
     <div>
       <h4 style="margin-bottom:5px;">
-        <a href="blog.html?slug=${encodeURIComponent(blog.slug)}" 
+        <a href="blog.html?slug=${encodeURIComponent(blog.title)}" 
            style="color:#111827; text-decoration:none; font-weight:bold;" 
            title="${blog.title}">
           ${blog.title}
@@ -295,7 +295,8 @@ function createBlogCard(blog){
       </h4>
       <p style="font-size:0.75em; color:#777;">By ${blog.author} | ${blog.date}</p>
       <p style="font-size:0.85em; color:#555;">${snippet}</p>
-      <div style="text-align:center; background:#1DA851; color:white; padding:8px; border-radius:6px; cursor:default;">
+      <div style="text-align:center; background:#1DA851; color:white; padding:8px; border-radius:6px; cursor:pointer;"
+           onclick="window.location.href='blog.html?slug=${encodeURIComponent(blog.title)}'">
         Read More
       </div>
     </div>
@@ -309,9 +310,8 @@ blogs.forEach(blog => unifiedBlogSlider.appendChild(createBlogCard(blog)));
 
 // ======== POLICIES ========
 const unifiedPoliciesSlider = document.getElementById("unifiedPoliciesSlider");
-let policies = JSON.parse(localStorage.getItem("policies")) || {};
-let policyItems = [];
-for (const key in policies) if (policies.hasOwnProperty(key)) policyItems.push({slug:key, content:policies[key]});
+const policies = JSON.parse(localStorage.getItem("policies")) || {};
+const policyItems = Object.keys(policies).map(slug => ({slug, content: policies[slug]}));
 
 function createPolicyCard(item){
   const card = document.createElement("div");
@@ -338,7 +338,8 @@ function createPolicyCard(item){
         </a>
       </h4>
       <p style="font-size:0.85em; color:#555;">${snippet}</p>
-      <div style="text-align:center; background:#1DA851; color:white; padding:8px; border-radius:6px; margin-top:5px; cursor:default;">
+      <div style="text-align:center; background:#1DA851; color:white; padding:8px; border-radius:6px; margin-top:5px; cursor:pointer;"
+           onclick="window.location.href='policy.html?slug=${encodeURIComponent(item.slug)}'">
         Read More
       </div>
     </div>
@@ -363,6 +364,7 @@ function setupCarousel(slider){
 setupCarousel(unifiedBlogSlider);
 setupCarousel(unifiedPoliciesSlider);
 </script>
+
   
 <!-- Footer -->
 <footer>
