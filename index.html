@@ -136,6 +136,69 @@ footer a{color:#25D366;text-decoration:none;}
   <div id="blogsContainer"></div>
 </section>
 
+  <!-- ===== Example Product Card ===== -->
+<div class="product-card">
+  <h3 class="product-name">E-commerce Store Package</h3>
+  <p class="product-price">KES 15,000</p>
+  <button class="add-to-cart-btn"
+          data-name="E-commerce Store Package"
+          data-price="15000"
+          data-category="e-commerce"
+          data-sku="ECOM001">
+    Add to Cart
+  </button>
+</div>
+
+<div class="product-card">
+  <h3 class="product-name">Local HTML Website</h3>
+  <p class="product-price">KES 5,000</p>
+  <button class="add-to-cart-btn"
+          data-name="Local HTML Website"
+          data-price="5000"
+          data-category="local"
+          data-sku="LOCAL001">
+    Add to Cart
+  </button>
+</div>
+
+<div class="product-card">
+  <h3 class="product-name">Digital Product - Template</h3>
+  <p class="product-price">KES 2,000</p>
+  <button class="add-to-cart-btn"
+          data-name="Digital Product - Template"
+          data-price="2000"
+          data-category="digital"
+          data-sku="DIGI001">
+    Add to Cart
+  </button>
+</div>
+
+<!-- ===== Add to Cart JS ===== -->
+<script>
+  const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
+
+  addToCartButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const name = btn.dataset.name;
+      const price = parseFloat(btn.dataset.price);
+      const category = btn.dataset.category;
+      const sku = btn.dataset.sku;
+
+      let cart = JSON.parse(localStorage.getItem("dkCart")) || [];
+
+      // Check if product already in cart
+      const existing = cart.find(item => item.sku === sku);
+      if(existing){
+        existing.quantity += 1; // increase quantity
+      } else {
+        cart.push({ name, price, category, sku, quantity: 1 });
+      }
+
+      localStorage.setItem("dkCart", JSON.stringify(cart));
+      alert(`${name} added to cart!`);
+    });
+  });
+</script>
 <!-- Footer -->
 <footer>
   <div class="footer-container">
