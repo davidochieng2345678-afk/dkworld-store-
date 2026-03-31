@@ -245,6 +245,124 @@ body {
   ]
 }
 </script>
+  <!-- ===== HORIZONTAL CAROUSEL SLIDERS (BLOG POSTS + POLICIES) ===== -->
+<section class="featured" style="margin-top:40px;">
+  <h3>Latest Blog Posts & Policies</h3>
+  
+  <!-- Blog Slider -->
+  <div style="position:relative; margin-top:20px;">
+    <button class="carousel-btn left" style="position:absolute; left:0; top:50%; transform:translateY(-50%); z-index:10; background:#111827; color:white; border:none; border-radius:50%; width:35px; height:35px; cursor:pointer;">&#8249;</button>
+    <div class="slider" id="unifiedBlogSlider" style="display:flex; overflow-x:auto; gap:15px; scroll-behavior:smooth; padding:10px;"></div>
+    <button class="carousel-btn right" style="position:absolute; right:0; top:50%; transform:translateY(-50%); z-index:10; background:#111827; color:white; border:none; border-radius:50%; width:35px; height:35px; cursor:pointer;">&#8250;</button>
+  </div>
+  
+  <!-- Policies Slider -->
+  <div style="position:relative; margin-top:30px;">
+    <button class="carousel-btn left" style="position:absolute; left:0; top:50%; transform:translateY(-50%); z-index:10; background:#111827; color:white; border:none; border-radius:50%; width:35px; height:35px; cursor:pointer;">&#8249;</button>
+    <div class="slider" id="unifiedPoliciesSlider" style="display:flex; overflow-x:auto; gap:15px; scroll-behavior:smooth; padding:10px;"></div>
+    <button class="carousel-btn right" style="position:absolute; right:0; top:50%; transform:translateY(-50%); z-index:10; background:#111827; color:white; border:none; border-radius:50%; width:35px; height:35px; cursor:pointer;">&#8250;</button>
+  </div>
+</section>
+
+<script>
+// ======== BLOG POSTS ========
+const unifiedBlogSlider = document.getElementById("unifiedBlogSlider");
+let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+
+function createBlogCard(blog){
+  const card = document.createElement("div");
+  card.style.minWidth = "250px";
+  card.style.background = "white";
+  card.style.borderRadius = "15px";
+  card.style.boxShadow = "0 6px 15px rgba(0,0,0,0.1)";
+  card.style.overflow = "hidden";
+  card.style.padding = "15px";
+  card.style.flexShrink = "0";
+  card.style.display = "flex";
+  card.style.flexDirection = "column";
+  card.style.gap = "10px";
+
+  const snippet = blog.content.replace(/<[^>]+>/g,"").substring(0,150) + "...";
+
+  card.innerHTML = `
+    <div>
+      <h4 style="margin-bottom:5px;">
+        <a href="blog.html?slug=${encodeURIComponent(blog.slug)}" 
+           style="color:#111827; text-decoration:none; font-weight:bold;" 
+           title="${blog.title}">
+          ${blog.title}
+        </a>
+      </h4>
+      <p style="font-size:0.75em; color:#777;">By ${blog.author} | ${blog.date}</p>
+      <p style="font-size:0.85em; color:#555;">${snippet}</p>
+      <div style="text-align:center; background:#1DA851; color:white; padding:8px; border-radius:6px; cursor:default;">
+        Read More
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+unifiedBlogSlider.innerHTML = "";
+blogs.forEach(blog => unifiedBlogSlider.appendChild(createBlogCard(blog)));
+
+
+// ======== POLICIES ========
+const unifiedPoliciesSlider = document.getElementById("unifiedPoliciesSlider");
+let policies = JSON.parse(localStorage.getItem("policies")) || {};
+let policyItems = [];
+for (const key in policies) if (policies.hasOwnProperty(key)) policyItems.push({slug:key, content:policies[key]});
+
+function createPolicyCard(item){
+  const card = document.createElement("div");
+  card.style.minWidth = "250px";
+  card.style.background = "white";
+  card.style.borderRadius = "15px";
+  card.style.boxShadow = "0 6px 15px rgba(0,0,0,0.1)";
+  card.style.overflow = "hidden";
+  card.style.padding = "15px";
+  card.style.flexShrink = "0";
+  card.style.display = "flex";
+  card.style.flexDirection = "column";
+  card.style.gap = "10px";
+
+  const snippet = item.content.replace(/<[^>]+>/g, "").substring(0,150) + "...";
+
+  card.innerHTML = `
+    <div>
+      <h4 style="margin-bottom:5px;">
+        <a href="policy.html?slug=${encodeURIComponent(item.slug)}" 
+           style="color:#111827; text-decoration:none; font-weight:bold;" 
+           title="${item.slug.toUpperCase()}">
+          ${item.slug.charAt(0).toUpperCase() + item.slug.slice(1)} Policy
+        </a>
+      </h4>
+      <p style="font-size:0.85em; color:#555;">${snippet}</p>
+      <div style="text-align:center; background:#1DA851; color:white; padding:8px; border-radius:6px; margin-top:5px; cursor:default;">
+        Read More
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+unifiedPoliciesSlider.innerHTML = "";
+policyItems.forEach(item => unifiedPoliciesSlider.appendChild(createPolicyCard(item)));
+
+
+// ======== CAROUSEL BUTTONS ========
+function setupCarousel(slider){
+  const container = slider.parentElement;
+  const btnLeft = container.querySelector(".carousel-btn.left");
+  const btnRight = container.querySelector(".carousel-btn.right");
+
+  btnLeft.addEventListener("click", ()=>{ slider.scrollBy({left:-300, behavior:"smooth"}); });
+  btnRight.addEventListener("click", ()=>{ slider.scrollBy({left:300, behavior:"smooth"}); });
+}
+
+setupCarousel(unifiedBlogSlider);
+setupCarousel(unifiedPoliciesSlider);
+</script>
   
 <!-- Footer -->
 <footer>
