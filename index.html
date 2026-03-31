@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="google-site-verification" content="jaR9slJ6xqPv5YMNdIkxbD9R2tcEGJbkZMON0Wegpe0" />
+<meta name="google-site-verification" content="jaR9slJ6xqPv5YMNdIkxbD9R2tcEGJbkZMON0Wegpe0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DK World Kenya - E-commerce, Digital Products & Local Websites</title>
 <meta name="description" content="DK World Kenya offers professional e-commerce websites, digital products, and local HTML websites. Manage your store easily with our admin panel and WhatsApp checkout.">
@@ -11,81 +11,38 @@
 <link rel="canonical" href="https://dkworldkenya.online/">
 <meta name="robots" content="index, follow">
 
-<!-- Open Graph for social -->
+<!-- Open Graph -->
 <meta property="og:title" content="DK World Kenya - E-commerce & Digital Products">
 <meta property="og:description" content="Professional e-commerce websites, digital products, and local HTML websites in Kenya.">
 <meta property="og:image" content="https://dkworldkenya.online/assets/og-image.jpg">
 <meta property="og:url" content="https://dkworldkenya.online/">
 <meta name="twitter:card" content="summary_large_image">
 
+<!-- Styles -->
 <style>
-  body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
-  /* RESET (always first) */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* GLOBAL */
-html, body {
-  width: 100%;
-  overflow-x: hidden;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f5f5f5;
-}
-
-/* MAIN LAYOUT CENTERING */
-body {
-  max-width: 1400px;
-  margin: auto;
-}
-
-/* SEARCH BAR */
-.search-bar {
-  width: 100%;
-  max-width: 1200px;
-  margin: 20px auto;
-  display: block;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-/* SLIDER FIX */
-.slider {
-  width: 100%;
-}
-  nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
-  nav a { color:white; text-decoration:none; font-weight:bold; }
-  nav a:hover, nav a.active { color:#25D366; }
+  body, html { margin:0; padding:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f5f5f5; overflow-x:hidden; }
+  nav { background:#111827; display:flex; justify-content:center; flex-wrap:wrap; padding:15px; gap:20px; }
+  nav a { color:white; text-decoration:none; font-weight:bold; transition:0.3s; }
+  nav a.active, nav a:hover { color:#25D366; }
 
   header { text-align:center; padding:20px; }
   header h1 { margin:0; font-size:2em; color:#111827; }
   header p { color:#555; }
 
-  .hero { background:#25D366; color:white; text-align:center; padding:60px 20px; position:relative; }
+  .hero { background:#25D366; color:white; text-align:center; padding:60px 20px; }
   .hero h2 { font-size:2.5em; margin-bottom:15px; }
   .hero p { font-size:1.2em; margin-bottom:20px; }
   .hero a { display:inline-block; background:white; color:#25D366; padding:12px 25px; border-radius:10px; font-weight:bold; text-decoration:none; transition:0.3s; }
   .hero a:hover { background:#e6e6e6; }
+  .trust-badges { display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-top:15px; font-weight:bold; font-size:0.9em; }
 
-  .trust-badges { display:flex; justify-content:center; flex-wrap:wrap; gap:15px; margin-top:15px; color:white; font-weight:bold; font-size:0.9em; }
-  
+  .search-bar { width:100%; max-width:1200px; margin:20px auto; display:block; padding:12px; border-radius:8px; border:1px solid #ccc; }
+
   .filters { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:20px 0; }
-  .filters button { padding:10px 20px; border:none; border-radius:8px; cursor:pointer; background:#111827; color:white; transition:0.3s; font-weight:bold; }
+  .filters button { padding:10px 20px; border:none; border-radius:8px; cursor:pointer; background:#111827; color:white; font-weight:bold; transition:0.3s; }
   .filters button.active, .filters button:hover { background:#25D366; }
 
-  .featured { padding:20px; }
-  .featured h3 { text-align:center; margin-bottom:15px; color:#111827; }
-  .slider { display:flex; overflow-x:auto; gap:15px; padding-bottom:10px; scrollbar-width:none; -ms-overflow-style:none; }
-  .slider::-webkit-scrollbar { display:none; }
-
-  .products { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:20px; padding:20px; }
+  .products { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; padding:20px; }
   .product-card { background:white; border-radius:15px; overflow:hidden; box-shadow:0 6px 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; transition:transform 0.3s, box-shadow 0.3s; }
   .product-card:hover { transform: translateY(-5px); box-shadow:0 10px 20px rgba(0,0,0,0.15); }
   .product-card img, .product-card iframe { width:100%; height:180px; object-fit:cover; }
@@ -93,314 +50,81 @@ body {
   .product-card h3 { margin:5px 0; font-size:1.2em; color:#111827; }
   .product-card p { font-size:0.9em; color:#555; flex-grow:1; }
   .product-card .price { font-weight:bold; margin:10px 0; color:#111827; }
-  .product-card a { text-align:center; background:#25D366; color:white; padding:10px; border-radius:8px; text-decoration:none; font-weight:bold; transition:0.3s; margin-top:5px; }
+  .product-card a { text-align:center; background:#25D366; color:white; padding:10px; border-radius:8px; text-decoration:none; font-weight:bold; margin-top:5px; transition:0.3s; }
   .product-card a:hover { background:#1DA851; }
-
-  footer { text-align:center; padding:25px; color:#777; font-size:0.9em; background:#111827; color:white; margin-top:40px; }
-  .footer-container { max-width:1100px;margin:auto;display:flex;flex-wrap:wrap;gap:30px;justify-content:space-between; }
-  .footer-container a { color:#25D366; text-decoration:none; }
-  .trust-footer { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:20px; font-size:14px; }
 
   @media(max-width:600px){ .filters { flex-direction: column; } }
 </style>
 
-<!-- Structured Data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Store",
-  "name": "DK World Kenya",
-  "url": "https://dkworldkenya.online",
-  "description": "E-commerce websites, digital products, and local HTML websites in Kenya.",
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Products",
-    "itemListElement": []
-  }
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "XXXX",
+  appId: "XXXX"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const container = document.getElementById("productsContainer");
+const featuredSlider = document.getElementById("featuredSlider");
+
+let products = [];
+
+async function loadProducts() {
+  const snapshot = await getDocs(collection(db, "products"));
+  products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+  displayFeatured(products.slice(0,5));
+  displayProducts(products);
 }
-</script>
-</head>
 
-<body>
-
-<!-- Navigation -->
-<nav>
-  <a href="index.html">Home</a>
-  <a href="about.html">About Us</a>
-  <a href="contact.html">Contact</a>
-  <a href="admin.html">Admin</a>
-</nav>
-
-<!-- Header -->
-<header>
-  <h1>DK World Kenya</h1>
-  <p>Digital Products, E-Commerce & Local Websites</p>
-</header>
-
-<!-- Hero -->
-<div class="hero">
-  <h2>Build Your Digital Presence Today!</h2>
-  <p>E-commerce, Websites & Digital Products Made Simple for Kenya</p>
-  <a href="#productsContainer">Shop Now</a>
-  <div class="trust-badges">
-    <div>✅ Secure Payments</div>
-    <div>🚀 Fast Delivery</div>
-    <div>💬 WhatsApp Support</div>
-    <div>🔒 Trusted Store</div>
-    <p style="font-size:1.1em;font-weight:bold;">🚀 Get your e-commerce store live and ready to sell within 24 hours!</p>
-  </div>
-</div>
-
-<input type="text" id="searchInput" placeholder="Search products..." class="search-bar">
-
-<!-- Featured Products -->
-<div class="featured">
-  <h3>Featured Products</h3>
-  <div class="slider" id="featuredSlider"></div>
-</div>
-
-<!-- Filters -->
-<div class="filters">
-  <button class="active" onclick="filterProducts('all')">All</button>
-  <button onclick="filterProducts('e-commerce')">E-commerce Websites</button>
-  <button onclick="filterProducts('digital')">Digital Products</button>
-  <button onclick="filterProducts('local')">Local HTML Sites</button>
-</div>
-
-<!-- Product Grid -->
-<section class="products" id="productsContainer"></section>
-
-
-
-<!-- Testimonials / Reviews -->
-<section class="reviews" style="padding:40px 20px; background:#f9f9f9; text-align:center;">
-  <h3>What Our Clients Say</h3>
-  <div class="review-slider" style="display:flex; overflow-x:auto; gap:20px; padding:20px 0; scrollbar-width:none; -ms-overflow-style:none;">
-    <div class="review-card" style="background:white; padding:20px; border-radius:15px; min-width:250px; box-shadow:0 6px 15px rgba(0,0,0,0.1);">
-      <p>“DK World Kenya created my online store quickly and professionally. Sales increased within days!”</p>
-      <strong>- Alice M.</strong>
-      <div>⭐⭐⭐⭐⭐</div>
+function createCard(prod){
+  const card = document.createElement("div");
+  card.className = "product-card";
+  const media = prod.video 
+    ? `<iframe src="${prod.video}" frameborder="0" allowfullscreen></iframe>` 
+    : `<img src="${prod.image}" alt="${prod.name}" loading="lazy">`;
+  card.innerHTML = `${media}<div class="content">
+    <div style="background:#25D366;color:white;padding:5px 10px;border-radius:5px;font-size:0.8em;display:inline-block;margin-bottom:5px;">
+      ⚡ Ready to Sell in 24h
     </div>
-    <div class="review-card" style="background:white; padding:20px; border-radius:15px; min-width:250px; box-shadow:0 6px 15px rgba(0,0,0,0.1);">
-      <p>“Amazing service and quick response via WhatsApp. Highly recommend for digital products.”</p>
-      <strong>- Peter K.</strong>
-      <div>⭐⭐⭐⭐⭐</div>
-    </div>
-    <div class="review-card" style="background:white; padding:20px; border-radius:15px; min-width:250px; box-shadow:0 6px 15px rgba(0,0,0,0.1);">
-      <p>“Professional, fast, and reliable. My local HTML site looks perfect.”</p>
-      <strong>- Grace N.</strong>
-      <div>⭐⭐⭐⭐⭐</div>
-    </div>
-  </div>
-</section>
-
-<!-- Schema.org structured data for reviews -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "DK World Kenya",
-  "url": "https://dkworldkenya.online",
-  "sameAs": [
-    "https://www.facebook.com/",
-    "https://www.instagram.com/",
-    "https://wa.me/254710346789"
-  ],
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5",
-    "reviewCount": "3"
-  },
-  "review": [
-    {
-      "@type": "Review",
-      "author": "Alice M.",
-      "datePublished": "2026-03-30",
-      "reviewBody": "DK World Kenya created my online store quickly and professionally. Sales increased within days!",
-      "reviewRating": {
-        "@type": "Rating",
-        "ratingValue": "5"
-      }
-    },
-    {
-      "@type": "Review",
-      "author": "Peter K.",
-      "datePublished": "2026-03-28",
-      "reviewBody": "Amazing service and quick response via WhatsApp. Highly recommend for digital products.",
-      "reviewRating": {
-        "@type": "Rating",
-        "ratingValue": "5"
-      }
-    },
-    {
-      "@type": "Review",
-      "author": "Grace N.",
-      "datePublished": "2026-03-25",
-      "reviewBody": "Professional, fast, and reliable. My local HTML site looks perfect.",
-      "reviewRating": {
-        "@type": "Rating",
-        "ratingValue": "5"
-      }
-    }
-  ]
+    <h3>${prod.name}</h3>
+    <p>${prod.description}</p>
+    <p>Category: ${prod.category}</p>
+    <div class="price">Ksh ${prod.price} | Stock: ${prod.stock}</div>
+    <a href="product.html?sku=${encodeURIComponent(prod.sku)}">View Details</a>
+    <a href="https://wa.me/254710346789?text=I%20want%20to%20buy%20${encodeURIComponent(prod.name)}%20SKU:${encodeURIComponent(prod.sku)}" target="_blank">Buy on WhatsApp</a>
+  </div>`;
+  return card;
 }
-</script>
 
-  <script>
-const BLOG_KEY = "blogs";
-
-function displayBlogsHomepage() {
-  const container = document.getElementById("blogsContainer");
-  const posts = JSON.parse(localStorage.getItem(BLOG_KEY)) || [];
-
+function displayProducts(filteredProducts){
   container.innerHTML = "";
-
-  if (posts.length === 0) {
-    container.innerHTML = "<p>No blog posts available.</p>";
+  if(filteredProducts.length===0){
+    container.innerHTML="<p style='text-align:center;'>No products found.</p>";
     return;
   }
-
-  posts.slice(0, 6).forEach(blog => {
-    const div = document.createElement("div");
-    div.classList.add("blog-item");
-
-    div.innerHTML = `
-      <img src="${blog.image || 'https://via.placeholder.com/400'}" alt="${blog.title}">
-      <h4>${blog.title}</h4>
-      <p class="meta">${blog.author || 'Admin'} • ${blog.date}</p>
-      <p class="content">${blog.content.substring(0, 100)}...</p>
-      <button onclick="openBlog(${blog.id})">Read More</button>
-    `;
-
-    container.appendChild(div);
-  });
+  filteredProducts.forEach(p => container.appendChild(createCard(p)));
 }
 
-// OPEN FULL BLOG
-function openBlog(id) {
-  localStorage.setItem("selectedBlog", id);
-  window.location.href = "blog.html";
-}
-
-document.addEventListener("DOMContentLoaded", displayBlogsHomepage);
-</script>
-
-
-
-<!-- Footer -->
-<footer>
-  <div class="footer-container">
-     <div>
-      <h3>DK World Kenya</h3>
-      <p>Your trusted source for e-commerce websites, digital products, and local HTML sites in Kenya.</p>
-      <p>
-        <a href="https://dkdigitalseo.online" target="_blank" title="Visit my SEO & Web Design Agency"
-           style="color:#25D366;font-weight:bold;text-decoration:none;">
-           Built by David O. Kiruo | SEO & Web Expert in Kenya
-        </a>
-      </p>
-    </div>
-<p><a href="policy.html?slug=terms">Terms of Service</a></p>
-<p><a href="policy.html?slug=privacy">Privacy Policy</a></p>
-<p><a href="policy.html?slug=refund">Refund Policy</a></p>
-<p><a href="policy.html?slug=shipping">Shipping Policy</a></p>
-    
-    <div>
-      <h4>Follow Us</h4>
-      <p><a href="#">Facebook</a></p>
-      <p><a href="#">Instagram</a></p>
-      <p><a href="https://wa.me/254710346789">WhatsApp</a></p>
-      <p><a href="mailto:dkdigitalseo.info@gmail.com">📧 Email</a></p>
-      <p><a href="https://dkdigitalseo.online" target="_blank">Built for Performance</a></p>
-    </div>
-  </div>
-<div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:20px;font-size:14px;">
-  <div>✅ Secure Payments</div>
-  <div>🚀 Live Installation in 24h</div>
-  <div>💬 WhatsApp Support</div>
-  <div>🔒 Trusted Store</div>
-</div>
-  <p style="text-align:center;margin-top:20px;color:#aaa;">© 2026 DK World Kenya. All rights reserved.</p>
-</footer>
-
-<!-- Floating WhatsApp -->
-<a href="https://wa.me/254710346789" target="_blank" style="position:fixed;bottom:20px;left:20px;background:#25D366;color:white;padding:15px;border-radius:50%;font-size:20px;text-decoration:none;box-shadow:0 6px 15px rgba(0,0,0,0.2);z-index:1000;">💬</a>
-
-<script>
-  // Sample products array
-  let products = JSON.parse(localStorage.getItem("products")) || [
-    {name:"E-Commerce Starter Kit", description:"Complete e-commerce website ready for Kenya market.", category:"e-commerce", price:5000, stock:10, sku:"EC001", image:"https://via.placeholder.com/300x180", video:""},
-    {name:"Digital Marketing Guide", description:"Step-by-step guide to marketing your products online.", category:"digital", price:1200, stock:50, sku:"DM001", image:"https://via.placeholder.com/300x180", video:""},
-    {name:"Local Business HTML Site", description:"Professional local HTML website for small businesses.", category:"local", price:2500, stock:15, sku:"LB001", image:"https://via.placeholder.com/300x180", video:""}
-  ];
-
-  const container = document.getElementById("productsContainer");
-  const filterButtons = document.querySelectorAll(".filters button");
-  const featuredSlider = document.getElementById("featuredSlider");
-
-  function createCard(prod){
-    const card = document.createElement("div");
-    card.className = "product-card";
-    let media = prod.video ? `<iframe src="${prod.video}" frameborder="0" allowfullscreen></iframe>` 
-                            : `<img src="${prod.image}" alt="${prod.name}" loading="lazy">`;
-    card.innerHTML = `${media}
-      <div class="content">
-      <div style="background:#25D366;color:white;padding:5px 10px;border-radius:5px;font-size:0.8em;display:inline-block;margin-bottom:5px;">
-  ⚡ Ready to Sell in 24h
-</div>
-        <h3>${prod.name}</h3>
-        <p>${prod.description}</p>
-        <p>Category: ${prod.category}</p>
-        <div class="price">Ksh ${prod.price} | Stock: ${prod.stock}</div>
-        <a href="product.html?sku=${encodeURIComponent(prod.sku)}">View Details</a>
-        <a href="https://wa.me/254710346789?text=I%20want%20to%20buy%20${encodeURIComponent(prod.name)}%20SKU:${encodeURIComponent(prod.sku)}" target="_blank">Buy on WhatsApp</a>
-      </div>`;
-    return card;
-  }
-
-  function displayProducts(filteredProducts){
-    container.innerHTML = "";
-    if(filteredProducts.length === 0){
-      container.innerHTML = "<p style='text-align:center;'>No products in this category. Check admin panel.</p>";
-      return;
-    }
-    filteredProducts.forEach(prod => container.appendChild(createCard(prod)));
-  }
-
-  function filterProducts(category){
-    filterButtons.forEach(btn => btn.classList.remove("active"));
-    event.target.classList.add("active");
-    displayProducts(category==='all'?products:products.filter(p=>p.category.toLowerCase()===category.toLowerCase()));
-  }
-
+function displayFeatured(productsList){
   featuredSlider.innerHTML="";
-  products.slice(0,5).forEach(prod => featuredSlider.appendChild(createCard(prod)));
-  displayProducts(products);
+  productsList.forEach(p => featuredSlider.appendChild(createCard(p)));
+}
 
-  const searchInput = document.getElementById("searchInput");
-  if(searchInput){searchInput.addEventListener("input", function(){
-    const value=this.value.toLowerCase();
-    const filtered=products.filter(p=>p.name.toLowerCase().includes(value)||p.category.toLowerCase().includes(value));
-    displayProducts(filtered);
-  });}
+function filterProducts(category){
+  document.querySelectorAll(".filters button").forEach(btn=>btn.classList.remove("active"));
+  event.target.classList.add("active");
+  displayProducts(category==='all'?products:products.filter(p=>p.category.toLowerCase()===category.toLowerCase()));
+}
 
-  // Active nav highlight
-  document.querySelectorAll("nav a").forEach(link=>{if(link.href===window.location.href) link.classList.add("active");});
-
-  // Structured data for products
-  const sd=document.querySelector('script[type="application/ld+json"]');
-  const sdData=JSON.parse(sd.textContent);
-  sdData.hasOfferCatalog.itemListElement=products.map(prod=>({
-    "@type":"Product",
-    "name": prod.name,
-    "image": prod.image,
-    "description": prod.description,
-    "sku": prod.sku,
-    "offers": {"@type":"Offer","url":`https://dkworldkenya.online/product.html?sku=${encodeURIComponent(prod.sku)}`,"priceCurrency":"KES","price":prod.price,"availability":prod.stock>0?"https://schema.org/InStock":"https://schema.org/OutOfStock"}
-  }));
-  sd.textContent=JSON.stringify(sdData);
+document.addEventListener("DOMContentLoaded", loadProducts);
 </script>
-
-</body>
-</html>
-
