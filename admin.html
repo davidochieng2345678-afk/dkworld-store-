@@ -291,6 +291,37 @@ document.getElementById("importProductsBtn").addEventListener("click", async () 
   }
 });
 
+  // ---------- BULK IMPORT FROM CSV ----------
+document.getElementById("bulkImportBtn").addEventListener("click", async () => {
+  const fileInput = document.getElementById("bulkImportFile");
+  if (!fileInput.files.length) return alert("Please select a CSV file first!");
+  
+  const file = fileInput.files[0];
+  const text = await file.text();
+  const lines = text.split("\n").filter(line => line.trim() !== "");
+  
+  // Assuming first line is header
+  const headers = lines[0].split(",").map(h => h.trim().toLowerCase());
+  
+  for(let i = 1; i < lines.length; i++){
+    const row = lines[i].split(",").map(cell => cell.trim());
+    const productData = {};
+    headers.forEach((h, idx) => {
+      if(h === "price" || h === "stock") productData[h] = Number(row[idx]) || 0;
+      else productData[h] = row[idx] || "";
+    });
+
+    // Check SKU duplicates
+    const snapshot = await getDocs(collection(db,"products"));
+    const exists = snapshot.docs.some(docSnap => docSnap.data().sku === productData.sku);
+    if(!exists){
+      await addDoc(collection(db,"products"), productData);
+    }
+  }
+
+  alert("Bulk import completed!");
+  displayProducts();
+});
 /* ---------------- POLICIES ---------------- */
 const policyForm = document.getElementById("policyForm");
 const policyTableBody = document.querySelector("#policyTable tbody");
