@@ -159,8 +159,8 @@ productForm.addEventListener("submit", function(e){
 
 displayProducts();
 </script>
-  
-<!-- ===== POLICIES ===== -->
+
+  <!-- ===== POLICIES ===== -->
 <section>
   <h2>Manage Policies (HTML Allowed)</h2>
 
@@ -190,6 +190,8 @@ displayProducts();
 
 <script>
 /* ===== POLICY MANAGEMENT ===== */
+
+// Initialize policies from localStorage or default values
 let policies = JSON.parse(localStorage.getItem("policies")) || {
   terms: "Terms of Service content here...",
   privacy: "Privacy Policy content here...",
@@ -202,56 +204,60 @@ const policySelect = document.getElementById("policySelect");
 const policyText = document.getElementById("policyText");
 const policyTableBody = document.querySelector("#policyTable tbody");
 
-// Display table
-function displayPolicies(){
+// Display all policies in the table
+function displayPolicies() {
   policyTableBody.innerHTML = "";
-  for (let key in policies){
+  for (let key in policies) {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${key.charAt(0).toUpperCase() + key.slice(1)}</td>
       <td>
-        <button class="edit" onclick="editPolicy('${key}')">Edit</button>
-        <button class="delete" onclick="deletePolicy('${key}')">Delete</button>
+        <button type="button" class="edit" onclick="editPolicy('${key}')">Edit</button>
+        <button type="button" class="delete" onclick="deletePolicy('${key}')">Delete</button>
       </td>`;
     policyTableBody.appendChild(tr);
   }
 }
 
-// Edit policy
-function editPolicy(key){
+// Edit a policy
+function editPolicy(key) {
   policySelect.value = key;
   policyText.value = policies[key];
 }
 
-// Delete policy
-function deletePolicy(key){
-  if(confirm(`Delete ${key} policy?`)){
+// Delete a policy
+function deletePolicy(key) {
+  if (confirm(`Are you sure you want to delete the "${key}" policy?`)) {
     delete policies[key];
     localStorage.setItem("policies", JSON.stringify(policies));
     displayPolicies();
     policyText.value = "";
     policySelect.value = "";
-    alert("Policy deleted.");
+    alert("Policy deleted successfully!");
   }
 }
 
 // Save / Update policy
-policyForm.addEventListener("submit", (e)=>{
+policyForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const key = policySelect.value;
-  if(!key) return alert("Select a policy first.");
+  if (!key) return alert("Please select a policy to save/update.");
   policies[key] = policyText.value;
   localStorage.setItem("policies", JSON.stringify(policies));
   displayPolicies();
   alert("Policy saved successfully!");
 });
 
-// Initial load
-displayPolicies();
-policySelect.addEventListener("change", ()=>{
+// Load policy content when changing selection
+policySelect.addEventListener("change", () => {
   const key = policySelect.value;
   policyText.value = policies[key] || "";
 });
+
+// Initial table load
+displayPolicies();
 </script>
+  
+
 </body>
 </html>
