@@ -1,1 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DK World Kenya - Admin Panel</title>
+<meta name="description" content="Admin panel to manage DK World Kenya products and blogs globally.">
+<meta name="author" content="David Ochieng">
+<meta name="robots" content="noindex, nofollow">
 
+<style>
+  body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:0; background:#f5f5f5; }
+  nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
+  nav a { color:white; text-decoration:none; font-weight:bold; }
+  nav a:hover, nav a.active { color:#25D366; }
+  
+  .container { max-width:900px; margin:auto; padding:20px; background:white; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.1); }
+  h1,h2 { text-align:center; margin-bottom:20px; color:#111827; }
+  
+  form { display:flex; flex-direction:column; gap:12px; margin-bottom:30px; }
+  input, select, textarea { padding:10px; border-radius:8px; border:1px solid #ccc; width:100%; font-size:1em; }
+  button { padding:12px; border:none; border-radius:8px; background:#25D366; color:white; font-weight:bold; cursor:pointer; transition:0.3s; }
+  button:hover { background:#1DA851; }
+  
+  table { width:100%; border-collapse:collapse; margin-top:20px; }
+  th, td { padding:10px; text-align:left; border-bottom:1px solid #ddd; word-break:break-word; }
+  th { background:#111827; color:white; }
+  td button { padding:5px 10px; margin-right:5px; font-size:0.9em; }
+  td button.edit { background:#1DA851; color:white; border:none; border-radius:5px; cursor:pointer; }
+  td button.delete { background:#FF4B4B; color:white; border:none; border-radius:5px; cursor:pointer; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="contact.html">Contact</a>
+  <a href="admin.html" class="active">Admin</a>
+</nav>
+
+<div class="container">
+  <h1>Admin Panel - DK World Kenya</h1>
+
+  <!-- ===== PRODUCTS ===== -->
+  <h2>Manage Products</h2>
+  <form id="productForm">
+    <input type="hidden" id="editProductId">
+    <input type="text" id="name" placeholder="Product Name (HTML allowed)" required>
+    <textarea id="description" placeholder="Product Description (HTML allowed)" rows="3" required></textarea>
+    <select id="category" required>
+      <option value="">Select Category</option>
+      <option value="e-commerce">E-commerce Websites</option>
+      <option value="digital">Digital Products</option>
+      <option value="local">Local HTML Sites</option>
+    </select>
+    <input type="number" id="price" placeholder="Price (KES)" required>
+    <input type="number" id="stock" placeholder="Stock Quantity" required>
+    <input type="text" id="sku" placeholder="SKU (Unique)" required>
+    <input type="url" id="image" placeholder="Image URL" required>
+    <input type="url" id="video" placeholder="Video URL (optional)">
+    <button type="submit">Add / Update Product</button>
+  </form>
+
+  <table id="productTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>SKU</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- ===== BLOG POSTS ===== -->
+  <h2>Manage Blog Posts</h2>
+  <form id="blogForm">
+    <input type="hidden" id="editBlogId">
+    <input type="text" id="blogTitle" placeholder="Blog Title" required>
+    <textarea id="blogContent" placeholder="Blog Content" rows="5" required></textarea>
+    <input type="text" id="blogCategory" placeholder="Category (optional)">
+    <input type="text" id="blogAuthor" placeholder="Author Name" required>
+    <input type="date" id="blogDate" required>
+    <button type="submit">Add / Update Blog Post</button>
+  </form>
+
+  <table id="blogTable">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Author</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<!-- ===== FIREBASE ===== -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "XXXX",
+  appId: "XXXX"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* ===== PRODUCTS ===== */
+const productForm = document.getElementById("productForm");
+const productTableBody = document.querySelector("#productTable tbody");
+
+async function displayProducts() {
+  productTableBody.innerHTML = "";
+  const snapshot = await getDocs(collection(db, "products"));
+  snapshot.forEach(docSnap => {
+    const p = docSnap.data();
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${p.name}</td>
+      <td>${p.category}</td>
+      <td>Ksh ${p.price}</td>
+      <td>${p.stock}</td>
+      <td>${p.sku}</td>
+      <td>
+        <button class="edit" onclick="editProduct('${docSnap.id}')">Edit</button>
+        <button class="delete" onclick="deleteProduct('${docSnap.id}')">Delete</button>
+      </td>
+    `;
+    productTableBody.appendChild(tr);
+  });
+}
+
+window.editProduct = async (id) => {
+  const docRef = doc(db, "products", id);
+  const docSnap = await getDocs(collection(db, "products"));
+  const p = (await docRef.get()).data ? (await docRef.get()).data() : {};
+  
+  document.getElementById("name").value = p.name;
+  document.getElementById("description").value = p.description;
+  document.getElementById("category").value = p.category;
+  document.getElementById("price").value = p.price;
+  document.getElementById("stock").value = p.stock;
+  document.getElementById("sku").value = p.sku;
+  document.getElementById("image").value = p.image;
+  document.getElementById("video").value = p.video;
+  document.getElementById("editProductId").value = id;
+}
+
+window.deleteProduct = async (id) => {
+  if(confirm("Are you sure you want to delete this product?")){
+    await deleteDoc(doc(db, "products", id));
+    displayProducts();
+    alert("Product deleted globally.");
+  }
+}
+
+productForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const id = document.getElementById("editProductId").value;
+  const data = {
+    name: document.getElementById("name").value,
+    description: document.getElementById("description").value,
+    category: document.getElementById("category").value,
+    price: parseFloat(document.getElementById("price").value),
+    stock: parseInt(document.getElementById("stock").value),
+    sku: document.getElementById("sku").value,
+    image: document.getElementById("image").value,
+    video: document.getElementById("video").value
+  };
+
+  if(id){
+    await updateDoc(doc(db, "products", id), data);
+    alert("Product updated globally.");
+  } else {
+    await addDoc(collection(db, "products"), data);
+    alert("Product added globally.");
+  }
+
+  productForm.reset();
+  document.getElementById("editProductId").value = "";
+  displayProducts();
+});
+
+/* ===== BLOG POSTS ===== */
+const blogForm = document.getElementById("blogForm");
+const blogTableBody = document.querySelector("#blogTable tbody");
+
+async function displayBlogs() {
+  blogTableBody.innerHTML = "";
+  const snapshot = await getDocs(collection(db, "blogs"));
+  snapshot.forEach(docSnap => {
+    const b = docSnap.data();
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${b.title}</td>
+      <td>${b.category || ""}</td>
+      <td>${b.author}</td>
+      <td>${b.date}</td>
+      <td>
+        <button class="edit" onclick="editBlog('${docSnap.id}')">Edit</button>
+        <button class="delete" onclick="deleteBlog('${docSnap.id}')">Delete</button>
+      </td>
+    `;
+    blogTableBody.appendChild(tr);
+  });
+}
+
+window.editBlog = async (id) => {
+  const docRef = doc(db, "blogs", id);
+  const docSnap = await getDocs(collection(db, "blogs"));
+  const b = (await docRef.get()).data ? (await docRef.get()).data() : {};
+
+  document.getElementById("blogTitle").value = b.title;
+  document.getElementById("blogContent").value = b.content;
+  document.getElementById("blogCategory").value = b.category;
+  document.getElementById("blogAuthor").value = b.author;
+  document.getElementById("blogDate").value = b.date;
+  document.getElementById("editBlogId").value = id;
+}
+
+window.deleteBlog = async (id) => {
+  if(confirm("Are you sure you want to delete this blog post?")){
+    await deleteDoc(doc(db, "blogs", id));
+    displayBlogs();
+    alert("Blog deleted globally.");
+  }
+}
+
+blogForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const id = document.getElementById("editBlogId").value;
+  const data = {
+    title: document.getElementById("blogTitle").value,
+    content: document.getElementById("blogContent").value,
+    category: document.getElementById("blogCategory").value,
+    author: document.getElementById("blogAuthor").value,
+    date: document.getElementById("blogDate").value
+  };
+
+  if(id){
+    await updateDoc(doc(db, "blogs", id), data);
+    alert("Blog updated globally.");
+  } else {
+    await addDoc(collection(db, "blogs"), data);
+    alert("Blog added globally.");
+  }
+
+  blogForm.reset();
+  document.getElementById("editBlogId").value = "";
+  displayBlogs();
+});
+
+/* ===== INITIAL LOAD ===== */
+displayProducts();
+displayBlogs();
+</script>
+
+</body>
+</html>
