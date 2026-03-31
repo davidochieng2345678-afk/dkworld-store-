@@ -159,6 +159,234 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ---------- Firebase Config ----------
+const firebaseConfig = {
+  apiKey: "AIzaSyABCVM1b9FEdXlJWf1SoL7dwQL1EXPXwgA",
+  authDomain: "dkworld-kenya.firebaseapp.com",
+  projectId: "dkworld-kenya",
+  storageBucket: "dkworld-kenya.firebasestorage.app",
+  messagingSenderId: "263537160242",
+  appId: "1:263537160242:web:a07511fae26faabf584c2b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// ---------- Full Products List ----------
+const products = [
+  {
+    "name": "E-Commerce Starter Kit",
+    "description": "Complete dynamic e-commerce website tailored for Kenyan businesses. Fully SEO optimized, mobile-friendly, with WhatsApp checkout and easy-to-use admin panel.",
+    "category": "e-commerce",
+    "price": 25000,
+    "stock": 10,
+    "sku": "EC001",
+    "image": "https://via.placeholder.com/300x180?text=E-Commerce+Kit",
+    "video": ""
+  },
+  {
+    "name": "Advanced E-Commerce Pack",
+    "description": "High-end e-commerce store with custom design, multi-language support, SEO tools, and live analytics dashboard for Kenyan businesses.",
+    "category": "e-commerce",
+    "price": 45000,
+    "stock": 5,
+    "sku": "EC002",
+    "image": "https://via.placeholder.com/300x180?text=Advanced+E-Commerce",
+    "video": ""
+  },
+  {
+    "name": "Premium E-Commerce Store",
+    "description": "Top-tier e-commerce solution with full automation, live inventory sync, custom checkout flow, and advanced SEO optimization.",
+    "category": "e-commerce",
+    "price": 65000,
+    "stock": 3,
+    "sku": "EC003",
+    "image": "https://via.placeholder.com/300x180?text=Premium+E-Commerce",
+    "video": ""
+  },
+  {
+    "name": "Local Business HTML Site",
+    "description": "Simple yet professional HTML website for local businesses. SEO-friendly, mobile-responsive, easy to deploy and customize.",
+    "category": "local",
+    "price": 5000,
+    "stock": 20,
+    "sku": "LB001",
+    "image": "https://via.placeholder.com/300x180?text=Local+HTML+Site",
+    "video": ""
+  },
+  {
+    "name": "Corporate HTML Template",
+    "description": "Static HTML template for corporate websites. Clean design, fast loading, SEO-ready, perfect for small to medium businesses.",
+    "category": "local",
+    "price": 7000,
+    "stock": 15,
+    "sku": "LB002",
+    "image": "https://via.placeholder.com/300x180?text=Corporate+HTML",
+    "video": ""
+  },
+  {
+    "name": "Portfolio HTML Site",
+    "description": "Showcase your work online with this responsive portfolio HTML site. SEO optimized, minimal design, and fast-loading pages.",
+    "category": "local",
+    "price": 4500,
+    "stock": 25,
+    "sku": "LB003",
+    "image": "https://via.placeholder.com/300x180?text=Portfolio+HTML",
+    "video": ""
+  },
+  {
+    "name": "Digital Marketing Guide",
+    "description": "Comprehensive guide to promote your products online. Covers SEO, social media, email marketing, and WhatsApp marketing for Kenyan businesses.",
+    "category": "digital",
+    "price": 1200,
+    "stock": 50,
+    "sku": "DM001",
+    "image": "https://via.placeholder.com/300x180?text=Digital+Marketing+Guide",
+    "video": ""
+  },
+  {
+    "name": "E-Commerce SEO Toolkit",
+    "description": "Digital toolkit with templates, checklists, and strategies to improve SEO and increase sales on your e-commerce store.",
+    "category": "digital",
+    "price": 1500,
+    "stock": 30,
+    "sku": "DM002",
+    "image": "https://via.placeholder.com/300x180?text=SEO+Toolkit",
+    "video": ""
+  },
+  {
+    "name": "WhatsApp Checkout Plugin",
+    "description": "Ready-to-use plugin to integrate WhatsApp checkout on your store. Easy installation, increases conversion, ideal for Kenyan e-commerce businesses.",
+    "category": "digital",
+    "price": 1000,
+    "stock": 40,
+    "sku": "DM003",
+    "image": "https://via.placeholder.com/300x180?text=WhatsApp+Checkout",
+    "video": ""
+  },
+  {
+    "name": "Online Store Starter Kit (Digital Copy)",
+    "description": "Copy of a ready-made DK World Kenya e-commerce store. Fully dynamic, SEO optimized, mobile-ready, and fast setup within 24h.",
+    "category": "digital",
+    "price": 35000,
+    "stock": 5,
+    "sku": "DM004",
+    "image": "https://via.placeholder.com/300x180?text=Store+Copy",
+    "video": ""
+  },
+  {
+    "name": "Minimalist E-Commerce Template",
+    "description": "Lightweight, fast-loading e-commerce HTML template for startups and small businesses. SEO-ready and mobile-friendly.",
+    "category": "e-commerce",
+    "price": 15000,
+    "stock": 8,
+    "sku": "EC004",
+    "image": "https://via.placeholder.com/300x180?text=Minimalist+E-Commerce",
+    "video": ""
+  },
+  {
+    "name": "Bakery Local HTML Site",
+    "description": "Custom HTML template for bakeries and food businesses. Fast, responsive, and SEO-friendly for local searches.",
+    "category": "local",
+    "price": 6000,
+    "stock": 12,
+    "sku": "LB004",
+    "image": "https://via.placeholder.com/300x180?text=Bakery+HTML",
+    "video": ""
+  },
+  {
+    "name": "Fashion Store HTML Template",
+    "description": "Static HTML site for fashion businesses. Mobile-ready, clean design, SEO-friendly.",
+    "category": "local",
+    "price": 5500,
+    "stock": 10,
+    "sku": "LB005",
+    "image": "https://via.placeholder.com/300x180?text=Fashion+HTML",
+    "video": ""
+  },
+  {
+    "name": "Social Media Marketing Guide",
+    "description": "Digital guide on social media strategies to boost online sales, brand awareness, and customer engagement.",
+    "category": "digital",
+    "price": 1300,
+    "stock": 30,
+    "sku": "DM005",
+    "image": "https://via.placeholder.com/300x180?text=Social+Media+Guide",
+    "video": ""
+  },
+  {
+    "name": "Email Marketing Templates",
+    "description": "Set of email templates designed to convert leads into customers. Easy-to-use for Kenyan online businesses.",
+    "category": "digital",
+    "price": 1200,
+    "stock": 25,
+    "sku": "DM006",
+    "image": "https://via.placeholder.com/300x180?text=Email+Templates",
+    "video": ""
+  },
+  {
+    "name": "Mobile-Friendly E-Commerce Template",
+    "description": "Fully responsive e-commerce HTML template for all devices. Optimized for speed and SEO.",
+    "category": "e-commerce",
+    "price": 20000,
+    "stock": 6,
+    "sku": "EC005",
+    "image": "https://via.placeholder.com/300x180?text=Mobile+E-Commerce",
+    "video": ""
+  },
+  {
+    "name": "Photography Portfolio HTML Site",
+    "description": "Showcase your photography work with this responsive HTML template. SEO-friendly and fast-loading.",
+    "category": "local",
+    "price": 5000,
+    "stock": 15,
+    "sku": "LB006",
+    "image": "https://via.placeholder.com/300x180?text=Photography+HTML",
+    "video": ""
+  },
+  {
+    "name": "Startup E-Commerce Kit",
+    "description": "All-in-one starter e-commerce store for Kenyan entrepreneurs. Fully dynamic, SEO optimized, and ready to launch within 24h.",
+    "category": "e-commerce",
+    "price": 30000,
+    "stock": 5,
+    "sku": "EC006",
+    "image": "https://via.placeholder.com/300x180?text=Startup+E-Commerce",
+    "video": ""
+  },
+  {
+    "name": "Digital Product Pack",
+    "description": "Collection of ready-to-sell digital products including guides, templates, and tools for online businesses.",
+    "category": "digital",
+    "price": 5000,
+    "stock": 10,
+    "sku": "DM007",
+    "image": "https://via.placeholder.com/300x180?text=Digital+Pack",
+    "video": ""
+  }
+];
+
+// ---------- Import Function ----------
+async function importProducts() {
+  for (let p of products) {
+    try {
+      await addDoc(collection(db, "products"), p);
+      console.log(`Added: ${p.name}`);
+    } catch (err) {
+      console.error("Error adding product:", p.name, err);
+    }
+  }
+  alert("All products imported successfully!");
+}
+
+// Run import (once)
+importProducts();
+</script>
+
 /* ---------------- PRODUCTS ---------------- */
 const productForm = document.getElementById("productForm");
 const productTableBody = document.querySelector("#productTable tbody");
