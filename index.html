@@ -11,7 +11,7 @@
 <link rel="canonical" href="https://dkworldkenya.online/">
 <meta name="robots" content="index, follow">
 
-<!-- Open Graph for social -->
+<!-- Open Graph -->
 <meta property="og:title" content="DK World Kenya - E-commerce & Digital Products">
 <meta property="og:description" content="Professional e-commerce websites, digital products, and local HTML websites in Kenya.">
 <meta property="og:image" content="https://dkworldkenya.online/assets/og-image.jpg">
@@ -50,8 +50,11 @@ header p{color:#555;}
 .product-card h3{margin:5px 0;font-size:1.2em;color:#111827;}
 .product-card p{font-size:0.9em;color:#555;flex-grow:1;}
 .product-card .price{font-weight:bold;margin:10px 0;color:#111827;}
-.product-card a{display:block;text-align:center;background:#25D366;color:white;padding:10px;border-radius:8px;text-decoration:none;font-weight:bold;transition:0.3s;margin-top:5px;}
+.product-card a, .product-card button{display:block;text-align:center;margin-top:5px;}
+.product-card a{background:#25D366;color:white;padding:10px;border-radius:8px;text-decoration:none;font-weight:bold;transition:0.3s;}
 .product-card a:hover{background:#1DA851;}
+.product-card button{background:#25D366;color:white;padding:10px;border-radius:8px;font-weight:bold;cursor:pointer;transition:0.3s;}
+.product-card button:hover{background:#1DA851;}
 .review-slider{display:flex;overflow-x:auto;gap:20px;padding:20px 0;scrollbar-width:none;-ms-overflow-style:none;}
 .review-slider::-webkit-scrollbar{display:none;}
 .review-card{background:white;padding:20px;border-radius:15px;min-width:250px;box-shadow:0 6px 15px rgba(0,0,0,0.1);}
@@ -62,7 +65,7 @@ footer a{color:#25D366;text-decoration:none;}
 @media(max-width:600px){.filters{flex-direction:column;}}
 </style>
 
-<!-- Structured Data for Store -->
+<!-- Structured Data -->
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
@@ -78,7 +81,7 @@ footer a{color:#25D366;text-decoration:none;}
 
 <!-- Navigation -->
 <nav>
-  <a href="index.html">Home</a>
+  <a href="index.html" class="active">Home</a>
   <a href="about.html">About Us</a>
   <a href="contact.html">Contact</a>
   <a href="admin.html">Admin</a>
@@ -136,44 +139,6 @@ footer a{color:#25D366;text-decoration:none;}
   <div id="blogsContainer"></div>
 </section>
 
-  <!-- ===== Example Product Card ===== -->
-<div class="product-card">
-  <h3 class="product-name">E-commerce Store Package</h3>
-  <p class="product-price">KES 15,000</p>
-  <button class="add-to-cart-btn"
-          data-name="E-commerce Store Package"
-          data-price="15000"
-          data-category="e-commerce"
-          data-sku="ECOM001">
-    Add to Cart
-  </button>
-</div>
-
-<div class="product-card">
-  <h3 class="product-name">Local HTML Website</h3>
-  <p class="product-price">KES 5,000</p>
-  <button class="add-to-cart-btn"
-          data-name="Local HTML Website"
-          data-price="5000"
-          data-category="local"
-          data-sku="LOCAL001">
-    Add to Cart
-  </button>
-</div>
-
-<div class="product-card">
-  <h3 class="product-name">Digital Product - Template</h3>
-  <p class="product-price">KES 2,000</p>
-  <button class="add-to-cart-btn"
-          data-name="Digital Product - Template"
-          data-price="2000"
-          data-category="digital"
-          data-sku="DIGI001">
-    Add to Cart
-  </button>
-</div>
-
-
 <!-- Footer -->
 <footer>
   <div class="footer-container">
@@ -206,7 +171,7 @@ footer a{color:#25D366;text-decoration:none;}
 <!-- WhatsApp CTA -->
 <a href="https://wa.me/254710346789" target="_blank" style="position:fixed;bottom:20px;left:20px;background:#25D366;color:white;padding:15px;border-radius:50%;font-size:20px;text-decoration:none;box-shadow:0 6px 15px rgba(0,0,0,0.2);z-index:1000;">💬</a>
 
-<!-- ================== Firestore & Dynamic Scripts ================== -->
+<!-- Firestore & Dynamic Scripts -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -232,7 +197,7 @@ const searchInput = document.getElementById("searchInput");
 const reviewsContainer = document.getElementById("reviewsContainer");
 const blogsContainer = document.getElementById("blogsContainer");
 
-// Reviews (static example)
+// Reviews
 const reviewsData=[
   {author:"Alice M.",date:"2026-03-30",body:"DK World Kenya created my online store quickly and professionally. Sales increased within days!"},
   {author:"Peter K.",date:"2026-03-28",body:"Amazing service and quick response via WhatsApp. Highly recommend for digital products."},
@@ -245,7 +210,7 @@ reviewsData.forEach(r=>{
   reviewsContainer.appendChild(div);
 });
 
-// Create product card
+// Create product card with Add to Cart
 function createCard(prod){
   const card=document.createElement("div");
   card.className="product-card";
@@ -259,21 +224,31 @@ function createCard(prod){
     <div class="price">Ksh ${prod.price} | Stock: ${prod.stock}</div>
     <a href="product.html?sku=${encodeURIComponent(prod.sku)}">View Details</a>
     <a href="https://wa.me/254710346789?text=I%20want%20to%20buy%20${encodeURIComponent(prod.name)}%20SKU:${encodeURIComponent(prod.sku)}" target="_blank">Buy on WhatsApp</a>
+    <button class="add-to-cart-btn">Add to Cart</button>
   </div>`;
+
+  const addBtn = card.querySelector(".add-to-cart-btn");
+  addBtn.addEventListener("click", () => {
+    let cart = JSON.parse(localStorage.getItem("dkCart")) || [];
+    const existing = cart.find(item => item.sku === prod.sku);
+    if(existing){ existing.quantity += 1; } 
+    else { cart.push({ name: prod.name, price: prod.price, category: prod.category, sku: prod.sku, quantity: 1 }); }
+    localStorage.setItem("dkCart", JSON.stringify(cart));
+    alert(`${prod.name} added to cart!`);
+  });
+
   return card;
 }
 
-// Fetch products from Firestore
+// Fetch products
 let products=[];
 async function fetchProducts(){
   const productsCol = collection(db, "products");
   const snapshot = await getDocs(productsCol);
   products = snapshot.docs.map(doc=>doc.data());
 
-  // Display products
   displayProducts(products);
 
-  // Featured
   featuredSlider.innerHTML="";
   products.slice(0,5).forEach(p=>featuredSlider.appendChild(createCard(p)));
 
@@ -312,7 +287,6 @@ searchInput.addEventListener("input",function(){
 // Active nav
 document.querySelectorAll("nav a").forEach(link=>{if(link.href===window.location.href) link.classList.add("active");});
 
-// Initial fetch
 fetchProducts();
 </script>
 
