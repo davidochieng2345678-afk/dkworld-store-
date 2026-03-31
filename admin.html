@@ -159,6 +159,99 @@ productForm.addEventListener("submit", function(e){
 
 displayProducts();
 </script>
+  
+<!-- ===== POLICIES ===== -->
+<section>
+  <h2>Manage Policies (HTML Allowed)</h2>
 
+  <form id="policyForm">
+    <select id="policySelect" style="padding:10px; margin-bottom:10px;" required>
+      <option value="">-- Select Policy --</option>
+      <option value="terms">Terms of Service</option>
+      <option value="privacy">Privacy Policy</option>
+      <option value="refund">Refund Policy</option>
+      <option value="shipping">Shipping Policy</option>
+    </select>
+
+    <textarea id="policyText" rows="8" style="width:100%; padding:10px; border-radius:8px;" placeholder="Enter policy content here (HTML allowed)"></textarea>
+    <button type="submit" style="margin-top:10px;">Save / Update Policy</button>
+  </form>
+
+  <table id="policyTable">
+    <thead>
+      <tr>
+        <th>Policy Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<script>
+/* ===== POLICY MANAGEMENT ===== */
+let policies = JSON.parse(localStorage.getItem("policies")) || {
+  terms: "Terms of Service content here...",
+  privacy: "Privacy Policy content here...",
+  refund: "Refund Policy content here...",
+  shipping: "Shipping Policy content here..."
+};
+
+const policyForm = document.getElementById("policyForm");
+const policySelect = document.getElementById("policySelect");
+const policyText = document.getElementById("policyText");
+const policyTableBody = document.querySelector("#policyTable tbody");
+
+// Display table
+function displayPolicies(){
+  policyTableBody.innerHTML = "";
+  for (let key in policies){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${key.charAt(0).toUpperCase() + key.slice(1)}</td>
+      <td>
+        <button class="edit" onclick="editPolicy('${key}')">Edit</button>
+        <button class="delete" onclick="deletePolicy('${key}')">Delete</button>
+      </td>`;
+    policyTableBody.appendChild(tr);
+  }
+}
+
+// Edit policy
+function editPolicy(key){
+  policySelect.value = key;
+  policyText.value = policies[key];
+}
+
+// Delete policy
+function deletePolicy(key){
+  if(confirm(`Delete ${key} policy?`)){
+    delete policies[key];
+    localStorage.setItem("policies", JSON.stringify(policies));
+    displayPolicies();
+    policyText.value = "";
+    policySelect.value = "";
+    alert("Policy deleted.");
+  }
+}
+
+// Save / Update policy
+policyForm.addEventListener("submit", (e)=>{
+  e.preventDefault();
+  const key = policySelect.value;
+  if(!key) return alert("Select a policy first.");
+  policies[key] = policyText.value;
+  localStorage.setItem("policies", JSON.stringify(policies));
+  displayPolicies();
+  alert("Policy saved successfully!");
+});
+
+// Initial load
+displayPolicies();
+policySelect.addEventListener("change", ()=>{
+  const key = policySelect.value;
+  policyText.value = policies[key] || "";
+});
+</script>
 </body>
 </html>
