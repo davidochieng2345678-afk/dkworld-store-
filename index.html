@@ -246,7 +246,67 @@ body {
 }
 </script>
 
-  
+  <!-- ===== HOMEPAGE POLICIES & BLOG POSTS ===== -->
+<section id="homepageContent" style="max-width:1000px; margin:40px auto; padding:20px;">
+
+  <!-- POLICIES -->
+  <div id="homepagePolicies" style="padding:20px; background:#f9f9f9; border-radius:12px; margin-bottom:40px;">
+    <h2 style="margin-bottom:20px;">Our Policies</h2>
+    <div id="policiesContainer"></div>
+  </div>
+
+  <!-- BLOG POSTS -->
+  <div id="homepageBlogs" style="padding:20px; background:#fff; border-radius:12px;">
+    <h2 style="margin-bottom:20px;">Latest Blog Posts</h2>
+    <div id="blogsContainer"></div>
+  </div>
+
+</section>
+
+<script>
+  /* ===== LOAD POLICIES ===== */
+  const policies = JSON.parse(localStorage.getItem("policies")) || {
+    terms: "<p>Terms of Service content here...</p>",
+    privacy: "<p>Privacy Policy content here...</p>",
+    refund: "<p>Refund Policy content here...</p>",
+    shipping: "<p>Shipping Policy content here...</p>"
+  };
+
+  const policiesContainer = document.getElementById("policiesContainer");
+  policiesContainer.innerHTML = ""; // Clear container
+  for (let key in policies) {
+    const div = document.createElement("div");
+    div.style.marginBottom = "15px";
+    div.innerHTML = `<h3>${key.charAt(0).toUpperCase() + key.slice(1)}</h3>${policies[key]}`;
+    policiesContainer.appendChild(div);
+  }
+
+  /* ===== LOAD BLOG POSTS ===== */
+  const blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+  const blogsContainer = document.getElementById("blogsContainer");
+  blogsContainer.innerHTML = ""; // Clear container
+
+  if (blogs.length === 0) {
+    blogsContainer.innerHTML = "<p>No blog posts yet.</p>";
+  } else {
+    blogs.forEach(blog => {
+      const div = document.createElement("div");
+      div.style.marginBottom = "20px";
+      div.style.borderBottom = "1px solid #ddd";
+      div.style.paddingBottom = "15px";
+      div.innerHTML = `
+        <h3 style="margin-bottom:5px;">${blog.title}</h3>
+        <p style="font-size:0.9em; color:#555;">
+          <strong>Category:</strong> ${blog.category || "General"} | 
+          <strong>Author:</strong> ${blog.author} | 
+          <strong>Date:</strong> ${blog.date}
+        </p>
+        <div>${blog.content}</div>
+      `;
+      blogsContainer.appendChild(div);
+    });
+  }
+</script>
   
 <!-- Footer -->
 <footer>
