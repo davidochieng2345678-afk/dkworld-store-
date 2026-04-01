@@ -318,34 +318,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-  // Get existing products once (OPTIMIZED 🚀)
-  const snapshot = await getDocs(collection(db, "products"));
-  const existingSKUs = snapshot.docs.map(d => d.data().sku);
-
-  for (let i = 1; i < rows.length; i++) {
-    const values = rows[i].split(",").map(v => v.trim());
-    const product = {};
-
-    headers.forEach((h, idx) => {
-      if (h === "price" || h === "stock") {
-        product[h] = Number(values[idx]) || 0;
-      } else {
-        product[h] = values[idx] || "";
-      }
-    });
-
-    // Skip duplicates
-    if (!existingSKUs.includes(product.sku)) {
-      await addDoc(collection(db, "products"), product);
-    }
-  }
-
-  alert("CSV uploaded successfully!");
-  selectedFile = null;
-  csvFileInput.value = "";
-  displayProducts();
-});
-
+  
 /* ---------------- POLICIES ---------------- */
 const policyForm = document.getElementById("policyForm");
 const policyTableBody = document.querySelector("#policyTable tbody");
