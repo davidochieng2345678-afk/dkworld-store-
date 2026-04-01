@@ -394,6 +394,104 @@ blogsCSVInput.addEventListener("change", async e => {
   displayBlogs();
 });
 </script>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ===== Firebase Config =====
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// ===== Products JSON =====
+const products = [
+  {
+    "name": "Basic E-commerce Website 1",
+    "description": "<p>Responsive HTML e-commerce template for small businesses. Fully SEO optimized and mobile-friendly.</p>",
+    "category": "e-commerce",
+    "price": 12000,
+    "stock": 50,
+    "sku": "ECOM-001",
+    "image": "https://via.placeholder.com/150?text=ECOM-001",
+    "video": "",
+    "metaTitle": "Basic E-commerce Website Template | DK World Kenya",
+    "metaDescription": "Responsive HTML e-commerce template for small businesses. SEO optimized, mobile-friendly, and customizable."
+  },
+  {
+    "name": "Basic E-commerce Website 2",
+    "description": "<p>HTML e-commerce template for small business owners. Fast-loading, SEO-friendly, and responsive across devices.</p>",
+    "category": "e-commerce",
+    "price": 12500,
+    "stock": 48,
+    "sku": "ECOM-002",
+    "image": "https://via.placeholder.com/150?text=ECOM-002",
+    "video": "",
+    "metaTitle": "Basic E-commerce Website 2 Template | DK World Kenya",
+    "metaDescription": "Fast-loading HTML template for small business e-commerce. SEO optimized and mobile-friendly."
+  },
+  {
+    "name": "Advanced E-commerce Website 3",
+    "description": "<p>Full-featured HTML e-commerce template with shopping cart. Optimized for SEO and mobile devices.</p>",
+    "category": "e-commerce",
+    "price": 20000,
+    "stock": 30,
+    "sku": "ECOM-003",
+    "image": "https://via.placeholder.com/150?text=ECOM-003",
+    "video": "",
+    "metaTitle": "Advanced E-commerce Website Template | DK World Kenya",
+    "metaDescription": "Full-featured HTML e-commerce template with shopping cart. SEO optimized and mobile responsive."
+  },
+  {
+    "name": "Advanced E-commerce Website 4",
+    "description": "<p>Professional e-commerce HTML template with advanced shopping features. Fully responsive and SEO ready.</p>",
+    "category": "e-commerce",
+    "price": 21000,
+    "stock": 28,
+    "sku": "ECOM-004",
+    "image": "https://via.placeholder.com/150?text=ECOM-004",
+    "video": "",
+    "metaTitle": "Advanced E-commerce Website 4 Template | DK World Kenya",
+    "metaDescription": "Professional HTML e-commerce template. Fully responsive and SEO optimized for growing stores."
+  },
+  {
+    "name": "Premium E-commerce Website 5",
+    "description": "<p>High-end HTML e-commerce template for larger stores. Optimized for speed, SEO, and user experience.</p>",
+    "category": "e-commerce",
+    "price": 25000,
+    "stock": 25,
+    "sku": "ECOM-005",
+    "image": "https://via.placeholder.com/150?text=ECOM-005",
+    "video": "",
+    "metaTitle": "Premium E-commerce Website Template | DK World Kenya",
+    "metaDescription": "High-end e-commerce HTML template for large stores. SEO optimized, mobile-friendly, and feature-rich."
+  }
+];
+
+// ===== Upload Products Function =====
+(async function() {
+  const snapshot = await getDocs(collection(db, "products"));
+  const existingSKUs = snapshot.docs.map(d => d.data().sku.toUpperCase());
+
+  for (const p of products) {
+    if (!existingSKUs.includes(p.sku.toUpperCase())) {
+      await addDoc(collection(db, "products"), p);
+      console.log("Added:", p.sku);
+    } else {
+      console.log("Skipped duplicate:", p.sku);
+    }
+  }
+
+  alert("Products uploaded successfully!");
+})();
+</script>
 
 </body>
 </html>
