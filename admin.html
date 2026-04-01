@@ -362,4 +362,38 @@ window.editBlog=async id=>{
   document.getElementById("blogContent").value=b.content;
   document.getElementById("blogCategory").value=b.category||"";
   document.getElementById("blogAuthor").value=b.author;
-  document
+  document.getElementById("blogDate").value = b.date;
+  document.getElementById("editBlogId").value = id;
+};
+window.deleteBlog = async id => {
+  if(confirm("Delete this blog post?")) {
+    await deleteDoc(doc(db, "blogs", id));
+    displayBlogs();
+  }
+};
+
+/* CSV UPLOAD BLOGS */
+const blogsCSVInput = document.getElementById("blogsCSVInput");
+document.getElementById("importBlogsCSVBtn").addEventListener("click", () => blogsCSVInput.click());
+blogsCSVInput.addEventListener("change", async e => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const rows = parseCSV(await file.text());
+  for(const r of rows){
+    if(r.title && r.content){
+      await addDoc(collection(db, "blogs"), {
+        title: r.title,
+        content: r.content,
+        category: r.category || "",
+        author: r.author || "",
+        date: r.date || new Date().toISOString().split("T")[0]
+      });
+    }
+  }
+  alert("Blogs CSV uploaded!");
+  displayBlogs();
+});
+</script>
+
+</body>
+</html>
