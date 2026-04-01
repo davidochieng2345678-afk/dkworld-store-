@@ -60,10 +60,9 @@ h2 { margin-top:40px; }
   <section id="productsSection">
     <h2>Manage Products</h2>
 
-    <button id="importProductsBtn">Import Default Products</button>
-    <button id="importCSVBtn">Import Products from CSV</button>
-    <input type="file" id="csvFileInput" accept=".csv" style="display:none;">
-
+    <button id="importCSVBtn">Select CSV File</button>
+<input type="file" id="csvFileInput" accept=".csv" style="display:none;">
+<button id="sendCSVBtn">Upload CSV</button>
     <form id="productForm">
       <input type="hidden" id="editProductId">
       <input type="text" id="productName" placeholder="Product Name (HTML allowed)" required>
