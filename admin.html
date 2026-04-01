@@ -255,36 +255,67 @@ document.getElementById("importProductsBtn").addEventListener("click", async ()=
   displayProducts();
 });
 
+document.addEventListener("DOMContentLoaded", () => {
 
+  const csvFileInput = document.getElementById("csvFileInput");
+  const importCSVBtn = document.getElementById("importCSVBtn");
+  const sendCSVBtn = document.getElementById("sendCSVBtn");
 
-/* ===== CSV IMPORT WITH BUTTON (FIXED) ===== */
-const csvFileInput = document.getElementById("csvFileInput");
-const importCSVBtn = document.getElementById("importCSVBtn");
-const sendCSVBtn = document.getElementById("sendCSVBtn");
+  let selectedFile = null;
 
-let selectedFile = null;
+  // ✅ SELECT FILE
+  importCSVBtn.addEventListener("click", () => {
+    csvFileInput.click();
+  });
 
-// Step 1: Select file
-importCSVBtn.addEventListener("click", () => {
-  csvFileInput.click();
+  csvFileInput.addEventListener("change", (e) => {
+    selectedFile = e.target.files[0];
+
+    if (selectedFile) {
+      alert("Selected: " + selectedFile.name);
+    }
+  });
+
+  // ✅ UPLOAD FILE
+  sendCSVBtn.addEventListener("click", async () => {
+    if (!selectedFile) {
+      alert("Please select a CSV file first!");
+      return;
+    }
+
+    const text = await selectedFile.text();
+    const rows = text.split("\n").filter(r => r.trim() !== "");
+    const headers = rows[0].split(",").map(h => h.trim().toLowerCase());
+
+    const snapshot = await getDocs(collection(db, "products"));
+    const existingSKUs = snapshot.docs.map(d => d.data().sku);
+
+    for (let i = 1; i < rows.length; i++) {
+      const values = rows[i].split(",").map(v => v.trim());
+      const product = {};
+
+      headers.forEach((h, idx) => {
+        if (h === "price" || h === "stock") {
+          product[h] = Number(values[idx]) || 0;
+        } else {
+          product[h] = values[idx] || "";
+        }
+      });
+
+      if (!existingSKUs.includes(product.sku)) {
+        await addDoc(collection(db, "products"), product);
+      }
+    }
+
+    alert("CSV uploaded successfully!");
+    selectedFile = null;
+    csvFileInput.value = "";
+    displayProducts();
+  });
+
 });
 
-csvFileInput.addEventListener("change", (e) => {
-  selectedFile = e.target.files[0];
-  if (selectedFile) {
-    alert("CSV file selected: " + selectedFile.name);
-  }
-});
 
-// Step 2: Upload file
-sendCSVBtn.addEventListener("click", async () => {
-  if (!selectedFile) {
-    return alert("Please select a CSV file first!");
-  }
-
-  const text = await selectedFile.text();
-  const rows = text.split("\n").filter(r => r.trim() !== "");
-  const headers = rows[0].split(",").map(h => h.trim().toLowerCase());
 
   // Get existing products once (OPTIMIZED 🚀)
   const snapshot = await getDocs(collection(db, "products"));
