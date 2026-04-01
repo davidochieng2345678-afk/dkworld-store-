@@ -218,7 +218,35 @@ productForm.addEventListener("submit", async e=>{
   displayProducts();
 });
 
+import { getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+window.editProduct = async id => {
+  try {
+    const snap = await getDoc(doc(db, "products", id));
+    if (!snap.exists()) return alert("Product not found!");
+
+    const p = snap.data();
+    document.getElementById("productName").value = p.name;
+    document.getElementById("productDescription").value = p.description;
+    document.getElementById("productCategory").value = p.category;
+    document.getElementById("productPrice").value = p.price;
+    document.getElementById("productStock").value = p.stock;
+    document.getElementById("productSKU").value = p.sku;
+    document.getElementById("productImage").value = p.image;
+    document.getElementById("productVideo").value = p.video || "";
+    document.getElementById("editProductId").value = id;
+  } catch (err) {
+    console.error("Error fetching product:", err);
+    alert("Failed to load product for editing.");
+  }
+};
+
+window.deleteProduct = async id => {
+  if(confirm("Delete this product?")){
+    await deleteDoc(doc(db,"products",id));
+    displayProducts();
+  }
+};
 
 /* ---------- DEFAULT PRODUCTS ---------- */
 const defaultProducts = [
