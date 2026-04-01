@@ -356,7 +356,39 @@ window.editPolicy = async (id)=>{
   document.getElementById("policySelect").value = policy.name;
   document.getElementById("policyText").value = policy.content;
 };
+  
+// ===== CSV IMPORT LOGIC =====
+document.getElementById("importCSVBtn").addEventListener("click", () => {
+  document.getElementById("csvFileInput").click();
+});
 
+document.getElementById("csvFileInput").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const text = await file.text();
+  const rows = text.split("\n").filter(r => r.trim() !== "");
+  const headers = rows[0].split(",").map(h => h.trim());
+
+  for (let i = 1; i < rows.length; i++) {
+    const values = rows[i].split(",").map(v => v.trim());
+    const product = {};
+    headers.forEach((h, idx) => {
+      if (h === "price" || h === "stock") product[h] = Number(values[idx]);
+      else product[h] = values[idx];
+    });
+
+    // Check for duplicate SKU
+    const snapshot = await getDocs(collection(db, "products"));
+    const exists = snapshot.docs.some(docSnap => docSnap.data().sku === product.sku);
+    if (!exists) {
+      await addDoc(collection(db, "products"), product);
+    }
+  }
+
+  alert("CSV import completed!");
+  displayProducts();
+});
 /* ---------------- BLOGS ---------------- */
 const blogForm = document.getElementById("blogForm");
 const blogTableBody = document.querySelector("#blogTable tbody");
