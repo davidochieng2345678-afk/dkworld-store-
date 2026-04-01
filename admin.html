@@ -392,7 +392,24 @@ blogForm.addEventListener("submit", async e=>{
   displayBlogs();
 });
 
+window.editBlog = async id => {
+  try {
+    const snap = await getDoc(doc(db, "blogs", id));
+    if (!snap.exists()) return alert("Blog post not found!");
 
+    const b = snap.data();
+    document.getElementById("blogTitle").value = b.title;
+    document.getElementById("blogContent").value = b.content;
+    document.getElementById("blogCategory").value = b.category || "";
+    document.getElementById("blogAuthor").value = b.author;
+    document.getElementById("blogDate").value = b.date;
+    document.getElementById("editBlogId").value = id;
+  } catch (err) {
+    console.error("Error fetching blog:", err);
+    alert("Failed to load blog post for editing.");
+  }
+};
+  
 </script>
 
 </body>
