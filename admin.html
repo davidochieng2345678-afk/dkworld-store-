@@ -256,6 +256,45 @@ document.getElementById("importProductsBtn").addEventListener("click", async ()=
   displayProducts();
 });
 
+  /* ===== MOBILE-FRIENDLY CSV IMPORT ===== */
+const csvFileInput = document.getElementById("csvFileInput");
+const importCSVBtn = document.getElementById("importCSVBtn");
+
+csvFileInput.style.display = "block"; // Make sure input is visible for mobile
+csvFileInput.style.marginBottom = "15px";
+
+importCSVBtn.addEventListener("click", () => {
+  csvFileInput.click(); // trigger file picker
+});
+
+csvFileInput.addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return alert("No file selected!");
+
+  const text = await file.text();
+  const rows = text.split("\n").filter(r => r.trim() !== "");
+  const headers = rows[0].split(",").map(h => h.trim().toLowerCase());
+
+  for (let i = 1; i < rows.length; i++) {
+    const values = rows[i].split(",").map(v => v.trim());
+    const product = {};
+    headers.forEach((h, idx) => {
+      if (h === "price" || h === "stock") product[h] = Number(values[idx]) || 0;
+      else product[h] = values[idx] || "";
+    });
+
+    // Check for duplicate SKU
+    const snapshot = await getDocs(collection(db, "products"));
+    const exists = snapshot.docs.some(docSnap => docSnap.data().sku === product.sku);
+    if (!exists) {
+      await addDoc(collection(db, "products"), product);
+    }
+  }
+
+  alert("CSV import completed!");
+  displayProducts();
+});
+
 /* ---------- CSV IMPORT ---------- */
 document.getElementById("importCSVBtn").addEventListener("click", ()=> document.getElementById("csvFileInput").click());
 
