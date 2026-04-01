@@ -60,10 +60,8 @@ h2 { margin-top:40px; }
   <section id="productsSection">
     <h2>Manage Products</h2>
     <button id="importProductsBtn">Import Default Products</button>
-
-    <button id="importCSVBtn">Select CSV File</button>
-<input type="file" id="csvFileInput" accept=".csv" style="display:none;">
-<button id="sendCSVBtn">Upload CSV</button>
+    <button id="importProductsCSVBtn">Upload Products CSV</button>
+    <input type="file" id="productsCSVInput" accept=".csv" style="display:none;">
     <form id="productForm">
       <input type="hidden" id="editProductId">
       <input type="text" id="productName" placeholder="Product Name (HTML allowed)" required>
@@ -100,6 +98,8 @@ h2 { margin-top:40px; }
   <!-- ===== POLICIES MANAGEMENT ===== -->
   <section id="policiesSection">
     <h2>Manage Policies (HTML Allowed)</h2>
+    <button id="importPoliciesCSVBtn">Upload Policies CSV</button>
+    <input type="file" id="policiesCSVInput" accept=".csv" style="display:none;">
     <form id="policyForm">
       <select id="policySelect" required>
         <option value="">-- Select Policy --</option>
@@ -126,6 +126,8 @@ h2 { margin-top:40px; }
   <!-- ===== BLOG POSTS MANAGEMENT ===== -->
   <section id="blogsSection">
     <h2>Manage Blog Posts (HTML Allowed)</h2>
+    <button id="importBlogsCSVBtn">Upload Blogs CSV</button>
+    <input type="file" id="blogsCSVInput" accept=".csv" style="display:none;">
     <form id="blogForm">
       <input type="hidden" id="editBlogId">
       <input type="text" id="blogTitle" placeholder="Blog Title (HTML allowed)" required>
@@ -154,7 +156,7 @@ h2 { margin-top:40px; }
 <!-- ===== FIREBASE ADMIN SCRIPT ===== -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // Firebase Config
 const firebaseConfig = {
@@ -168,25 +170,42 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-/* ---------------- PRODUCTS ---------------- */
+/* ------------------- HELPER ------------------- */
+async function fetchCollection(colName) {
+  const snapshot = await getDocs(collection(db, colName));
+  return snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+}
+function parseCSV(text) {
+  const rows = text.split("\n").filter(r=>r.trim());
+  const headers = rows[0].split(",").map(h=>h.trim().toLowerCase());
+  const data = [];
+  for(let i=1;i<rows.length;i++){
+    const values = rows[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g).map(v=>v.replace(/^"|"$/g,''));
+    const obj = {};
+    headers.forEach((h,idx)=> obj[h]=values[idx] || "");
+    data.push(obj);
+  }
+  return data;
+}
+
+/* ------------------- PRODUCTS ------------------- */
 const productForm = document.getElementById("productForm");
 const productTableBody = document.querySelector("#productTable tbody");
+const defaultProducts = [
+  { name:"Basic E-commerce Website", description:"<p>Responsive HTML e-commerce template for small businesses.</p>", category:"e-commerce", price:12000, stock:50, sku:"ECOM-001", image:"https://example.com/images/ecom1.jpg", video:"" },
+  { name:"Digital Marketing Template", description:"<p>HTML template for digital marketing agencies.</p>", category:"digital", price:8000, stock:40, sku:"DIGI-001", image:"https://example.com/images/digital1.jpg", video:"" },
+  { name:"Local Business Website", description:"<p>HTML site template suitable for local shops or services.</p>", category:"local", price:5000, stock:30, sku:"LOC-001", image:"https://example.com/images/local1.jpg", video:"" }
+];
 
 async function displayProducts(){
   productTableBody.innerHTML = "";
-  const snapshot = await getDocs(collection(db,"products"));
-  snapshot.forEach(docSnap=>{
-    const p = docSnap.data();
+  const products = await fetchCollection("products");
+  products.forEach(p=>{
     const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${p.name}</td>
-      <td>${p.category}</td>
-      <td>Ksh ${p.price}</td>
-      <td>${p.stock}</td>
-      <td>${p.sku}</td>
+    tr.innerHTML = `<td>${p.name}</td><td>${p.category}</td><td>Ksh ${p.price}</td><td>${p.stock}</td><td>${p.sku}</td>
       <td>
-        <button class="edit" onclick="editProduct('${docSnap.id}')">Edit</button>
-        <button class="delete" onclick="deleteProduct('${docSnap.id}')">Delete</button>
+        <button class="edit" onclick="editProduct('${p.id}')">Edit</button>
+        <button class="delete" onclick="deleteProduct('${p.id}')">Delete</button>
       </td>`;
     productTableBody.appendChild(tr);
   });
@@ -195,22 +214,22 @@ displayProducts();
 
 productForm.addEventListener("submit", async e=>{
   e.preventDefault();
-  const productData = {
+  const data = {
     name: document.getElementById("productName").value,
     description: document.getElementById("productDescription").value,
     category: document.getElementById("productCategory").value,
-    price: parseFloat(document.getElementById("productPrice").value),
-    stock: parseInt(document.getElementById("productStock").value),
+    price: Number(document.getElementById("productPrice").value),
+    stock: Number(document.getElementById("productStock").value),
     sku: document.getElementById("productSKU").value.toUpperCase(),
     image: document.getElementById("productImage").value,
     video: document.getElementById("productVideo").value || ""
   };
   const editId = document.getElementById("editProductId").value;
   if(editId){
-    await updateDoc(doc(db,"products",editId), productData);
+    await updateDoc(doc(db,"products",editId), data);
     alert("Product updated!");
   } else {
-    await addDoc(collection(db,"products"), productData);
+    await addDoc(collection(db,"products"), data);
     alert("Product added!");
   }
   productForm.reset();
@@ -218,125 +237,61 @@ productForm.addEventListener("submit", async e=>{
   displayProducts();
 });
 
-import { getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 window.editProduct = async id => {
-  try {
-    const snap = await getDoc(doc(db, "products", id));
-    if (!snap.exists()) return alert("Product not found!");
-
-    const p = snap.data();
-    document.getElementById("productName").value = p.name;
-    document.getElementById("productDescription").value = p.description;
-    document.getElementById("productCategory").value = p.category;
-    document.getElementById("productPrice").value = p.price;
-    document.getElementById("productStock").value = p.stock;
-    document.getElementById("productSKU").value = p.sku;
-    document.getElementById("productImage").value = p.image;
-    document.getElementById("productVideo").value = p.video || "";
-    document.getElementById("editProductId").value = id;
-  } catch (err) {
-    console.error("Error fetching product:", err);
-    alert("Failed to load product for editing.");
-  }
+  const snap = await getDoc(doc(db,"products",id));
+  if(!snap.exists()){ alert("Product not found!"); return; }
+  const p = snap.data();
+  document.getElementById("productName").value=p.name;
+  document.getElementById("productDescription").value=p.description;
+  document.getElementById("productCategory").value=p.category;
+  document.getElementById("productPrice").value=p.price;
+  document.getElementById("productStock").value=p.stock;
+  document.getElementById("productSKU").value=p.sku;
+  document.getElementById("productImage").value=p.image;
+  document.getElementById("productVideo").value=p.video || "";
+  document.getElementById("editProductId").value=id;
 };
+window.deleteProduct = async id=>{ if(confirm("Delete this product?")){ await deleteDoc(doc(db,"products",id)); displayProducts(); }};
 
-window.deleteProduct = async id => {
-  if(confirm("Delete this product?")){
-    await deleteDoc(doc(db,"products",id));
-    displayProducts();
-  }
-};
-
-/* ---------- DEFAULT PRODUCTS ---------- */
-const defaultProducts = [
-  { name:"Basic E-commerce Website", description:"<p>Responsive HTML e-commerce template for small businesses.</p>", category:"e-commerce", price:12000, stock:50, sku:"ECOM-001", image:"https://example.com/images/ecom1.jpg", video:"" },
-  { name:"Digital Marketing Template", description:"<p>HTML template for digital marketing agencies.</p>", category:"digital", price:8000, stock:40, sku:"DIGI-001", image:"https://example.com/images/digital1.jpg", video:"" },
-  { name:"Local Business Website", description:"<p>HTML site template suitable for local shops or services.</p>", category:"local", price:5000, stock:30, sku:"LOC-001", image:"https://example.com/images/local1.jpg", video:"" }
-];
-
+/* IMPORT DEFAULT PRODUCTS */
 document.getElementById("importProductsBtn").addEventListener("click", async ()=>{
   if(!confirm("Import default products?")) return;
-  const snapshot = await getDocs(collection(db,"products"));
-  const existingSKUs = snapshot.docs.map(d=>d.data().sku.toUpperCase());
+  const products = await fetchCollection("products");
+  const existing = products.map(p=>p.sku.toUpperCase());
   for(const p of defaultProducts){
-    if(!existingSKUs.includes(p.sku.toUpperCase())) await addDoc(collection(db,"products"), p);
+    if(!existing.includes(p.sku.toUpperCase())) await addDoc(collection(db,"products"), p);
   }
   displayProducts();
 });
-document.addEventListener("DOMContentLoaded", () => {
-  const csvFileInput = document.getElementById("csvFileInput");
-  const importCSVBtn = document.getElementById("importCSVBtn");
-  const sendCSVBtn = document.getElementById("sendCSVBtn");
 
-  let selectedFile = null;
-
-  // ✅ SELECT FILE
-  importCSVBtn.addEventListener("click", () => csvFileInput.click());
-
-  csvFileInput.addEventListener("change", (e) => {
-    selectedFile = e.target.files[0];
-    if (selectedFile) alert("Selected: " + selectedFile.name);
-  });
-
-  // ✅ UPLOAD CSV
-  sendCSVBtn.addEventListener("click", async () => {
-    if (!selectedFile) return alert("Please select a CSV file first!");
-
-    try {
-      const text = await selectedFile.text();
-      const rows = text.split("\n").filter(r => r.trim() !== "");
-      const headers = rows[0].split(",").map(h => h.trim().toLowerCase());
-
-      const snapshot = await getDocs(collection(db, "products"));
-      const existingSKUs = snapshot.docs.map(d => d.data().sku.toUpperCase());
-
-      for (let i = 1; i < rows.length; i++) {
-        // Split CSV safely, handling commas inside quotes
-        const values = rows[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g).map(v => v.replace(/^"|"$/g, ''));
-
-        const product = {};
-        headers.forEach((h, idx) => {
-          if (h === "price" || h === "stock") {
-            product[h] = Number(values[idx]) || 0;
-          } else {
-            product[h] = values[idx] || "";
-          }
-        });
-
-        if (!existingSKUs.includes(product.sku.toUpperCase())) {
-          await addDoc(collection(db, "products"), product);
-          console.log("Added product:", product.sku);
-        } else {
-          console.log("Skipped duplicate SKU:", product.sku);
-        }
-      }
-
-      alert("CSV uploaded successfully!");
-      selectedFile = null;
-      csvFileInput.value = "";
-      displayProducts();
-    } catch (err) {
-      console.error("CSV upload failed:", err);
-      alert("Failed to upload CSV. Check console for details.");
+/* CSV UPLOAD PRODUCTS */
+const productsCSVInput = document.getElementById("productsCSVInput");
+document.getElementById("importProductsCSVBtn").addEventListener("click", ()=>productsCSVInput.click());
+productsCSVInput.addEventListener("change", async e=>{
+  const file = e.target.files[0]; if(!file) return;
+  const text = await file.text();
+  const rows = parseCSV(text);
+  const products = await fetchCollection("products");
+  const existing = products.map(p=>p.sku.toUpperCase());
+  for(const r of rows){
+    if(!r.sku) continue;
+    if(!existing.includes(r.sku.toUpperCase())){
+      r.price=Number(r.price)||0; r.stock=Number(r.stock)||0;
+      await addDoc(collection(db,"products"), r);
     }
-  });
+  }
+  alert("Products CSV uploaded!"); displayProducts();
 });
 
-
-
-  
-/* ---------------- POLICIES ---------------- */
+/* ------------------- POLICIES ------------------- */
 const policyForm = document.getElementById("policyForm");
 const policyTableBody = document.querySelector("#policyTable tbody");
-
 async function displayPolicies(){
-  policyTableBody.innerHTML = "";
-  const snapshot = await getDocs(collection(db,"policies"));
-  snapshot.forEach(docSnap=>{
-    const p = docSnap.data();
+  policyTableBody.innerHTML="";
+  const policies = await fetchCollection("policies");
+  policies.forEach(p=>{
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${p.name}</td><td><button class="edit" onclick="editPolicy('${docSnap.id}')">Edit</button></td>`;
+    tr.innerHTML=`<td>${p.name}</td><td><button class="edit" onclick="editPolicy('${p.id}')">Edit</button></td>`;
     policyTableBody.appendChild(tr);
   });
 }
@@ -344,45 +299,41 @@ displayPolicies();
 
 policyForm.addEventListener("submit", async e=>{
   e.preventDefault();
-  const name = document.getElementById("policySelect").value;
-  const content = document.getElementById("policyText").value;
+  const name=document.getElementById("policySelect").value;
+  const content=document.getElementById("policyText").value;
   await setDoc(doc(db,"policies",name), { name, content });
-  displayPolicies();
+  displayPolicies(); alert("Policy saved!");
 });
-
-
-  window.editPolicy = async id => {
-  try {
-    const snap = await getDoc(doc(db, "policies", id));
-    if (!snap.exists()) return alert("Policy not found!");
-
-    const p = snap.data();
-    document.getElementById("policySelect").value = p.name;
-    document.getElementById("policyText").value = p.content;
-  } catch (err) {
-    console.error("Error fetching policy:", err);
-    alert("Failed to load policy for editing.");
-  }
+window.editPolicy = async id=>{
+  const snap=await getDoc(doc(db,"policies",id));
+  if(!snap.exists()){ alert("Policy not found!"); return; }
+  const p=snap.data();
+  document.getElementById("policySelect").value=p.name;
+  document.getElementById("policyText").value=p.content;
 };
 
-/* ---------------- BLOGS ---------------- */
-const blogForm = document.getElementById("blogForm");
-const blogTableBody = document.querySelector("#blogTable tbody");
+/* CSV UPLOAD POLICIES */
+const policiesCSVInput=document.getElementById("policiesCSVInput");
+document.getElementById("importPoliciesCSVBtn").addEventListener("click", ()=>policiesCSVInput.click());
+policiesCSVInput.addEventListener("change", async e=>{
+  const file=e.target.files[0]; if(!file) return;
+  const rows=parseCSV(await file.text());
+  for(const r of rows){ if(r.name && r.content){ await setDoc(doc(db,"policies",r.name), { name:r.name, content:r.content }); } }
+  alert("Policies CSV uploaded!"); displayPolicies();
+});
 
+/* ------------------- BLOGS ------------------- */
+const blogForm=document.getElementById("blogForm");
+const blogTableBody=document.querySelector("#blogTable tbody");
 async function displayBlogs(){
-  blogTableBody.innerHTML = "";
-  const snapshot = await getDocs(collection(db,"blogs"));
-  snapshot.forEach(docSnap=>{
-    const b = docSnap.data();
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${b.title}</td>
-      <td>${b.category||""}</td>
-      <td>${b.author}</td>
-      <td>${b.date}</td>
+  blogTableBody.innerHTML="";
+  const blogs=await fetchCollection("blogs");
+  blogs.forEach(b=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${b.title}</td><td>${b.category||""}</td><td>${b.author}</td><td>${b.date}</td>
       <td>
-        <button class="edit" onclick="editBlog('${docSnap.id}')">Edit</button>
-        <button class="delete" onclick="deleteBlog('${docSnap.id}')">Delete</button>
+        <button class="edit" onclick="editBlog('${b.id}')">Edit</button>
+        <button class="delete" onclick="deleteBlog('${b.id}')">Delete</button>
       </td>`;
     blogTableBody.appendChild(tr);
   });
@@ -391,43 +342,24 @@ displayBlogs();
 
 blogForm.addEventListener("submit", async e=>{
   e.preventDefault();
-  const blogData = {
-    title: document.getElementById("blogTitle").value,
-    content: document.getElementById("blogContent").value,
-    category: document.getElementById("blogCategory").value,
-    author: document.getElementById("blogAuthor").value,
-    date: document.getElementById("blogDate").value
+  const data={
+    title:document.getElementById("blogTitle").value,
+    content:document.getElementById("blogContent").value,
+    category:document.getElementById("blogCategory").value,
+    author:document.getElementById("blogAuthor").value,
+    date:document.getElementById("blogDate").value
   };
-  const editId = document.getElementById("editBlogId").value;
-  if(editId){
-    await updateDoc(doc(db,"blogs",editId), blogData);
-  } else {
-    await addDoc(collection(db,"blogs"), blogData);
-  }
-  blogForm.reset();
-  document.getElementById("editBlogId").value = "";
-  displayBlogs();
+  const editId=document.getElementById("editBlogId").value;
+  if(editId){ await updateDoc(doc(db,"blogs",editId), data); } else { await addDoc(collection(db,"blogs"), data); }
+  blogForm.reset(); document.getElementById("editBlogId").value="";
+  displayBlogs(); alert("Blog saved!");
 });
-
-window.editBlog = async id => {
-  try {
-    const snap = await getDoc(doc(db, "blogs", id));
-    if (!snap.exists()) return alert("Blog post not found!");
-
-    const b = snap.data();
-    document.getElementById("blogTitle").value = b.title;
-    document.getElementById("blogContent").value = b.content;
-    document.getElementById("blogCategory").value = b.category || "";
-    document.getElementById("blogAuthor").value = b.author;
-    document.getElementById("blogDate").value = b.date;
-    document.getElementById("editBlogId").value = id;
-  } catch (err) {
-    console.error("Error fetching blog:", err);
-    alert("Failed to load blog post for editing.");
-  }
-};
-  
-</script>
-
-</body>
-</html>
+window.editBlog=async id=>{
+  const snap=await getDoc(doc(db,"blogs",id));
+  if(!snap.exists()){ alert("Blog not found!"); return; }
+  const b=snap.data();
+  document.getElementById("blogTitle").value=b.title;
+  document.getElementById("blogContent").value=b.content;
+  document.getElementById("blogCategory").value=b.category||"";
+  document.getElementById("blogAuthor").value=b.author;
+  document
