@@ -255,9 +255,7 @@ document.getElementById("importProductsBtn").addEventListener("click", async ()=
   }
   displayProducts();
 });
-
 document.addEventListener("DOMContentLoaded", () => {
-
   const csvFileInput = document.getElementById("csvFileInput");
   const importCSVBtn = document.getElementById("importCSVBtn");
   const sendCSVBtn = document.getElementById("sendCSVBtn");
@@ -265,55 +263,55 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedFile = null;
 
   // ✅ SELECT FILE
-  importCSVBtn.addEventListener("click", () => {
-    csvFileInput.click();
-  });
+  importCSVBtn.addEventListener("click", () => csvFileInput.click());
 
   csvFileInput.addEventListener("change", (e) => {
     selectedFile = e.target.files[0];
-
-    if (selectedFile) {
-      alert("Selected: " + selectedFile.name);
-    }
+    if (selectedFile) alert("Selected: " + selectedFile.name);
   });
 
-  // ✅ UPLOAD FILE
+  // ✅ UPLOAD CSV
   sendCSVBtn.addEventListener("click", async () => {
-    if (!selectedFile) {
-      alert("Please select a CSV file first!");
-      return;
-    }
+    if (!selectedFile) return alert("Please select a CSV file first!");
 
-    const text = await selectedFile.text();
-    const rows = text.split("\n").filter(r => r.trim() !== "");
-    const headers = rows[0].split(",").map(h => h.trim().toLowerCase());
+    try {
+      const text = await selectedFile.text();
+      const rows = text.split("\n").filter(r => r.trim() !== "");
+      const headers = rows[0].split(",").map(h => h.trim().toLowerCase());
 
-    const snapshot = await getDocs(collection(db, "products"));
-    const existingSKUs = snapshot.docs.map(d => d.data().sku);
+      const snapshot = await getDocs(collection(db, "products"));
+      const existingSKUs = snapshot.docs.map(d => d.data().sku.toUpperCase());
 
-    for (let i = 1; i < rows.length; i++) {
-      const values = rows[i].split(",").map(v => v.trim());
-      const product = {};
+      for (let i = 1; i < rows.length; i++) {
+        // Split CSV safely, handling commas inside quotes
+        const values = rows[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g).map(v => v.replace(/^"|"$/g, ''));
 
-      headers.forEach((h, idx) => {
-        if (h === "price" || h === "stock") {
-          product[h] = Number(values[idx]) || 0;
+        const product = {};
+        headers.forEach((h, idx) => {
+          if (h === "price" || h === "stock") {
+            product[h] = Number(values[idx]) || 0;
+          } else {
+            product[h] = values[idx] || "";
+          }
+        });
+
+        if (!existingSKUs.includes(product.sku.toUpperCase())) {
+          await addDoc(collection(db, "products"), product);
+          console.log("Added product:", product.sku);
         } else {
-          product[h] = values[idx] || "";
+          console.log("Skipped duplicate SKU:", product.sku);
         }
-      });
-
-      if (!existingSKUs.includes(product.sku)) {
-        await addDoc(collection(db, "products"), product);
       }
+
+      alert("CSV uploaded successfully!");
+      selectedFile = null;
+      csvFileInput.value = "";
+      displayProducts();
+    } catch (err) {
+      console.error("CSV upload failed:", err);
+      alert("Failed to upload CSV. Check console for details.");
     }
-
-    alert("CSV uploaded successfully!");
-    selectedFile = null;
-    csvFileInput.value = "";
-    displayProducts();
   });
-
 });
 
 
