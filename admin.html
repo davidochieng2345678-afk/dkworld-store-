@@ -392,23 +392,7 @@ blogForm.addEventListener("submit", async e=>{
   displayBlogs();
 });
 
-window.editBlog = async id=>{
-  const snap = await getDocs(doc(db,"blogs",id));
-  const b = snap.data();
-  document.getElementById("blogTitle").value = b.title;
-  document.getElementById("blogContent").value = b.content;
-  document.getElementById("blogCategory").value = b.category;
-  document.getElementById("blogAuthor").value = b.author;
-  document.getElementById("blogDate").value = b.date;
-  document.getElementById("editBlogId").value = id;
-};
 
-window.deleteBlog = async id=>{
-  if(confirm("Delete this blog post?")){
-    await deleteDoc(doc(db,"blogs",id));
-    displayBlogs();
-  }
-};
 </script>
 
 </body>
