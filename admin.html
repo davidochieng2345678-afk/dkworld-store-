@@ -81,7 +81,10 @@ h2 { margin-top:40px; }
       <input type="url" id="productVideo" placeholder="Video URL (optional)">
       <button type="submit">Add / Update Product</button>
     </form>
-
+    
+<!-- ===== ADD THIS INSIDE YOUR CONTAINER, BELOW DEFAULT PRODUCTS BUTTON ===== -->
+<button id="importCSVBtn" style="background:#FF8C00; margin-bottom:15px;">Import Products from CSV</button>
+<input type="file" id="csvFileInput" accept=".csv" style="display:none;">
     <table id="productTable">
       <thead>
         <tr>
