@@ -256,46 +256,64 @@ document.getElementById("importProductsBtn").addEventListener("click", async ()=
   displayProducts();
 });
 
-  /* ===== MOBILE-FRIENDLY CSV IMPORT ===== */
+
+
+/* ===== CSV IMPORT WITH BUTTON (FIXED) ===== */
 const csvFileInput = document.getElementById("csvFileInput");
 const importCSVBtn = document.getElementById("importCSVBtn");
+const sendCSVBtn = document.getElementById("sendCSVBtn");
 
-csvFileInput.style.display = "block"; // Make sure input is visible for mobile
-csvFileInput.style.marginBottom = "15px";
+let selectedFile = null;
 
+// Step 1: Select file
 importCSVBtn.addEventListener("click", () => {
-  csvFileInput.click(); // trigger file picker
+  csvFileInput.click();
 });
 
-csvFileInput.addEventListener("change", async (e) => {
-  const file = e.target.files[0];
-  if (!file) return alert("No file selected!");
+csvFileInput.addEventListener("change", (e) => {
+  selectedFile = e.target.files[0];
+  if (selectedFile) {
+    alert("CSV file selected: " + selectedFile.name);
+  }
+});
 
-  const text = await file.text();
+// Step 2: Upload file
+sendCSVBtn.addEventListener("click", async () => {
+  if (!selectedFile) {
+    return alert("Please select a CSV file first!");
+  }
+
+  const text = await selectedFile.text();
   const rows = text.split("\n").filter(r => r.trim() !== "");
   const headers = rows[0].split(",").map(h => h.trim().toLowerCase());
+
+  // Get existing products once (OPTIMIZED 🚀)
+  const snapshot = await getDocs(collection(db, "products"));
+  const existingSKUs = snapshot.docs.map(d => d.data().sku);
 
   for (let i = 1; i < rows.length; i++) {
     const values = rows[i].split(",").map(v => v.trim());
     const product = {};
+
     headers.forEach((h, idx) => {
-      if (h === "price" || h === "stock") product[h] = Number(values[idx]) || 0;
-      else product[h] = values[idx] || "";
+      if (h === "price" || h === "stock") {
+        product[h] = Number(values[idx]) || 0;
+      } else {
+        product[h] = values[idx] || "";
+      }
     });
 
-    // Check for duplicate SKU
-    const snapshot = await getDocs(collection(db, "products"));
-    const exists = snapshot.docs.some(docSnap => docSnap.data().sku === product.sku);
-    if (!exists) {
+    // Skip duplicates
+    if (!existingSKUs.includes(product.sku)) {
       await addDoc(collection(db, "products"), product);
     }
   }
 
-  alert("CSV import completed!");
+  alert("CSV uploaded successfully!");
+  selectedFile = null;
+  csvFileInput.value = "";
   displayProducts();
 });
-
-
 
 /* ---------------- POLICIES ---------------- */
 const policyForm = document.getElementById("policyForm");
