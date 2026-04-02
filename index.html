@@ -246,11 +246,12 @@ async function fetchProducts() {
     }));
     sd.textContent = JSON.stringify(sdData);
 
-  } catch (err) {
-    console.error(err);
-    container.innerHTML = "<p style='text-align:center;color:red;'>Unable to load products.</p>";
-  }
+  } catch(err){
+  console.error("FULL ERROR:", err);
+  container.innerHTML = `<p style='text-align:center;color:red;'>Error: ${err.message}</p>`;
+
 }
+  }
 
   
 
