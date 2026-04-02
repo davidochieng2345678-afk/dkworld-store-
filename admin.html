@@ -212,8 +212,10 @@ async function displayProducts(){
 }
 displayProducts();
 
-productForm.addEventListener("submit", async e=>{
+
+  productForm.addEventListener("submit", async e=>{
   e.preventDefault();
+
   const data = {
     name: document.getElementById("productName").value,
     description: document.getElementById("productDescription").value,
@@ -224,17 +226,26 @@ productForm.addEventListener("submit", async e=>{
     image: document.getElementById("productImage").value,
     video: document.getElementById("productVideo").value || ""
   };
-  const editId = document.getElementById("editProductId").value;
-  if(editId){
-    await updateDoc(doc(db,"products",editId), data);
-    alert("Product updated!");
-  } else {
-    await addDoc(collection(db,"products"), data);
-    alert("Product added!");
+
+  try {
+    const editId = document.getElementById("editProductId").value;
+
+    if(editId){
+      await updateDoc(doc(db,"products",editId), data);
+      alert("Product updated!");
+    } else {
+      await addDoc(collection(db,"products"), data);
+      alert("✅ Product added successfully!");
+    }
+
+    productForm.reset();
+    document.getElementById("editProductId").value = "";
+    displayProducts();
+
+  } catch(error) {
+    console.error("🔥 Firebase Error:", error);
+    alert("❌ Error adding product. Check console.");
   }
-  productForm.reset();
-  document.getElementById("editProductId").value = "";
-  displayProducts();
 });
 
 window.editProduct = async id => {
