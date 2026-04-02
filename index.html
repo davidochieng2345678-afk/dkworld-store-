@@ -190,12 +190,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// DOM
-const container = document.getElementById("productsContainer");
-const featuredSlider = document.getElementById("featuredSlider");
-const searchInput = document.getElementById("searchInput");
-const reviewsContainer = document.getElementById("reviewsContainer");
-const blogsContainer = document.getElementById("blogsContainer");
+
+  const container = document.getElementById("productsContainer");
+container.innerHTML = ""; // clear existing products first
+products.forEach(p => {
+  const div = document.createElement("div");
+  div.innerHTML = `
+    <h3>${p.name}</h3>
+    <p>Category: ${p.category}</p>
+    <p>Price: Ksh ${p.price} | Stock: ${p.stock}</p>
+    <div>${p.description}</div>
+    <img src="${p.image}" alt="${p.name}" style="max-width:150px;">
+    <a href="https://wa.me/254710346XXX?text=I'm%20interested%20in%20${encodeURIComponent(p.name)}" target="_blank">Buy on WhatsApp</a>
+  `;
+  container.appendChild(div);
+});
+
+
 
 // Reviews
 const reviewsData=[
