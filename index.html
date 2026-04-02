@@ -51,6 +51,7 @@ header p{color:#555;}
 .product-card a:hover{background:#1DA851;}
 .product-card button{background:#25D366;color:white;padding:10px;border-radius:8px;font-weight:bold;cursor:pointer;transition:0.3s;}
 .product-card button:hover{background:#1DA851;}
+.product-card .read-more{color:#25D366;cursor:pointer;font-weight:bold;font-size:0.85em;text-decoration:underline;margin-top:5px;text-align:left;}
 .slider{display:flex;overflow-x:auto;gap:15px;padding-bottom:10px;scrollbar-width:none;-ms-overflow-style:none;}
 .slider::-webkit-scrollbar{display:none;}
 .review-slider{display:flex;overflow-x:auto;gap:20px;padding:20px 0;scrollbar-width:none;-ms-overflow-style:none;}
@@ -135,12 +136,12 @@ footer a{color:#25D366;text-decoration:none;}
 <!-- WhatsApp CTA -->
 <a href="https://wa.me/254710346789" target="_blank" style="position:fixed;bottom:20px;left:20px;background:#25D366;color:white;padding:15px;border-radius:50%;font-size:20px;text-decoration:none;box-shadow:0 6px 15px rgba(0,0,0,0.2);z-index:1000;">💬</a>
 
-<!-- Firebase Scripts -->
+<!-- Firebase & Products Script -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// ===== Firebase Config =====
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyABCVM1b9FEdXlJWf1SoL7dwQL1EXPXwgA",
   authDomain: "dkworld-kenya.firebaseapp.com",
@@ -162,16 +163,21 @@ const searchInput = document.getElementById("searchInput");
 
 let products = [];
 
-// ===== Create Product Card =====
+// ===== Create Product Card with Read More =====
 function createCard(prod){
-  const card=document.createElement("div");
-  card.className="product-card";
+  const card = document.createElement("div");
+  card.className = "product-card";
   const media = prod.video ? `<iframe src="${prod.video}" frameborder="0" allowfullscreen></iframe>` 
                             : `<img src="${prod.image}" alt="${prod.name}" loading="lazy">`;
-  card.innerHTML=`${media}<div class="content">
+
+  const shortDesc = prod.description.length > 300 ? prod.description.slice(0,300) + "..." : prod.description;
+  const readMore = prod.description.length > 300 ? `<span class="read-more">Read More</span>` : "";
+
+  card.innerHTML = `${media}<div class="content">
     <div style="background:#25D366;color:white;padding:5px 10px;border-radius:5px;font-size:0.8em;display:inline-block;margin-bottom:5px;">⚡ Ready in 24h</div>
     <h3>${prod.name}</h3>
-    <p>${prod.description}</p>
+    <p class="desc">${shortDesc}</p>
+    ${readMore}
     <p>Category: ${prod.category}</p>
     <div class="price">Ksh ${prod.price} | Stock: ${prod.stock}</div>
     <a href="product.html?sku=${encodeURIComponent(prod.sku)}">View Details</a>
@@ -179,7 +185,8 @@ function createCard(prod){
     <button class="add-to-cart-btn">Add to Cart</button>
   </div>`;
 
-  card.querySelector(".add-to-cart-btn").addEventListener("click",()=>{
+  // Add to cart
+  card.querySelector(".add-to-cart-btn").addEventListener("click", ()=>{
     let cart = JSON.parse(localStorage.getItem("dkCart")) || [];
     const existing = cart.find(item => item.sku === prod.sku);
     if(existing){ existing.quantity += 1; } 
@@ -188,6 +195,21 @@ function createCard(prod){
     alert(`${prod.name} added to cart!`);
   });
 
+  // Read More toggle
+  const readMoreBtn = card.querySelector(".read-more");
+  if(readMoreBtn){
+    readMoreBtn.addEventListener("click", ()=>{
+      const desc = card.querySelector(".desc");
+      if(readMoreBtn.textContent === "Read More"){
+        desc.textContent = prod.description;
+        readMoreBtn.textContent = "Show Less";
+      } else {
+        desc.textContent = shortDesc;
+        readMoreBtn.textContent = "Read More";
+      }
+    });
+  }
+
   return card;
 }
 
@@ -195,16 +217,17 @@ function createCard(prod){
 async function fetchProducts(){
   try{
     const snapshot = await getDocs(collection(db,"products"));
-    products = snapshot.docs.map(doc=>doc.data());
+    products = snapshot.docs.map(doc => doc.data());
     displayProducts(products);
 
-    featuredSlider.innerHTML="";
-    products.slice(0,5).forEach(p=>featuredSlider.appendChild(createCard(p)));
+    // Featured
+    featuredSlider.innerHTML = "";
+    products.slice(0,5).forEach(p => featuredSlider.appendChild(createCard(p)));
 
-    // Structured data
+    // Structured Data
     const sd = document.querySelector('script[type="application/ld+json"]');
     const sdData = JSON.parse(sd.textContent);
-    sdData.hasOfferCatalog.itemListElement = products.map(prod=>({
+    sdData.hasOfferCatalog.itemListElement = products.map(prod => ({
       "@type":"Product",
       "name":prod.name,
       "image":prod.image,
@@ -227,39 +250,41 @@ async function fetchProducts(){
 
 // ===== Display Products =====
 function displayProducts(list){
-  container.innerHTML="";
+  container.innerHTML = "";
   if(list.length===0){ container.innerHTML="<p style='text-align:center;'>No products found.</p>"; return; }
-  list.forEach(p=>container.appendChild(createCard(p)));
+  list.forEach(p => container.appendChild(createCard(p)));
 }
 
 // ===== Filters =====
 function filterProducts(event, category){
-  document.querySelectorAll(".filters button").forEach(btn=>btn.classList.remove("active"));
+  document.querySelectorAll(".filters button").forEach(btn => btn.classList.remove("active"));
   event.target.classList.add("active");
-  displayProducts(category==="all" ? products : products.filter(p=>p.category.toLowerCase()===category.toLowerCase()));
+  displayProducts(category==="all" ? products : products.filter(p => p.category.toLowerCase()===category.toLowerCase()));
 }
 
 // ===== Search =====
 searchInput.addEventListener("input", function(){
   const val = this.value.toLowerCase();
-  displayProducts(products.filter(p=>p.name.toLowerCase().includes(val) || p.category.toLowerCase().includes(val)));
+  displayProducts(products.filter(p => p.name.toLowerCase().includes(val) || p.category.toLowerCase().includes(val)));
 });
 
 // ===== Reviews =====
-const reviewsData=[
+const reviewsData = [
   {author:"Alice M.",body:"DK World Kenya created my online store quickly and professionally. Sales increased within days!"},
   {author:"Peter K.",body:"Amazing service and quick response via WhatsApp. Highly recommend for digital products."},
   {author:"Grace N.",body:"Professional, fast, and reliable. My local HTML site looks perfect."}
 ];
 reviewsData.forEach(r=>{
   const div = document.createElement("div");
-  div.className="review-card";
-  div.innerHTML=`<p>“${r.body}”</p><strong>- ${r.author}</strong><div>⭐⭐⭐⭐⭐</div>`;
+  div.className = "review-card";
+  div.innerHTML = `<p>“${r.body}”</p><strong>- ${r.author}</strong><div>⭐⭐⭐⭐⭐</div>`;
   reviewsContainer.appendChild(div);
 });
 
 // ===== Initialize =====
 fetchProducts();
 </script>
+
 </body>
 </html>
+  
