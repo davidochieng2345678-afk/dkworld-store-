@@ -214,46 +214,46 @@ function createCard(prod){
 }
 
 // ===== Fetch Products =====
-async function fetchProducts(){
-  try{
-    const snapshot = await getDocs(collection(db,"products"));
+async function fetchProducts() {
+  try {
+    const snapshot = await getDocs(collection(db, "products"));
     products = snapshot.docs.map(doc => doc.data());
+
+    // Display all products in main grid
     displayProducts(products);
 
-    // Featured
+    // ===== Featured Products Slider =====
+    const featuredProducts = products.filter(p => p.featured); // only show featured
     featuredSlider.innerHTML = "";
-    products.slice(0,5).forEach(p => featuredSlider.appendChild(createCard(p)));
+    featuredProducts.forEach(p => featuredSlider.appendChild(createCard(p)));
 
-    // Structured Data
+    // ===== Structured Data Update =====
     const sd = document.querySelector('script[type="application/ld+json"]');
     const sdData = JSON.parse(sd.textContent);
     sdData.hasOfferCatalog.itemListElement = products.map(prod => ({
-      "@type":"Product",
-      "name":prod.name,
-      "image":prod.image,
-      "description":prod.description,
-      "sku":prod.sku,
-      "offers":{
-        "@type":"Offer",
-        "url":`https://dkworldkenya.online/product.html?sku=${encodeURIComponent(prod.sku)}`,
-        "priceCurrency":"KES",
-        "price":prod.price,
-        "availability": prod.stock>0?"https://schema.org/InStock":"https://schema.org/OutOfStock"
+      "@type": "Product",
+      "name": prod.name,
+      "image": prod.image,
+      "description": prod.description,
+      "sku": prod.sku,
+      "offers": {
+        "@type": "Offer",
+        "url": `https://dkworldkenya.online/product.html?sku=${encodeURIComponent(prod.sku)}`,
+        "priceCurrency": "KES",
+        "price": prod.price,
+        "availability": prod.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
       }
     }));
     sd.textContent = JSON.stringify(sdData);
-  } catch(err){
+
+  } catch (err) {
     console.error(err);
-    container.innerHTML="<p style='text-align:center;color:red;'>Unable to load products.</p>";
+    container.innerHTML = "<p style='text-align:center;color:red;'>Unable to load products.</p>";
   }
 }
 
-// ===== Display Products =====
-function displayProducts(list){
-  container.innerHTML = "";
-  if(list.length===0){ container.innerHTML="<p style='text-align:center;'>No products found.</p>"; return; }
-  list.forEach(p => container.appendChild(createCard(p)));
-}
+  
+
 
 // ===== Filters =====
 function filterProducts(event, category){
