@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Post | DK World Kenya</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin:0; background:#f5f5f5; }
+    nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
+    nav a { color:white; text-decoration:none; font-weight:bold; }
+    nav a:hover { color:#25D366; }
+    .container { max-width:800px; margin:2rem auto; padding:1rem; background:white; border-radius:1rem; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+    .post-header { margin-bottom:2rem; }
+    .post-title { font-size:2rem; margin-bottom:0.5rem; }
+    .post-meta { color:#6b7280; font-size:0.9rem; }
+    .post-content { line-height:1.6; }
+    .back-link { display:inline-block; margin-top:2rem; color:#2563eb; text-decoration:none; }
+    .error { text-align:center; padding:2rem; color:#b91c1c; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact</a>
+    <a href="blog.html">Blog</a>
+    <a href="policies.html">Policies</a>
+    <a href="admin.html">Admin</a>
+  </nav>
+
+  <div class="container" id="postContainer">
+    <div class="loading">📖 Loading post...</div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyABCVM1b9FEdXlJWf1SoL7dwQL1EXPXwgA",
+      authDomain: "dkworld-kenya.firebaseapp.com",
+      projectId: "dkworld-kenya",
+      storageBucket: "dkworld-kenya.firebasestorage.app",
+      messagingSenderId: "263537160242",
+      appId: "1:263537160242:web:a07511fae26faabf584c2b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('id');
+
+    async function loadPost() {
+      const container = document.getElementById('postContainer');
+      if (!postId) {
+        container.innerHTML = '<div class="error">❌ No post specified.</div>';
+        return;
+      }
+      try {
+        const postRef = doc(db, "blogs", postId);
+        const postSnap = await getDoc(postRef);
+        if (!postSnap.exists()) {
+          container.innerHTML = '<div class="error">Post not found.</div>';
+          return;
+        }
+        const post = postSnap.data();
+        const dateStr = post.date ? new Date(post.date).toLocaleDateString() : 'Recent';
+        container.innerHTML = `
+          <div class="post-header">
+            <h1 class="post-title">${escapeHtml(post.title)}</h1>
+            <div class="post-meta">📅 ${dateStr} &nbsp;|&nbsp; ✍️ ${escapeHtml(post.author || 'Admin')}</div>
+          </div>
+          <div class="post-content">${post.content || ''}</div>
+          <a href="blog.html" class="back-link">← Back to all articles</a>
+        `;
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = '<div class="error">⚠️ Failed to load post.</div>';
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
+    }
+
+    loadPost();
+  </script>
+</body>
+</html>
