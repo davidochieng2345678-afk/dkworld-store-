@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -6,28 +6,23 @@
   <title id="metaTitle">Blog Post | DK World Kenya</title>
   <meta name="description" id="metaDescription" content="Read our latest insights on web design, digital marketing, and business growth for Kenyan professionals.">
   <meta name="author" id="metaAuthor" content="DK World Kenya">
-  
-  <!-- Open Graph / Social Media -->
   <meta property="og:title" id="ogTitle" content="Blog Post | DK World Kenya">
-  <meta property="og:description" id="ogDescription" content="Read our latest insights on web design, digital marketing, and business growth for Kenyan professionals.">
+  <meta property="og:description" id="ogDescription" content="Read our latest insights...">
   <meta property="og:type" content="article">
   <meta property="og:url" id="ogUrl" content="">
   <meta property="og:image" id="ogImage" content="https://dkworldkenya.online/default-og.jpg">
-  <meta property="og:site_name" content="DK World Kenya">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" id="twitterTitle" content="Blog Post | DK World Kenya">
-  <meta name="twitter:description" id="twitterDescription" content="Read our latest insights...">
   
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f9fafb;
-      color: #1f2937;
+      font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
       line-height: 1.6;
     }
     nav {
-      background: #111827;
+      background: #0f172a;
       color: white;
       padding: 1rem;
       display: flex;
@@ -37,79 +32,135 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     nav a {
-      color: white;
+      color: #e2e8f0;
       text-decoration: none;
       font-weight: 500;
       transition: color 0.2s;
     }
     nav a:hover { color: #25D366; }
     .container {
-      max-width: 900px;
+      max-width: 950px;
       margin: 2rem auto;
       padding: 0 1rem;
     }
     .post-card {
       background: white;
       border-radius: 1.5rem;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.02);
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
       overflow: hidden;
       padding: 2rem;
+      transition: transform 0.2s;
     }
     .post-title {
       font-size: 2.2rem;
       font-weight: 800;
       line-height: 1.3;
       margin-bottom: 0.75rem;
-      color: #111827;
+      color: #0f172a;
+      letter-spacing: -0.01em;
     }
     .post-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
-      color: #6b7280;
+      color: #475569;
       font-size: 0.9rem;
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: 1px solid #e2e8f0;
       padding-bottom: 1rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.8rem;
     }
     .reading-time {
-      background: #f3f4f6;
-      padding: 0.2rem 0.6rem;
+      background: #e2e8f0;
+      padding: 0.2rem 0.7rem;
       border-radius: 2rem;
       font-size: 0.8rem;
+      font-weight: 500;
     }
     .post-content {
       font-size: 1.05rem;
       line-height: 1.7;
+      color: #1e293b;
     }
-    .post-content h1, .post-content h2, .post-content h3 {
-      margin-top: 1.8em;
-      margin-bottom: 0.5em;
+    /* Headings */
+    .post-content h2 {
+      font-size: 1.7rem;
       font-weight: 700;
-      line-height: 1.3;
+      margin-top: 1.8em;
+      margin-bottom: 0.6em;
+      border-left: 5px solid #2563eb;
+      padding-left: 1rem;
+      color: #0f172a;
     }
-    .post-content h2 { font-size: 1.5rem; border-left: 4px solid #2563eb; padding-left: 1rem; }
-    .post-content h3 { font-size: 1.3rem; }
-    .post-content p { margin-bottom: 1.2em; }
-    .post-content strong, .post-content b { font-weight: 700; color: #111827; }
-    .post-content ul, .post-content ol { margin: 1em 0 1em 2em; }
-    .post-content li { margin-bottom: 0.4em; }
-    .post-content a { color: #2563eb; text-decoration: underline; }
-    .post-content img { max-width: 100%; height: auto; border-radius: 0.75rem; margin: 1.5rem 0; }
+    .post-content h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-top: 1.4em;
+      margin-bottom: 0.4em;
+      color: #1e293b;
+    }
+    /* Paragraphs */
+    .post-content p {
+      margin-bottom: 1.2em;
+    }
+    /* Lists */
+    .post-content ul, .post-content ol {
+      margin: 0.8em 0 1.2em 1.8em;
+    }
+    .post-content li {
+      margin-bottom: 0.5em;
+    }
+    /* Bold & strong */
+    .post-content strong, .post-content b {
+      font-weight: 700;
+      color: #0f172a;
+      background: linear-gradient(120deg, #fef08a 0%, #fef08a 40%, transparent 60%);
+      background-size: 100% 30%;
+      background-repeat: no-repeat;
+      background-position: bottom;
+      padding: 0 0.1rem;
+    }
+    /* Blockquotes */
     .post-content blockquote {
       border-left: 4px solid #25D366;
       background: #f0fdf4;
       padding: 1rem 1.5rem;
       margin: 1.5rem 0;
-      border-radius: 0.75rem;
+      border-radius: 1rem;
       font-style: italic;
+      color: #14532d;
     }
+    /* Images */
+    .post-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 1rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    /* Tables */
+    .post-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+    .post-content th, .post-content td {
+      border: 1px solid #cbd5e1;
+      padding: 0.75rem;
+      text-align: left;
+    }
+    .post-content th {
+      background: #f1f5f9;
+      font-weight: 600;
+    }
+    /* Share section */
     .share-section {
       margin-top: 2.5rem;
       padding-top: 1.5rem;
-      border-top: 1px solid #e5e7eb;
+      border-top: 1px solid #e2e8f0;
       text-align: center;
     }
     .share-buttons {
@@ -123,23 +174,22 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: #f3f4f6;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 1.2rem;
       border-radius: 2rem;
       text-decoration: none;
-      font-weight: 500;
-      transition: background 0.2s;
+      font-weight: 600;
+      transition: all 0.2s ease;
     }
     .share-btn.whatsapp { background: #25D366; color: white; }
     .share-btn.twitter { background: #1DA1F2; color: white; }
     .share-btn.facebook { background: #1877F2; color: white; }
-    .share-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+    .share-btn:hover { transform: translateY(-2px); filter: brightness(0.95); }
     .back-link {
       display: inline-block;
       margin-top: 2rem;
       color: #2563eb;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
     }
     .back-link:hover { text-decoration: underline; }
     .loading, .error {
@@ -152,6 +202,7 @@
     @media (max-width: 640px) {
       .post-card { padding: 1.2rem; }
       .post-title { font-size: 1.6rem; }
+      .post-content h2 { font-size: 1.4rem; }
     }
   </style>
 </head>
@@ -195,6 +246,87 @@
     return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
   }
 
+  // Bold important keywords automatically (percentages, KES, product names, key terms)
+  function boldKeywords(text) {
+    if (!text) return text;
+    let result = text;
+    // Patterns to bold (add or remove as needed)
+    const patterns = [
+      { regex: /(\d+%|[\d,]+\s*percent)/gi, replacement: '<strong>$1</strong>' },
+      { regex: /(KES\s?[\d,]+|Ksh\s?[\d,]+)/gi, replacement: '<strong>$1</strong>' },
+      { regex: /(Law Firm Website Template|DK World Kenya|WhatsApp|SEO|HTML|CSS|Google|Nairobi|Kenya)/gi, replacement: '<strong>$1</strong>' },
+      { regex: /(\b\d{1,2}[-–]\d{1,2} hours?|\b\d{1,2} days?|\b\d{1,2} weeks?)/gi, replacement: '<strong>$1</strong>' },
+      { regex: /(\+[0-9]+%|up\s?by\s?[0-9]+%)/gi, replacement: '<strong>$1</strong>' }
+    ];
+    patterns.forEach(p => {
+      result = result.replace(p.regex, p.replacement);
+    });
+    return result;
+  }
+
+  // Convert plain text to semantic HTML with bold keywords
+  function formatPlainTextToHtml(text) {
+    if (!text) return '<p><em>No content yet.</em></p>';
+    
+    const lines = text.split(/\r?\n/);
+    let html = '';
+    let inList = false;
+    let listHtml = '';
+    
+    for (let i = 0; i < lines.length; i++) {
+      let rawLine = lines[i];
+      let line = rawLine.trim();
+      if (line === '') continue;
+      
+      // Detect headings: ends with colon, short all-caps, or starts with number/word then colon
+      const isHeading = (
+        (line.length < 80 && (line.endsWith(':') || (line === line.toUpperCase() && line.length < 50))) ||
+        /^\d+\.\s+[A-Z]/.test(line) ||
+        /^[A-Z][a-z]+:/.test(line)
+      );
+      
+      // Detect list items (start with ·, -, *, or number.)
+      const isListItem = /^[·\-*]\s/.test(line) || /^\d+\.\s/.test(line);
+      
+      // Apply keyword bolding to the line (but not to HTML tags)
+      let processedLine = escapeHtml(line);
+      processedLine = boldKeywords(processedLine);
+      
+      if (isListItem) {
+        if (!inList) {
+          inList = true;
+          listHtml = '<ul>';
+        }
+        let itemText = processedLine.replace(/^[·\-*]\s/, '').replace(/^\d+\.\s/, '');
+        listHtml += `<li>${itemText}</li>`;
+      } else {
+        if (inList) {
+          listHtml += '</ul>';
+          html += listHtml;
+          inList = false;
+          listHtml = '';
+        }
+        
+        if (isHeading) {
+          if (line.length < 60 && (line.includes(':') || /^\d+\./.test(line))) {
+            html += `<h2>${processedLine}</h2>`;
+          } else {
+            html += `<h3>${processedLine}</h3>`;
+          }
+        } else {
+          html += `<p>${processedLine}</p>`;
+        }
+      }
+    }
+    
+    if (inList) {
+      listHtml += '</ul>';
+      html += listHtml;
+    }
+    
+    return html;
+  }
+
   function stripHtml(html) {
     if (!html) return '';
     const tmp = document.createElement('div');
@@ -209,7 +341,6 @@
     return minutes === 1 ? '1 min read' : `${minutes} min read`;
   }
 
-  // Generate JSON-LD schema (Article + BlogPosting)
   function addSchema(post, plainDescription, imageUrl) {
     const existingScript = document.getElementById('blogSchema');
     if (existingScript) existingScript.remove();
@@ -219,29 +350,19 @@
       "@type": "BlogPosting",
       "headline": post.title,
       "description": plainDescription,
-      "author": {
-        "@type": "Person",
-        "name": post.author || "DK World Kenya"
-      },
+      "author": { "@type": "Person", "name": post.author || "DK World Kenya" },
       "datePublished": post.date ? new Date(post.date).toISOString() : new Date().toISOString(),
       "dateModified": new Date().toISOString(),
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": currentUrl
-      },
+      "mainEntityOfPage": { "@type": "WebPage", "@id": currentUrl },
       "publisher": {
         "@type": "Organization",
         "name": "DK World Kenya",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://dkworldkenya.online/logo.png"
-        }
+        "logo": { "@type": "ImageObject", "url": "https://dkworldkenya.online/logo.png" }
       },
       "image": imageUrl || "https://dkworldkenya.online/default-og.jpg",
-      "articleBody": stripHtml(post.content || "").substring(0, 5000),
+      "articleBody": plainDescription.substring(0, 5000),
       "keywords": post.category || "blog, web design, Kenya"
     };
-
     const script = document.createElement('script');
     script.id = 'blogSchema';
     script.type = 'application/ld+json';
@@ -249,20 +370,15 @@
     document.head.appendChild(script);
   }
 
-  // Update meta tags for social sharing
   function updateMetaTags(post, plainDescription, imageUrl) {
     document.title = `${post.title} | DK World Kenya`;
     document.querySelector('#metaTitle')?.setAttribute('content', post.title);
     document.querySelector('#metaDescription')?.setAttribute('content', plainDescription);
     document.querySelector('#metaAuthor')?.setAttribute('content', post.author || 'DK World Kenya');
-    
     document.querySelector('#ogTitle')?.setAttribute('content', post.title);
     document.querySelector('#ogDescription')?.setAttribute('content', plainDescription);
     document.querySelector('#ogUrl')?.setAttribute('content', currentUrl);
     if (imageUrl) document.querySelector('#ogImage')?.setAttribute('content', imageUrl);
-    
-    document.querySelector('#twitterTitle')?.setAttribute('content', post.title);
-    document.querySelector('#twitterDescription')?.setAttribute('content', plainDescription);
   }
 
   async function loadPost() {
@@ -282,16 +398,17 @@
       const title = post.title || 'Untitled';
       const author = post.author || 'Admin';
       const dateStr = post.date ? new Date(post.date).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }) : 'Recent';
-      const contentHtml = post.content || '<p><em>No content yet.</em></p>';
+      
+      const rawContent = post.content || '';
+      // If content already contains HTML tags, use as-is; otherwise format plain text
+      const contentHtml = /<[^>]+>/.test(rawContent) ? rawContent : formatPlainTextToHtml(rawContent);
       const readTime = readingTime(contentHtml);
       const plainDescription = stripHtml(contentHtml).substring(0, 160);
-      const imageUrl = post.imageUrl || null; // if you add image field in future
+      const imageUrl = post.imageUrl || null;
 
-      // Update SEO & Schema
       updateMetaTags(post, plainDescription, imageUrl);
       addSchema(post, plainDescription, imageUrl);
 
-      // Render HTML
       container.innerHTML = `
         <div class="post-card">
           <h1 class="post-title">${escapeHtml(title)}</h1>
@@ -324,3 +441,4 @@
 </script>
 </body>
 </html>
+
