@@ -352,6 +352,227 @@ searchInput.addEventListener("input", ()=>{
 // INIT
 fetchProducts();
 </script>
+<style>
+  .blog-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+  .blog-section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    letter-spacing: -0.01em;
+  }
+  .blog-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .blog-card {
+    background: #fff;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .blog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.1);
+  }
+  .card-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background: #f3f4f6;
+  }
+  .card-content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .blog-card h3 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.4;
+  }
+  .blog-meta {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 0.75rem;
+    display: flex;
+    gap: 1rem;
+  }
+  .blog-card p {
+    color: #4b5563;
+    line-height: 1.5;
+    margin: 0 0 1rem 0;
+    flex: 1;
+  }
+  .read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-weight: 500;
+    color: #2563eb;
+    text-decoration: none;
+    transition: gap 0.2s;
+  }
+  .read-more:hover {
+    gap: 0.5rem;
+    text-decoration: underline;
+  }
+  .loading-spinner {
+    text-align: center;
+    padding: 3rem;
+    color: #6b7280;
+  }
+  .error-message {
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    text-align: center;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    background: #f9fafb;
+    border-radius: 1rem;
+    color: #4b5563;
+  }
+  .view-all-cta {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  .btn-outline {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid #d1d5db;
+    padding: 0.6rem 1.5rem;
+    border-radius: 2rem;
+    text-decoration: none;
+    font-weight: 500;
+    color: #1f2937;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .btn-outline:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+  }
+  @media (max-width: 640px) {
+    .blog-container {
+      gap: 1.5rem;
+    }
+    .card-content {
+      padding: 1.25rem;
+    }
+  }
+</style>
+
+<section class="blog-section">
+  <h2>Latest Insights</h2>
+  <div id="blogContainer" class="blog-container">
+    <!-- loading state will appear here -->
+  </div>
+  <div class="view-all-cta">
+    <a href="/blog" class="btn-outline">View all articles →</a>
+  </div>
+</section>
+
+<script type="module">
+  import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const db = getFirestore();
+  const container = document.getElementById("blogContainer");
+
+  // Helper: format date (expects Firestore Timestamp or ISO string)
+  function formatDate(dateValue) {
+    if (!dateValue) return '';
+    try {
+      const date = dateValue.toDate ? dateValue.toDate() : new Date(dateValue);
+      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    } catch {
+      return '';
+    }
+  }
+
+  // Truncate excerpt to ~120 chars
+  function truncate(text, maxLen = 120) {
+    if (!text) return '';
+    return text.length > maxLen ? text.slice(0, maxLen).trim() + '…' : text;
+  }
+
+  async function loadBlog() {
+    // Show loading spinner
+    container.innerHTML = `<div class="loading-spinner">📖 Loading insights...</div>`;
+
+    try {
+      // Query: newest first, limit to 6 posts for better conversion focus
+      const q = query(collection(db, "blog"), orderBy("createdAt", "desc"), limit(6));
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        container.innerHTML = `<div class="empty-state">✨ No posts yet. Check back soon!</div>`;
+        return;
+      }
+
+      let html = '';
+      snapshot.forEach(doc => {
+        const post = doc.data();
+        const title = post.title || 'Untitled';
+        const excerpt = truncate(post.excerpt || post.content?.slice(0, 150) || '');
+        const slug = post.slug || doc.id;
+        const imageUrl = post.imageUrl || 'https://placehold.co/600x400?text=Blog+Image';
+        const dateStr = formatDate(post.createdAt);
+        const author = post.author || 'Editor';
+
+        html += `
+          <div class="blog-card">
+            <img class="card-image" src="${imageUrl}" alt="${title}" loading="lazy" onerror="this.src='https://placehold.co/600x400?text=No+Image'">
+            <div class="card-content">
+              <h3>${escapeHtml(title)}</h3>
+              <div class="blog-meta">
+                <span>📅 ${dateStr || 'Recent'}</span>
+                <span>✍️ ${escapeHtml(author)}</span>
+              </div>
+              <p>${escapeHtml(excerpt)}</p>
+              <a href="/blog/${encodeURIComponent(slug)}" class="read-more">Read more →</a>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    } catch (error) {
+      console.error("Firestore error:", error);
+      container.innerHTML = `<div class="error-message">⚠️ Unable to load articles. Please refresh or try again later.</div>`;
+    }
+  }
+
+  // Basic XSS protection
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+      return c;
+    });
+  }
+
+  loadBlog();
+</script>
+  
 <footer style="background:#111827;color:white;padding:25px 20px;margin-top:20px;">
   <div style="max-width:1200px;margin:auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;padding-bottom:20px;">
     
