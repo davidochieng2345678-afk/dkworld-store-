@@ -546,6 +546,65 @@ blogsCSVInput.addEventListener("change", async e => {
 })();
 </script>
 
-
+<script>
+// ADD CLICKABLE VIEW BUTTONS FOR BLOG POSTS
+(function() {
+  function addBlogViewButtons() {
+    const table = document.querySelector('#blogTable');
+    if (!table) return;
+    
+    // Add "View" header if missing
+    const theadRow = table.querySelector('thead tr');
+    let hasView = false;
+    for (let th of theadRow.cells) {
+      if (th.innerText.trim().toLowerCase() === 'view') hasView = true;
+    }
+    if (!hasView) {
+      const th = document.createElement('th');
+      th.innerText = 'View';
+      theadRow.appendChild(th);
+    }
+    
+    // Add view button to each row
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      if (row.querySelector('.blog-view-btn-cell')) return;
+      
+      const editBtn = row.querySelector('.edit');
+      if (!editBtn) return;
+      const onclickAttr = editBtn.getAttribute('onclick');
+      const match = onclickAttr && onclickAttr.match(/editBlog\('([^']+)'\)/);
+      const blogId = match ? match[1] : null;
+      if (!blogId) return;
+      
+      const td = document.createElement('td');
+      td.className = 'blog-view-btn-cell';
+      const btn = document.createElement('button');
+      btn.textContent = 'View →';
+      btn.style.background = '#2563eb';
+      btn.style.color = 'white';
+      btn.style.border = 'none';
+      btn.style.borderRadius = '5px';
+      btn.style.padding = '5px 10px';
+      btn.style.cursor = 'pointer';
+      btn.style.fontWeight = 'bold';
+      btn.onclick = (function(id) {
+        return function() {
+          window.open(`/blog-post.html?id=${id}`, '_blank');
+        };
+      })(blogId);
+      td.appendChild(btn);
+      row.appendChild(td);
+    });
+  }
+  
+  addBlogViewButtons();
+  const observer = new MutationObserver(function() {
+    addBlogViewButtons();
+  });
+  const tbody = document.querySelector('#blogTable tbody');
+  if (tbody) observer.observe(tbody, { childList: true, subtree: true });
+})();
+</script>
 </body>
 </html>
