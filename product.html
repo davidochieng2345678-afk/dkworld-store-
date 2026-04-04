@@ -22,16 +22,12 @@
 <link rel="preconnect" href="https://www.gstatic.com">
 <link rel="preconnect" href="https://firebasestorage.googleapis.com">
 
-<!-- Structured Data (dynamic product schema will be injected) -->
+<!-- Structured Data -->
 <script id="productSchema" type="application/ld+json"></script>
 <script id="breadcrumbSchema" type="application/ld+json"></script>
 
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background: #f9fafb;
@@ -57,9 +53,7 @@
     transition: 0.2s;
     font-size: 1rem;
   }
-  nav a:hover, nav a.active {
-    color: #25D366;
-  }
+  nav a:hover, nav a.active { color: #25D366; }
   .container {
     max-width: 1280px;
     margin: 2rem auto;
@@ -71,7 +65,6 @@
     box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
     overflow: hidden;
     margin-bottom: 2.5rem;
-    transition: transform 0.2s;
   }
   .product-grid {
     display: grid;
@@ -93,10 +86,7 @@
     object-fit: contain;
     border-radius: 20px;
   }
-  .product-details {
-    display: flex;
-    flex-direction: column;
-  }
+  .product-details { display: flex; flex-direction: column; }
   .category-badge {
     display: inline-block;
     background: #e6f7ec;
@@ -113,40 +103,16 @@
     font-weight: 800;
     margin-bottom: 0.75rem;
     color: #0f172a;
-    letter-spacing: -0.02em;
-  }
-  .price-box {
-    margin: 0.75rem 0;
   }
   .current-price {
     font-size: 2rem;
     font-weight: 800;
     color: #0f172a;
   }
-  .stock-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0.5rem 0 1rem 0;
-    font-weight: 500;
-  }
-  .in-stock {
-    color: #16a34a;
-    background: #e0f2e9;
-    padding: 0.25rem 0.75rem;
-    border-radius: 30px;
-    font-size: 0.85rem;
-  }
-  .low-stock {
-    color: #b45309;
-    background: #ffedd5;
-    padding: 0.25rem 0.75rem;
-    border-radius: 30px;
-  }
-  .out-stock {
-    color: #b91c1c;
-    background: #fee2e2;
-  }
+  .stock-status { margin: 0.5rem 0 1rem 0; }
+  .in-stock { color: #16a34a; background: #e0f2e9; padding: 0.25rem 0.75rem; border-radius: 30px; display: inline-block; }
+  .low-stock { color: #b45309; background: #ffedd5; padding: 0.25rem 0.75rem; border-radius: 30px; display: inline-block; }
+  .out-stock { color: #b91c1c; background: #fee2e2; padding: 0.25rem 0.75rem; border-radius: 30px; display: inline-block; }
   .quantity-selector {
     display: flex;
     align-items: center;
@@ -167,11 +133,8 @@
     font-size: 1.4rem;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.1s;
   }
-  .quantity-btn:hover {
-    background: #eef2ff;
-  }
+  .quantity-btn:hover { background: #eef2ff; }
   #quantityInput {
     width: 60px;
     text-align: center;
@@ -193,11 +156,8 @@
     gap: 0.6rem;
     font-size: 1.1rem;
     transition: 0.2s;
-    border: none;
-    cursor: pointer;
     width: 100%;
     max-width: 280px;
-    box-shadow: 0 4px 10px rgba(37,211,102,0.3);
   }
   .whatsapp-btn:hover {
     background: #1da851;
@@ -218,38 +178,19 @@
     padding: 0.4rem 0.9rem;
     border-radius: 40px;
   }
-  /* description formatting */
   .product-description {
     margin-top: 1.5rem;
     border-top: 1px solid #eef2ff;
-    padding-top: 1.5rem;
+    padding: 1.5rem;
   }
   .product-description h2, .product-description h3 {
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
     font-weight: 700;
-    color: #0f172a;
   }
-  .product-description h2:first-child {
-    margin-top: 0;
-  }
-  .product-description h3 {
-    font-size: 1.25rem;
-  }
-  .product-description p {
-    margin-bottom: 1rem;
-    line-height: 1.7;
-    color: #334155;
-  }
-  .product-description ul, .product-description ol {
-    margin: 0.75rem 0 1rem 1.8rem;
-  }
-  .product-description li {
-    margin-bottom: 0.4rem;
-  }
-  .product-description strong {
-    color: #0f172a;
-  }
+  .product-description p { margin-bottom: 1rem; line-height: 1.7; }
+  .product-description ul, .product-description ol { margin: 0.75rem 0 1rem 1.8rem; }
+  .product-description li { margin-bottom: 0.4rem; }
   .breadcrumb {
     font-size: 0.85rem;
     margin-bottom: 1rem;
@@ -258,13 +199,8 @@
     gap: 0.3rem;
     color: #4b5563;
   }
-  .breadcrumb a {
-    color: #2563eb;
-    text-decoration: none;
-  }
-  .breadcrumb a:hover {
-    text-decoration: underline;
-  }
+  .breadcrumb a { color: #2563eb; text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
   .related-title {
     font-size: 1.8rem;
     font-weight: 700;
@@ -276,41 +212,24 @@
     gap: 1.5rem;
     overflow-x: auto;
     padding: 0.5rem 0.2rem 1.5rem;
-    scrollbar-width: thin;
   }
   .product-card {
     min-width: 260px;
     background: white;
     border-radius: 20px;
     overflow: hidden;
-    transition: 0.2s;
     box-shadow: 0 8px 20px rgba(0,0,0,0.05);
   }
-  .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 25px -12px rgba(0,0,0,0.15);
-  }
+  .product-card:hover { transform: translateY(-5px); }
   .product-card img {
     width: 100%;
     height: 180px;
     object-fit: cover;
   }
-  .product-card .content {
-    padding: 1rem;
-  }
-  .product-card h3 {
-    font-size: 1.05rem;
-    margin-bottom: 0.5rem;
-  }
-  .product-card .price {
-    font-weight: 800;
-    margin: 0.5rem 0;
-  }
-  .card-buttons {
-    display: flex;
-    gap: 0.7rem;
-    margin-top: 0.8rem;
-  }
+  .product-card .content { padding: 1rem; }
+  .product-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+  .product-card .price { font-weight: 800; margin: 0.5rem 0; }
+  .card-buttons { display: flex; gap: 0.7rem; margin-top: 0.8rem; }
   .card-buttons a {
     flex: 1;
     text-align: center;
@@ -320,14 +239,8 @@
     font-size: 0.8rem;
     font-weight: 600;
   }
-  .view-link {
-    background: #0f172a;
-    color: white;
-  }
-  .wa-link {
-    background: #25D366;
-    color: white;
-  }
+  .view-link { background: #0f172a; color: white; }
+  .wa-link { background: #25D366; color: white; }
   footer {
     text-align: center;
     padding: 2rem;
@@ -336,31 +249,12 @@
     margin-top: 3rem;
   }
   @media (max-width: 780px) {
-    .product-grid {
-      grid-template-columns: 1fr;
-      padding: 1.5rem;
-    }
-    h1 {
-      font-size: 1.7rem;
-    }
-    .container {
-      padding: 0 1rem;
-    }
-    .whatsapp-btn {
-      max-width: 100%;
-    }
+    .product-grid { grid-template-columns: 1fr; padding: 1.5rem; }
+    h1 { font-size: 1.7rem; }
   }
-  .loader {
-    text-align: center;
-    padding: 3rem;
-  }
-  .highlight-bold {
-    font-weight: 700;
-    color: #0f172a;
-    background: #fef9c3;
-    padding: 0 0.1rem;
-    border-radius: 6px;
-  }
+  .loader { text-align: center; padding: 3rem; }
+  .highlight-bold { font-weight: 700; background: #fef9c3; padding: 0 0.1rem; border-radius: 6px; }
+  .error-message { text-align: center; padding: 3rem; color: #b91c1c; background: #fee2e2; border-radius: 1rem; }
 </style>
 </head>
 <body>
@@ -387,7 +281,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyABCVM1b9FEdXlJWf1SoL7dwQL1EXPXwgA",
@@ -405,39 +299,32 @@ const container = document.getElementById("productContainer");
 const relatedContainer = document.getElementById("relatedProducts");
 const breadcrumbDiv = document.getElementById("breadcrumbNav");
 
+// Get parameter – support BOTH ?id= and ?sku=
 const urlParams = new URLSearchParams(window.location.search);
-const sku = urlParams.get("sku");
+const productId = urlParams.get("id");
+const productSku = urlParams.get("sku");
 
-// ---------- FORMAT DESCRIPTION: Plain text → semantic HTML with headings, lists, bold long-tail keywords ----------
+let currentProduct = null;
+let currentQuantity = 1;
+
+// Format description (plain text to semantic HTML)
 function formatDescription(plainText, productName, category) {
-  if (!plainText) return "<p>No description available.</p>";
-  // If already contains HTML tags, return as-is (but ensure safe)
+  if (!plainText) return "<div class='product-description'><p>No description available.</p></div>";
   if (/<\/?[a-z][\s\S]*>/i.test(plainText)) {
     return `<div class="product-description">${plainText}</div>`;
   }
   
-  // 1. split lines
-  let lines = plainText.split(/\r?\n/);
-  let result = [];
-  let inList = false;
-  let listItems = [];
-  
-  // Helper to bold long-tail keywords & important terms
   const boldLongTail = (text) => {
-    // list of long-tail / conversion keywords (e-commerce + Kenya specific)
-    const keywords = [
-      productName, category, "Kenya", "Nairobi", "best price", "high quality", 
+    const keywords = [productName, category, "Kenya", "Nairobi", "best price", "high quality", 
       "free delivery", "original", "money back", "warranty", "digital product", 
       "instant download", "affordable", "top rated", "trusted seller", "fast shipping",
-      "customer support", "24/7", "secure payment", "best in Kenya"
-    ];
+      "customer support", "24/7", "secure payment", "best in Kenya"];
     let bolded = text;
     keywords.forEach(kw => {
       if (!kw) return;
       const regex = new RegExp(`(${kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
       bolded = bolded.replace(regex, `<strong class="highlight-bold">$1</strong>`);
     });
-    // also bold phrases that look like long-tail (3-6 words starting with capital letter, product features)
     const longTailRegex = /\b([A-Z][a-z]+(?:\s+[A-Za-z][a-z]*){2,5})\b/g;
     bolded = bolded.replace(longTailRegex, (match) => {
       if (match.length > 10 && !match.includes('strong')) 
@@ -447,8 +334,13 @@ function formatDescription(plainText, productName, category) {
     return bolded;
   };
   
-  for (let i = 0; i < lines.length; i++) {
-    let line = lines[i].trim();
+  const lines = plainText.split(/\r?\n/);
+  let result = [];
+  let inList = false;
+  let listItems = [];
+  
+  for (let line of lines) {
+    line = line.trim();
     if (line === "") {
       if (inList) {
         result.push(`<ul>${listItems.join('')}</ul>`);
@@ -457,8 +349,6 @@ function formatDescription(plainText, productName, category) {
       }
       continue;
     }
-    
-    // Detect bullet list items
     if (line.match(/^[\-\*•]\s/)) {
       let content = line.replace(/^[\-\*•]\s/, '');
       content = boldLongTail(content);
@@ -466,14 +356,11 @@ function formatDescription(plainText, productName, category) {
       inList = true;
       continue;
     }
-    
     if (inList) {
       result.push(`<ul>${listItems.join('')}</ul>`);
       listItems = [];
       inList = false;
     }
-    
-    // Detect headings (ends with colon OR short line & capital pattern OR contains specific keywords)
     const isHeading = (line.length < 70 && (line.endsWith(':') || /^(Features|Specs|Benefits|Details|Why Choose|Highlights|Description|Overview|Key Features|What's Included)/i.test(line)));
     if (isHeading) {
       let headingText = line.replace(/:$/, '');
@@ -481,40 +368,26 @@ function formatDescription(plainText, productName, category) {
       result.push(`<h3>${headingText}</h3>`);
       continue;
     }
-    
-    // Normal paragraph
-    let para = boldLongTail(line);
-    result.push(`<p>${para}</p>`);
+    result.push(`<p>${boldLongTail(line)}</p>`);
   }
-  
-  if (inList && listItems.length) {
-    result.push(`<ul>${listItems.join('')}</ul>`);
-  }
-  
+  if (inList && listItems.length) result.push(`<ul>${listItems.join('')}</ul>`);
   return `<div class="product-description">${result.join('')}</div>`;
 }
 
-// Helper to update meta & canonical
-function updateMetaAndSchema(product, formattedDescriptionPlain) {
-  // meta description (strip HTML)
-  const plainDesc = product.description.replace(/<[^>]*>/g, '').substring(0, 160);
-  document.title = `${product.name} - DK World Kenya | Best Digital Products`;
-  const metaDesc = document.querySelector('meta[name="description"]');
-  if (metaDesc) metaDesc.setAttribute("content", plainDesc || `Buy ${product.name} in Kenya at Ksh ${product.price}. Quality guaranteed.`);
-  const metaKeywords = document.querySelector('meta[name="keywords"]');
-  if (metaKeywords) metaKeywords.setAttribute("content", `${product.category}, ${product.name}, buy ${product.name} Kenya, digital products, DK World Kenya`);
-  
-  // Open Graph
+function updateMetaAndSchema(product) {
+  const plainDesc = (product.description || '').replace(/<[^>]*>/g, '').substring(0, 160);
+  document.title = `${product.name} - DK World Kenya`;
+  let metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc) metaDesc.setAttribute("content", plainDesc || `Buy ${product.name} in Kenya at Ksh ${product.price}.`);
+  let metaKeywords = document.querySelector('meta[name="keywords"]');
+  if (metaKeywords) metaKeywords.setAttribute("content", `${product.category}, ${product.name}, buy ${product.name} Kenya, DK World Kenya`);
   document.querySelector('meta[property="og:title"]').setAttribute("content", `${product.name} - DK World Kenya`);
   document.querySelector('meta[property="og:description"]').setAttribute("content", plainDesc.substring(0, 200));
   if (product.image) document.querySelector('meta[property="og:image"]').setAttribute("content", product.image);
-  document.querySelector('meta[property="og:url"]').setAttribute("content", `https://dkworldkenya.online/product.html?sku=${encodeURIComponent(product.sku)}`);
-  
-  // Canonical link
+  document.querySelector('meta[property="og:url"]').setAttribute("content", `https://dkworldkenya.online/product.html?id=${product.id || ''}`);
   const canonicalLink = document.getElementById("dynamicCanonical");
-  if (canonicalLink) canonicalLink.href = `https://dkworldkenya.online/product.html?sku=${encodeURIComponent(product.sku)}`;
+  if (canonicalLink) canonicalLink.href = `https://dkworldkenya.online/product.html?id=${product.id || ''}`;
   
-  // Product Schema (rich snippet)
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -522,50 +395,38 @@ function updateMetaAndSchema(product, formattedDescriptionPlain) {
     "image": product.image || "https://dkworldkenya.online/default.jpg",
     "description": plainDesc,
     "sku": product.sku,
-    "brand": {
-      "@type": "Brand",
-      "name": "DK World Kenya"
-    },
+    "brand": { "@type": "Brand", "name": "DK World Kenya" },
     "offers": {
       "@type": "Offer",
-      "url": `https://dkworldkenya.online/product.html?sku=${encodeURIComponent(product.sku)}`,
+      "url": `https://dkworldkenya.online/product.html?id=${product.id || ''}`,
       "priceCurrency": "KES",
       "price": product.price,
-      "priceValidUntil": "2026-12-31",
       "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      "seller": {
-        "@type": "Organization",
-        "name": "DK World Kenya"
-      }
+      "seller": { "@type": "Organization", "name": "DK World Kenya" }
     }
   };
   document.getElementById("productSchema").textContent = JSON.stringify(productSchema);
 }
 
-// Breadcrumb + BreadcrumbList Schema
-function setBreadcrumb(category, productName, skuVal) {
+function setBreadcrumb(category, productName, productId) {
   const baseUrl = "https://dkworldkenya.online";
-  const breadcrumbHtml = `
+  breadcrumbDiv.innerHTML = `
     <a href="index.html">Home</a> &nbsp;›&nbsp;
     <a href="index.html?category=${encodeURIComponent(category)}">${category}</a> &nbsp;›&nbsp;
     <span>${productName}</span>
   `;
-  breadcrumbDiv.innerHTML = breadcrumbHtml;
-  
   const breadcrumbList = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": `${baseUrl}/index.html` },
       { "@type": "ListItem", "position": 2, "name": category, "item": `${baseUrl}/index.html?category=${encodeURIComponent(category)}` },
-      { "@type": "ListItem", "position": 3, "name": productName, "item": `${baseUrl}/product.html?sku=${encodeURIComponent(skuVal)}` }
+      { "@type": "ListItem", "position": 3, "name": productName, "item": `${baseUrl}/product.html?id=${productId}` }
     ]
   };
   document.getElementById("breadcrumbSchema").textContent = JSON.stringify(breadcrumbList);
 }
 
-// WhatsApp with quantity
-let currentQuantity = 1;
 function updateWhatsAppLink(product) {
   const qty = currentQuantity;
   const message = `I want to buy ${qty} x ${product.name} (SKU: ${product.sku}) - Total Ksh ${product.price * qty}. Please confirm availability.`;
@@ -574,24 +435,23 @@ function updateWhatsAppLink(product) {
   if (waBtn) waBtn.href = waLink;
 }
 
-// Build product UI with formatted description & quantity
 function renderProductUI(product) {
   const formattedDescHTML = formatDescription(product.description, product.name, product.category);
   const mediaHtml = product.video 
-    ? `<iframe class="product-media" src="${product.video}" frameborder="0" allowfullscreen style="width:100%; height:350px; border-radius:20px;"></iframe>`
-    : `<img class="product-media" src="${product.image}" alt="${product.name}" loading="lazy" style="width:100%;">`;
+    ? `<iframe src="${product.video}" frameborder="0" allowfullscreen style="width:100%; height:350px; border-radius:20px;"></iframe>`
+    : `<img src="${product.image}" alt="${product.name}" loading="lazy" style="width:100%; border-radius:20px;">`;
   
   let stockHtml = '';
   if (product.stock > 10) stockHtml = `<span class="in-stock">✓ In Stock (${product.stock} units)</span>`;
-  else if (product.stock > 0 && product.stock <= 10) stockHtml = `<span class="low-stock">⚠️ Low Stock - Only ${product.stock} left!</span>`;
+  else if (product.stock > 0) stockHtml = `<span class="low-stock">⚠️ Low Stock - Only ${product.stock} left!</span>`;
   else stockHtml = `<span class="out-stock">✗ Out of Stock</span>`;
   
-  const containerHtml = `
+  container.innerHTML = `
     <div class="product-grid">
       <div class="product-media">${mediaHtml}</div>
       <div class="product-details">
         <span class="category-badge">${product.category}</span>
-        <h1>${product.name}</h1>
+        <h1>${escapeHtml(product.name)}</h1>
         <div class="price-box">
           <span class="current-price">Ksh ${Number(product.price).toLocaleString()}</span>
         </div>
@@ -601,9 +461,7 @@ function renderProductUI(product) {
           <input type="number" id="quantityInput" value="1" min="1" max="${product.stock > 0 ? product.stock : 1}" step="1">
           <button class="quantity-btn" id="plusQty">+</button>
         </div>
-        <a id="dynamicWhatsAppBtn" class="whatsapp-btn" target="_blank" href="#">
-          💬 Buy on WhatsApp
-        </a>
+        <a id="dynamicWhatsAppBtn" class="whatsapp-btn" target="_blank" href="#">💬 Buy on WhatsApp</a>
         <div class="trust-badge">
           <span class="trust-item">🔒 Secure Checkout</span>
           <span class="trust-item">🚚 Fast Delivery Kenya</span>
@@ -614,13 +472,11 @@ function renderProductUI(product) {
     </div>
     ${formattedDescHTML}
   `;
-  container.innerHTML = containerHtml;
   
   // quantity controls
   const minusBtn = document.getElementById("minusQty");
   const plusBtn = document.getElementById("plusQty");
   const qtyInput = document.getElementById("quantityInput");
-  
   const updateQuantity = () => {
     let val = parseInt(qtyInput.value);
     if (isNaN(val)) val = 1;
@@ -630,152 +486,102 @@ function renderProductUI(product) {
     qtyInput.value = val;
     updateWhatsAppLink(product);
   };
-  
-  minusBtn?.addEventListener("click", () => {
+  if (minusBtn) minusBtn.addEventListener("click", () => {
     let val = parseInt(qtyInput.value) - 1;
     if (val < 1) val = 1;
     qtyInput.value = val;
     updateQuantity();
   });
-  plusBtn?.addEventListener("click", () => {
+  if (plusBtn) plusBtn.addEventListener("click", () => {
     let val = parseInt(qtyInput.value) + 1;
     if (product.stock > 0 && val > product.stock) val = product.stock;
     qtyInput.value = val;
     updateQuantity();
   });
-  qtyInput?.addEventListener("change", updateQuantity);
+  if (qtyInput) qtyInput.addEventListener("change", updateQuantity);
   updateWhatsAppLink(product);
 }
 
-// Related products loader (improved)
-async function loadRelatedProducts(category, currentSku) {
+async function loadRelatedProducts(category, currentId) {
   if (!category) return;
-  const q = query(collection(db, "products"), where("category", "==", category));
-  const snapshot = await getDocs(q);
-  const related = [];
-  snapshot.forEach(docSnap => {
-    const prod = docSnap.data();
-    if (prod.sku !== currentSku) related.push(prod);
-  });
-  relatedContainer.innerHTML = "";
-  if (related.length === 0) {
-    relatedContainer.innerHTML = "<p style='text-align:center;'>✨ More products coming soon.</p>";
-    return;
-  }
-  related.slice(0, 8).forEach(prod => {
-    const card = document.createElement("div");
-    card.className = "product-card";
-    card.innerHTML = `
-      <img src="${prod.image}" alt="${prod.name}" loading="lazy">
-      <div class="content">
-        <h3>${prod.name}</h3>
-        <div class="price">Ksh ${Number(prod.price).toLocaleString()}</div>
-        <div class="card-buttons">
-          <a href="product.html?sku=${encodeURIComponent(prod.sku)}" class="view-link">View</a>
-          <a target="_blank" href="https://wa.me/254710346789?text=I%20want%20to%20buy%20${encodeURIComponent(prod.name)}" class="wa-link">WhatsApp</a>
+  try {
+    const q = query(collection(db, "products"), where("category", "==", category), limit(6));
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) { relatedContainer.innerHTML = "<p style='text-align:center'>No related products found.</p>"; return; }
+    let html = '';
+    snapshot.forEach(docSnap => {
+      const prod = docSnap.data();
+      if (docSnap.id === currentId) return;
+      html += `
+        <div class="product-card">
+          <img src="${prod.image || 'https://placehold.co/300x180'}" alt="${escapeHtml(prod.name)}" loading="lazy">
+          <div class="content">
+            <h3>${escapeHtml(prod.name)}</h3>
+            <div class="price">Ksh ${Number(prod.price).toLocaleString()}</div>
+            <div class="card-buttons">
+              <a href="product.html?id=${docSnap.id}" class="view-link">View</a>
+              <a href="https://wa.me/254710346789?text=I'm%20interested%20in%20${encodeURIComponent(prod.name)}" target="_blank" class="wa-link">WhatsApp</a>
+            </div>
+          </div>
         </div>
-      </div>
-    `;
-    relatedContainer.appendChild(card);
-  });
+      `;
+    });
+    relatedContainer.innerHTML = html;
+  } catch (err) { console.error(err); }
 }
 
-// Main load product
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
+}
+
+// MAIN: fetch product by ID (preferred) or by SKU
 async function loadProduct() {
-  if (!sku) {
-    container.innerHTML = "<div style='padding:2rem; text-align:center'>❌ No product selected. <a href='index.html'>Browse products</a></div>";
+  if (!productId && !productSku) {
+    container.innerHTML = '<div class="error-message">❌ No product selected. Please browse our <a href="index.html">products</a>.</div>';
     return;
   }
+  
   try {
-    const q = query(collection(db, "products"), where("sku", "==", sku));
-    const snapshot = await getDocs(q);
-    if (snapshot.empty) {
-      container.innerHTML = "<div style='padding:2rem; text-align:center'>⚠️ Product not found. <a href='index.html'>Return to shop</a></div>";
+    let productDoc = null;
+    let docId = null;
+    
+    // First try by document ID
+    if (productId) {
+      const docRef = doc(db, "products", productId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        productDoc = docSnap.data();
+        docId = docSnap.id;
+      }
+    }
+    
+    // If not found by ID, try by SKU
+    if (!productDoc && productSku) {
+      const q = query(collection(db, "products"), where("sku", "==", productSku.toUpperCase()), limit(1));
+      const snapshot = await getDocs(q);
+      if (!snapshot.empty) {
+        snapshot.forEach(d => { productDoc = d.data(); docId = d.id; });
+      }
+    }
+    
+    if (!productDoc) {
+      container.innerHTML = '<div class="error-message">❌ Product not found. It may have been removed or the link is incorrect.</div>';
       return;
     }
-    snapshot.forEach(docSnap => {
-      const product = docSnap.data();
-      // Update page metadata + schemas
-      updateMetaAndSchema(product, product.description);
-      setBreadcrumb(product.category, product.name, product.sku);
-      renderProductUI(product);
-      loadRelatedProducts(product.category, product.sku);
-    });
-  } catch (error) {
-    console.error("Firebase error:", error);
-    container.innerHTML = "<div style='padding:2rem; text-align:center'>⚠️ Unable to load product. Refresh or try again.</div>";
+    
+    currentProduct = { ...productDoc, id: docId };
+    updateMetaAndSchema(currentProduct);
+    setBreadcrumb(currentProduct.category, currentProduct.name, docId);
+    renderProductUI(currentProduct);
+    loadRelatedProducts(currentProduct.category, docId);
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = '<div class="error-message">⚠️ Failed to load product. Please refresh or try again later.</div>';
   }
 }
-
-// Active nav highlight
-document.querySelectorAll("nav a").forEach(link => {
-  if (link.href === window.location.href.split('?')[0]) link.classList.add("active");
-});
 
 loadProduct();
 </script>
-<script>
-// WORKING CLICKABLE VIEW BUTTON FOR PRODUCTS
-(function() {
-  function addViewButtons() {
-    const table = document.querySelector('#productTable');
-    if (!table) return;
-    
-    // Add "View" header if missing
-    const theadRow = table.querySelector('thead tr');
-    let hasView = false;
-    for (let th of theadRow.cells) {
-      if (th.innerText.trim().toLowerCase() === 'view') hasView = true;
-    }
-    if (!hasView) {
-      const th = document.createElement('th');
-      th.innerText = 'View';
-      theadRow.appendChild(th);
-    }
-    
-    // Add view button to each row
-    const rows = table.querySelectorAll('tbody tr');
-    rows.forEach(row => {
-      if (row.querySelector('.product-view-btn-cell')) return;
-      
-      const editBtn = row.querySelector('.edit');
-      if (!editBtn) return;
-      const onclickAttr = editBtn.getAttribute('onclick');
-      const match = onclickAttr && onclickAttr.match(/editProduct\('([^']+)'\)/);
-      const productId = match ? match[1] : null;
-      if (!productId) return;
-      
-      const td = document.createElement('td');
-      td.className = 'product-view-btn-cell';
-      const btn = document.createElement('button');
-      btn.textContent = 'View →';
-      btn.style.background = '#2563eb';
-      btn.style.color = 'white';
-      btn.style.border = 'none';
-      btn.style.borderRadius = '5px';
-      btn.style.padding = '5px 10px';
-      btn.style.cursor = 'pointer';
-      btn.style.fontWeight = 'bold';
-      btn.onclick = (function(id) {
-        return function() {
-          window.open(`/product.html?id=${id}`, '_blank');
-        };
-      })(productId);
-      td.appendChild(btn);
-      row.appendChild(td);
-    });
-  }
-  
-  addViewButtons();
-  const observer = new MutationObserver(function() {
-    addViewButtons();
-  });
-  const tbody = document.querySelector('#productTable tbody');
-  if (tbody) observer.observe(tbody, { childList: true, subtree: true });
-})();
-</script>
- 
-
-
 </body>
 </html>
