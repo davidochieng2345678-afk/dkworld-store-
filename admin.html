@@ -500,5 +500,91 @@ blogsCSVInput.addEventListener("change", async e => {
     
 </script>
 
+  <script>
+// ========== AUTO-ADD VIEW BUTTONS (no existing code replaced) ==========
+(function() {
+  // Helper to add view buttons to a table
+  function addViewButtons(tableId, baseUrl, getIdFromRow) {
+    const table = document.querySelector(tableId);
+    if (!table) return;
+    
+    // Add "View" column header if missing
+    const thead = table.querySelector('thead tr');
+    let thExists = false;
+    for (let th of thead.cells) {
+      if (th.innerText.trim().toLowerCase() === 'view') thExists = true;
+    }
+    if (!thExists) {
+      const th = document.createElement('th');
+      th.innerText = 'View';
+      thead.appendChild(th);
+    }
+    
+    // Add view button to each row
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      // Check if view button already exists in this row
+      if (row.querySelector('.view-btn-added')) return;
+      
+      const id = getIdFromRow(row);
+      if (!id) return;
+      
+      const viewCell = document.createElement('td');
+      const viewBtn = document.createElement('button');
+      viewBtn.innerText = 'View →';
+      viewBtn.style.background = '#2563eb';
+      viewBtn.style.color = 'white';
+      viewBtn.style.border = 'none';
+      viewBtn.style.borderRadius = '5px';
+      viewBtn.style.padding = '5px 10px';
+      viewBtn.style.cursor = 'pointer';
+      viewBtn.className = 'view-btn-added';
+      viewBtn.onclick = () => window.open(`${baseUrl}?id=${id}`, '_blank');
+      viewCell.appendChild(viewBtn);
+      row.appendChild(viewCell);
+    });
+  }
+  
+  // Extract ID from edit button's onclick or from row data
+  function getProductId(row) {
+    const editBtn = row.querySelector('.edit');
+    if (editBtn && editBtn.getAttribute('onclick')) {
+      const match = editBtn.getAttribute('onclick').match(/editProduct\('([^']+)'\)/);
+      return match ? match[1] : null;
+    }
+    return null;
+  }
+  
+  function getBlogId(row) {
+    const editBtn = row.querySelector('.edit');
+    if (editBtn && editBtn.getAttribute('onclick')) {
+      const match = editBtn.getAttribute('onclick').match(/editBlog\('([^']+)'\)/);
+      return match ? match[1] : null;
+    }
+    return null;
+  }
+  
+  // Initial addition
+  function addAllViewButtons() {
+    addViewButtons('#productTable', '/product.html', getProductId);
+    addViewButtons('#blogTable', '/blog-post.html', getBlogId);
+  }
+  
+  // Observe table changes (since tables are rebuilt dynamically)
+  const observer = new MutationObserver(() => {
+    addAllViewButtons();
+  });
+  
+  // Start observing both tables
+  const productTable = document.querySelector('#productTable tbody');
+  const blogTable = document.querySelector('#blogTable tbody');
+  if (productTable) observer.observe(productTable, { childList: true, subtree: true });
+  if (blogTable) observer.observe(blogTable, { childList: true, subtree: true });
+  
+  // Run once on load
+  addAllViewButtons();
+})();
+</script>
+
 </body>
 </html>
