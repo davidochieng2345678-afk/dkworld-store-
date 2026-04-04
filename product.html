@@ -2,58 +2,369 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DK World Kenya - Product</title>
-<meta name="description" content="Loading product details...">
-<meta name="keywords" content="Kenya e-commerce, digital products Kenya, local websites, HTML sites, DK World Kenya">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DK World Kenya - Premium Digital Products</title>
+<meta name="description" content="Discover top-quality digital products and services in Kenya. Secure checkout and fast delivery.">
+<meta name="keywords" content="Kenya e-commerce, digital products Kenya, web design services, SEO Kenya, DK World Kenya">
 <meta name="author" content="David Ochieng">
-<link rel="canonical" href="https://dkworldkenya.online/">
+<link rel="canonical" href="https://dkworldkenya.online/" id="dynamicCanonical">
 <meta name="robots" content="index, follow">
 
-<!-- Structured Data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Product"
-}
-</script>
+<!-- Open Graph / Social Media -->
+<meta property="og:title" content="DK World Kenya - Premium Digital Products">
+<meta property="og:description" content="Shop the best digital products in Kenya. Quality guaranteed.">
+<meta property="og:image" content="https://dkworldkenya.online/og-default.jpg">
+<meta property="og:url" content="https://dkworldkenya.online/">
+<meta property="og:type" content="product">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Preconnect & Performance -->
+<link rel="preconnect" href="https://www.gstatic.com">
+<link rel="preconnect" href="https://firebasestorage.googleapis.com">
+
+<!-- Structured Data (dynamic product schema will be injected) -->
+<script id="productSchema" type="application/ld+json"></script>
+<script id="breadcrumbSchema" type="application/ld+json"></script>
 
 <style>
-body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:0; background:#f5f5f5; }
-nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
-nav a { color:white; text-decoration:none; font-weight:bold; }
-nav a:hover, nav a.active { color:#25D366; }
-
-.container { max-width:900px; margin:30px auto; padding:20px; background:white; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.1); }
-.product-media { width:100%; max-height:400px; object-fit:cover; border-radius:12px; margin-bottom:20px; }
-h1 { color:#111827; margin-bottom:10px; }
-h2 { font-size:1.5rem; margin-top:30px; margin-bottom:15px; color:#111827; }
-h3 { font-size:1.3rem; margin-top:20px; margin-bottom:10px; color:#111827; }
-.category { color:#555; margin-bottom:10px; font-weight:bold; }
-.price { font-weight:bold; font-size:1.3em; color:#111827; margin-bottom:15px; }
-.stock { margin-bottom:15px; color:#777; }
-p { line-height:1.6; color:#555; margin-bottom:15px; }
-ul, ol { margin-left:20px; margin-bottom:15px; }
-li { margin-bottom:8px; }
-a.whatsapp { display:inline-block; padding:12px 25px; background:#25D366; color:white; border-radius:10px; text-decoration:none; font-weight:bold; transition:0.3s; }
-a.whatsapp:hover { background:#1DA851; }
-
-.slider{display:flex;gap:15px;padding:20px;overflow-x:auto;}
-.product-card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 6px 15px rgba(0,0,0,0.08);transition:0.3s;min-width:260px;}
-.product-card:hover{transform:translateY(-5px);}
-.product-card img{width:100%;height:180px;object-fit:cover;}
-.content{padding:12px;}
-.content h3{font-size:1.1rem;margin-bottom:8px;}
-.content a{display:block;margin:5px 0;padding:8px;text-align:center;border-radius:6px;text-decoration:none;font-weight:600;}
-.content a:first-of-type{background:#111827;color:white;}
-.content a:last-of-type{background:#25D366;color:white;}
-
-footer { text-align:center; padding:25px; color:#777; font-size:0.9em; margin-top:40px; }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: #f9fafb;
+    color: #1f2937;
+    line-height: 1.5;
+  }
+  nav {
+    background: #0f172a;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav a {
+    color: #e2e8f0;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s;
+    font-size: 1rem;
+  }
+  nav a:hover, nav a.active {
+    color: #25D366;
+  }
+  .container {
+    max-width: 1280px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+  }
+  .product-main {
+    background: white;
+    border-radius: 28px;
+    box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+    transition: transform 0.2s;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+  }
+  .product-media {
+    background: #f3f4f6;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-media img, .product-media iframe {
+    width: 100%;
+    max-height: 450px;
+    object-fit: contain;
+    border-radius: 20px;
+  }
+  .product-details {
+    display: flex;
+    flex-direction: column;
+  }
+  .category-badge {
+    display: inline-block;
+    background: #e6f7ec;
+    color: #0c6b2f;
+    padding: 0.3rem 0.9rem;
+    border-radius: 40px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    width: fit-content;
+    margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+  }
+  .price-box {
+    margin: 0.75rem 0;
+  }
+  .current-price {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0f172a;
+  }
+  .stock-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0 1rem 0;
+    font-weight: 500;
+  }
+  .in-stock {
+    color: #16a34a;
+    background: #e0f2e9;
+    padding: 0.25rem 0.75rem;
+    border-radius: 30px;
+    font-size: 0.85rem;
+  }
+  .low-stock {
+    color: #b45309;
+    background: #ffedd5;
+    padding: 0.25rem 0.75rem;
+    border-radius: 30px;
+  }
+  .out-stock {
+    color: #b91c1c;
+    background: #fee2e2;
+  }
+  .quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.25rem 0;
+    background: #f8fafc;
+    padding: 0.5rem 1rem;
+    border-radius: 60px;
+    width: fit-content;
+    border: 1px solid #e2e8f0;
+  }
+  .quantity-btn {
+    background: white;
+    border: 1px solid #cbd5e1;
+    width: 36px;
+    height: 36px;
+    border-radius: 40px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.1s;
+  }
+  .quantity-btn:hover {
+    background: #eef2ff;
+  }
+  #quantityInput {
+    width: 60px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+  }
+  .whatsapp-btn {
+    background: #25D366;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 60px;
+    text-decoration: none;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    font-size: 1.1rem;
+    transition: 0.2s;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    max-width: 280px;
+    box-shadow: 0 4px 10px rgba(37,211,102,0.3);
+  }
+  .whatsapp-btn:hover {
+    background: #1da851;
+    transform: translateY(-2px);
+  }
+  .trust-badge {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .trust-item {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #f1f5f9;
+    padding: 0.4rem 0.9rem;
+    border-radius: 40px;
+  }
+  /* description formatting */
+  .product-description {
+    margin-top: 1.5rem;
+    border-top: 1px solid #eef2ff;
+    padding-top: 1.5rem;
+  }
+  .product-description h2, .product-description h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .product-description h2:first-child {
+    margin-top: 0;
+  }
+  .product-description h3 {
+    font-size: 1.25rem;
+  }
+  .product-description p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: #334155;
+  }
+  .product-description ul, .product-description ol {
+    margin: 0.75rem 0 1rem 1.8rem;
+  }
+  .product-description li {
+    margin-bottom: 0.4rem;
+  }
+  .product-description strong {
+    color: #0f172a;
+  }
+  .breadcrumb {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    color: #4b5563;
+  }
+  .breadcrumb a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+  .related-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 2rem 0 1.2rem 0;
+    text-align: center;
+  }
+  .slider {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding: 0.5rem 0.2rem 1.5rem;
+    scrollbar-width: thin;
+  }
+  .product-card {
+    min-width: 260px;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: 0.2s;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  }
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -12px rgba(0,0,0,0.15);
+  }
+  .product-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+  .product-card .content {
+    padding: 1rem;
+  }
+  .product-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+  }
+  .product-card .price {
+    font-weight: 800;
+    margin: 0.5rem 0;
+  }
+  .card-buttons {
+    display: flex;
+    gap: 0.7rem;
+    margin-top: 0.8rem;
+  }
+  .card-buttons a {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 40px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .view-link {
+    background: #0f172a;
+    color: white;
+  }
+  .wa-link {
+    background: #25D366;
+    color: white;
+  }
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: #4b5563;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 3rem;
+  }
+  @media (max-width: 780px) {
+    .product-grid {
+      grid-template-columns: 1fr;
+      padding: 1.5rem;
+    }
+    h1 {
+      font-size: 1.7rem;
+    }
+    .container {
+      padding: 0 1rem;
+    }
+    .whatsapp-btn {
+      max-width: 100%;
+    }
+  }
+  .loader {
+    text-align: center;
+    padding: 3rem;
+  }
+  .highlight-bold {
+    font-weight: 700;
+    color: #0f172a;
+    background: #fef9c3;
+    padding: 0 0.1rem;
+    border-radius: 6px;
+  }
 </style>
 </head>
 <body>
 
-<!-- Navigation -->
 <nav>
   <a href="index.html">Home</a>
   <a href="about.html">About Us</a>
@@ -61,26 +372,23 @@ footer { text-align:center; padding:25px; color:#777; font-size:0.9em; margin-to
   <a href="admin.html">Admin</a>
 </nav>
 
-<!-- Product Container -->
-<div class="container" id="productContainer">
-  <p>Loading product details...</p>
+<div class="container">
+  <div id="breadcrumbNav" class="breadcrumb"></div>
+  <div id="productContainer" class="product-main">
+    <div class="loader">✨ Loading premium product details...</div>
+  </div>
+  <h2 class="related-title">✨ You May Also Like</h2>
+  <div id="relatedProducts" class="slider"></div>
 </div>
 
-<!-- Related Products -->
-<h2 style="text-align:center;margin-top:40px;">Related Products</h2>
-<div id="relatedProducts" class="slider"></div>
-
-<!-- Footer -->
 <footer>
-  &copy; 2026 DK World Kenya | Built by <a href="https://dkdigitalseo.online" target="_blank" style="color:#25D366;text-decoration:none;">David O. Kiruo</a>, SEO owner of DK Digital SEO
+  &copy; 2026 DK World Kenya | Built by <a href="https://dkdigitalseo.online" target="_blank" style="color:#25D366;text-decoration:none;">David O. Kiruo</a>, SEO expert | Fast Delivery • Trusted Store
 </footer>
 
-<!-- ================== Firebase & Product Script ================== -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyABCVM1b9FEdXlJWf1SoL7dwQL1EXPXwgA",
   authDomain: "dkworld-kenya.firebaseapp.com",
@@ -90,120 +398,321 @@ const firebaseConfig = {
   appId: "1:263537160242:web:a07511fae26faabf584c2b"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Container reference
 const container = document.getElementById("productContainer");
 const relatedContainer = document.getElementById("relatedProducts");
+const breadcrumbDiv = document.getElementById("breadcrumbNav");
 
-// Get SKU from URL
-const params = new URLSearchParams(window.location.search);
-const sku = params.get("sku");
+const urlParams = new URLSearchParams(window.location.search);
+const sku = urlParams.get("sku");
 
-async function loadProduct() {
-  if (!sku) {
-    container.innerHTML = "<p>No product selected. <a href='index.html'>Go back</a></p>";
-    return;
+// ---------- FORMAT DESCRIPTION: Plain text → semantic HTML with headings, lists, bold long-tail keywords ----------
+function formatDescription(plainText, productName, category) {
+  if (!plainText) return "<p>No description available.</p>";
+  // If already contains HTML tags, return as-is (but ensure safe)
+  if (/<\/?[a-z][\s\S]*>/i.test(plainText)) {
+    return `<div class="product-description">${plainText}</div>`;
   }
-
-  const q = query(collection(db, "products"), where("sku", "==", sku));
-  const snapshot = await getDocs(q);
-
-  if (snapshot.empty) {
-    container.innerHTML = "<p>Product not found. <a href='index.html'>Go back</a></p>";
-    return;
-  }
-
-  snapshot.forEach(docSnap => {
-    const product = docSnap.data();
-
-    let media = product.video 
-      ? `<iframe class="product-media" src="${product.video}" frameborder="0" allowfullscreen></iframe>` 
-      : `<img class="product-media" src="${product.image}" alt="${product.name}">`;
-
-    container.innerHTML = `
-      ${media}
-      <h1>${product.name}</h1>
-      <p class="category">Category: ${product.category}</p>
-      <p class="price">Price: Ksh ${product.price}</p>
-      <p class="stock">Stock: ${product.stock}</p>
-      <div>${product.description}</div>
-      <a class="whatsapp" target="_blank" href="https://wa.me/254710346789?text=I%20want%20to%20buy%20${encodeURIComponent(product.name)}%20SKU:${encodeURIComponent(product.sku)}">Buy on WhatsApp</a>
-    `;
-
-    // Update page title & meta
-    document.title = `${product.name} - DK World Kenya`;
-    document.querySelector('meta[name="description"]').setAttribute("content", product.description);
-
-    // Update structured data
-    const sd = document.querySelector('script[type="application/ld+json"]');
-    sd.textContent = JSON.stringify({
-      "@context":"https://schema.org",
-      "@type":"Product",
-      "name": product.name,
-      "image": product.image,
-      "description": product.description,
-      "sku": product.sku,
-      "offers": {
-        "@type":"Offer",
-        "url": `https://dkworldkenya.online/product.html?sku=${encodeURIComponent(product.sku)}`,
-        "priceCurrency":"KES",
-        "price": product.price,
-        "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
-      }
+  
+  // 1. split lines
+  let lines = plainText.split(/\r?\n/);
+  let result = [];
+  let inList = false;
+  let listItems = [];
+  
+  // Helper to bold long-tail keywords & important terms
+  const boldLongTail = (text) => {
+    // list of long-tail / conversion keywords (e-commerce + Kenya specific)
+    const keywords = [
+      productName, category, "Kenya", "Nairobi", "best price", "high quality", 
+      "free delivery", "original", "money back", "warranty", "digital product", 
+      "instant download", "affordable", "top rated", "trusted seller", "fast shipping",
+      "customer support", "24/7", "secure payment", "best in Kenya"
+    ];
+    let bolded = text;
+    keywords.forEach(kw => {
+      if (!kw) return;
+      const regex = new RegExp(`(${kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      bolded = bolded.replace(regex, `<strong class="highlight-bold">$1</strong>`);
     });
-
-    // Load related products
-    loadRelatedProducts(product.category, product.sku);
-  });
+    // also bold phrases that look like long-tail (3-6 words starting with capital letter, product features)
+    const longTailRegex = /\b([A-Z][a-z]+(?:\s+[A-Za-z][a-z]*){2,5})\b/g;
+    bolded = bolded.replace(longTailRegex, (match) => {
+      if (match.length > 10 && !match.includes('strong')) 
+        return `<strong class="highlight-bold">${match}</strong>`;
+      return match;
+    });
+    return bolded;
+  };
+  
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i].trim();
+    if (line === "") {
+      if (inList) {
+        result.push(`<ul>${listItems.join('')}</ul>`);
+        listItems = [];
+        inList = false;
+      }
+      continue;
+    }
+    
+    // Detect bullet list items
+    if (line.match(/^[\-\*•]\s/)) {
+      let content = line.replace(/^[\-\*•]\s/, '');
+      content = boldLongTail(content);
+      listItems.push(`<li>${content}</li>`);
+      inList = true;
+      continue;
+    }
+    
+    if (inList) {
+      result.push(`<ul>${listItems.join('')}</ul>`);
+      listItems = [];
+      inList = false;
+    }
+    
+    // Detect headings (ends with colon OR short line & capital pattern OR contains specific keywords)
+    const isHeading = (line.length < 70 && (line.endsWith(':') || /^(Features|Specs|Benefits|Details|Why Choose|Highlights|Description|Overview|Key Features|What's Included)/i.test(line)));
+    if (isHeading) {
+      let headingText = line.replace(/:$/, '');
+      headingText = boldLongTail(headingText);
+      result.push(`<h3>${headingText}</h3>`);
+      continue;
+    }
+    
+    // Normal paragraph
+    let para = boldLongTail(line);
+    result.push(`<p>${para}</p>`);
+  }
+  
+  if (inList && listItems.length) {
+    result.push(`<ul>${listItems.join('')}</ul>`);
+  }
+  
+  return `<div class="product-description">${result.join('')}</div>`;
 }
 
-// Related products
+// Helper to update meta & canonical
+function updateMetaAndSchema(product, formattedDescriptionPlain) {
+  // meta description (strip HTML)
+  const plainDesc = product.description.replace(/<[^>]*>/g, '').substring(0, 160);
+  document.title = `${product.name} - DK World Kenya | Best Digital Products`;
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc) metaDesc.setAttribute("content", plainDesc || `Buy ${product.name} in Kenya at Ksh ${product.price}. Quality guaranteed.`);
+  const metaKeywords = document.querySelector('meta[name="keywords"]');
+  if (metaKeywords) metaKeywords.setAttribute("content", `${product.category}, ${product.name}, buy ${product.name} Kenya, digital products, DK World Kenya`);
+  
+  // Open Graph
+  document.querySelector('meta[property="og:title"]').setAttribute("content", `${product.name} - DK World Kenya`);
+  document.querySelector('meta[property="og:description"]').setAttribute("content", plainDesc.substring(0, 200));
+  if (product.image) document.querySelector('meta[property="og:image"]').setAttribute("content", product.image);
+  document.querySelector('meta[property="og:url"]').setAttribute("content", `https://dkworldkenya.online/product.html?sku=${encodeURIComponent(product.sku)}`);
+  
+  // Canonical link
+  const canonicalLink = document.getElementById("dynamicCanonical");
+  if (canonicalLink) canonicalLink.href = `https://dkworldkenya.online/product.html?sku=${encodeURIComponent(product.sku)}`;
+  
+  // Product Schema (rich snippet)
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "image": product.image || "https://dkworldkenya.online/default.jpg",
+    "description": plainDesc,
+    "sku": product.sku,
+    "brand": {
+      "@type": "Brand",
+      "name": "DK World Kenya"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": `https://dkworldkenya.online/product.html?sku=${encodeURIComponent(product.sku)}`,
+      "priceCurrency": "KES",
+      "price": product.price,
+      "priceValidUntil": "2026-12-31",
+      "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "DK World Kenya"
+      }
+    }
+  };
+  document.getElementById("productSchema").textContent = JSON.stringify(productSchema);
+}
+
+// Breadcrumb + BreadcrumbList Schema
+function setBreadcrumb(category, productName, skuVal) {
+  const baseUrl = "https://dkworldkenya.online";
+  const breadcrumbHtml = `
+    <a href="index.html">Home</a> &nbsp;›&nbsp;
+    <a href="index.html?category=${encodeURIComponent(category)}">${category}</a> &nbsp;›&nbsp;
+    <span>${productName}</span>
+  `;
+  breadcrumbDiv.innerHTML = breadcrumbHtml;
+  
+  const breadcrumbList = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": `${baseUrl}/index.html` },
+      { "@type": "ListItem", "position": 2, "name": category, "item": `${baseUrl}/index.html?category=${encodeURIComponent(category)}` },
+      { "@type": "ListItem", "position": 3, "name": productName, "item": `${baseUrl}/product.html?sku=${encodeURIComponent(skuVal)}` }
+    ]
+  };
+  document.getElementById("breadcrumbSchema").textContent = JSON.stringify(breadcrumbList);
+}
+
+// WhatsApp with quantity
+let currentQuantity = 1;
+function updateWhatsAppLink(product) {
+  const qty = currentQuantity;
+  const message = `I want to buy ${qty} x ${product.name} (SKU: ${product.sku}) - Total Ksh ${product.price * qty}. Please confirm availability.`;
+  const waLink = `https://wa.me/254710346789?text=${encodeURIComponent(message)}`;
+  const waBtn = document.getElementById("dynamicWhatsAppBtn");
+  if (waBtn) waBtn.href = waLink;
+}
+
+// Build product UI with formatted description & quantity
+function renderProductUI(product) {
+  const formattedDescHTML = formatDescription(product.description, product.name, product.category);
+  const mediaHtml = product.video 
+    ? `<iframe class="product-media" src="${product.video}" frameborder="0" allowfullscreen style="width:100%; height:350px; border-radius:20px;"></iframe>`
+    : `<img class="product-media" src="${product.image}" alt="${product.name}" loading="lazy" style="width:100%;">`;
+  
+  let stockHtml = '';
+  if (product.stock > 10) stockHtml = `<span class="in-stock">✓ In Stock (${product.stock} units)</span>`;
+  else if (product.stock > 0 && product.stock <= 10) stockHtml = `<span class="low-stock">⚠️ Low Stock - Only ${product.stock} left!</span>`;
+  else stockHtml = `<span class="out-stock">✗ Out of Stock</span>`;
+  
+  const containerHtml = `
+    <div class="product-grid">
+      <div class="product-media">${mediaHtml}</div>
+      <div class="product-details">
+        <span class="category-badge">${product.category}</span>
+        <h1>${product.name}</h1>
+        <div class="price-box">
+          <span class="current-price">Ksh ${Number(product.price).toLocaleString()}</span>
+        </div>
+        <div class="stock-status">${stockHtml}</div>
+        <div class="quantity-selector">
+          <button class="quantity-btn" id="minusQty">−</button>
+          <input type="number" id="quantityInput" value="1" min="1" max="${product.stock > 0 ? product.stock : 1}" step="1">
+          <button class="quantity-btn" id="plusQty">+</button>
+        </div>
+        <a id="dynamicWhatsAppBtn" class="whatsapp-btn" target="_blank" href="#">
+          💬 Buy on WhatsApp
+        </a>
+        <div class="trust-badge">
+          <span class="trust-item">🔒 Secure Checkout</span>
+          <span class="trust-item">🚚 Fast Delivery Kenya</span>
+          <span class="trust-item">✅ 100% Genuine</span>
+          <span class="trust-item">🛡️ Buyer Protection</span>
+        </div>
+      </div>
+    </div>
+    ${formattedDescHTML}
+  `;
+  container.innerHTML = containerHtml;
+  
+  // quantity controls
+  const minusBtn = document.getElementById("minusQty");
+  const plusBtn = document.getElementById("plusQty");
+  const qtyInput = document.getElementById("quantityInput");
+  
+  const updateQuantity = () => {
+    let val = parseInt(qtyInput.value);
+    if (isNaN(val)) val = 1;
+    if (val < 1) val = 1;
+    if (product.stock > 0 && val > product.stock) val = product.stock;
+    currentQuantity = val;
+    qtyInput.value = val;
+    updateWhatsAppLink(product);
+  };
+  
+  minusBtn?.addEventListener("click", () => {
+    let val = parseInt(qtyInput.value) - 1;
+    if (val < 1) val = 1;
+    qtyInput.value = val;
+    updateQuantity();
+  });
+  plusBtn?.addEventListener("click", () => {
+    let val = parseInt(qtyInput.value) + 1;
+    if (product.stock > 0 && val > product.stock) val = product.stock;
+    qtyInput.value = val;
+    updateQuantity();
+  });
+  qtyInput?.addEventListener("change", updateQuantity);
+  updateWhatsAppLink(product);
+}
+
+// Related products loader (improved)
 async function loadRelatedProducts(category, currentSku) {
   if (!category) return;
   const q = query(collection(db, "products"), where("category", "==", category));
   const snapshot = await getDocs(q);
-
   const related = [];
   snapshot.forEach(docSnap => {
     const prod = docSnap.data();
     if (prod.sku !== currentSku) related.push(prod);
   });
-
   relatedContainer.innerHTML = "";
-  if (!related.length) {
-    relatedContainer.innerHTML = "<p>No related products found.</p>";
+  if (related.length === 0) {
+    relatedContainer.innerHTML = "<p style='text-align:center;'>✨ More products coming soon.</p>";
     return;
   }
-
-  related.forEach(prod => {
+  related.slice(0, 8).forEach(prod => {
     const card = document.createElement("div");
     card.className = "product-card";
-
     card.innerHTML = `
-      <img src="${prod.image}" alt="${prod.name}">
+      <img src="${prod.image}" alt="${prod.name}" loading="lazy">
       <div class="content">
         <h3>${prod.name}</h3>
-        <p class="price">Ksh ${prod.price}</p>
-        <a href="product.html?sku=${encodeURIComponent(prod.sku)}">View Product</a>
-        <a target="_blank" href="https://wa.me/254710346789?text=I%20want%20to%20buy%20${encodeURIComponent(prod.name)}">Buy on WhatsApp</a>
+        <div class="price">Ksh ${Number(prod.price).toLocaleString()}</div>
+        <div class="card-buttons">
+          <a href="product.html?sku=${encodeURIComponent(prod.sku)}" class="view-link">View</a>
+          <a target="_blank" href="https://wa.me/254710346789?text=I%20want%20to%20buy%20${encodeURIComponent(prod.name)}" class="wa-link">WhatsApp</a>
+        </div>
       </div>
     `;
     relatedContainer.appendChild(card);
   });
 }
 
-// Highlight active nav
+// Main load product
+async function loadProduct() {
+  if (!sku) {
+    container.innerHTML = "<div style='padding:2rem; text-align:center'>❌ No product selected. <a href='index.html'>Browse products</a></div>";
+    return;
+  }
+  try {
+    const q = query(collection(db, "products"), where("sku", "==", sku));
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) {
+      container.innerHTML = "<div style='padding:2rem; text-align:center'>⚠️ Product not found. <a href='index.html'>Return to shop</a></div>";
+      return;
+    }
+    snapshot.forEach(docSnap => {
+      const product = docSnap.data();
+      // Update page metadata + schemas
+      updateMetaAndSchema(product, product.description);
+      setBreadcrumb(product.category, product.name, product.sku);
+      renderProductUI(product);
+      loadRelatedProducts(product.category, product.sku);
+    });
+  } catch (error) {
+    console.error("Firebase error:", error);
+    container.innerHTML = "<div style='padding:2rem; text-align:center'>⚠️ Unable to load product. Refresh or try again.</div>";
+  }
+}
+
+// Active nav highlight
 document.querySelectorAll("nav a").forEach(link => {
-  if(link.href === window.location.href) link.classList.add("active");
+  if (link.href === window.location.href.split('?')[0]) link.classList.add("active");
 });
 
 loadProduct();
 </script>
-
 </body>
 </html>
-
-
