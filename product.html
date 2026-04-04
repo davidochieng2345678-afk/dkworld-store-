@@ -714,7 +714,80 @@ document.querySelectorAll("nav a").forEach(link => {
 
 loadProduct();
 </script>
-
+<script>
+// FIXED: Add clickable "View" buttons for products (using event delegation)
+(function() {
+  // Function to add View column and buttons
+  function addViewButtons() {
+    const table = document.querySelector('#productTable');
+    if (!table) return;
+    
+    // Add "View" column header if missing
+    const theadRow = table.querySelector('thead tr');
+    let hasView = false;
+    for (let th of theadRow.cells) {
+      if (th.innerText.trim().toLowerCase() === 'view') hasView = true;
+    }
+    if (!hasView) {
+      const th = document.createElement('th');
+      th.innerText = 'View';
+      theadRow.appendChild(th);
+    }
+    
+    // Add view button cell to each row if not already present
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      if (row.querySelector('.view-btn-cell')) return; // already has view cell
+      
+      // Find the edit button to extract product ID
+      const editBtn = row.querySelector('.edit');
+      if (!editBtn) return;
+      const onclickAttr = editBtn.getAttribute('onclick');
+      const match = onclickAttr && onclickAttr.match(/editProduct\('([^']+)'\)/);
+      const productId = match ? match[1] : null;
+      if (!productId) return;
+      
+      const td = document.createElement('td');
+      td.className = 'view-btn-cell';
+      const btn = document.createElement('button');
+      btn.textContent = 'View →';
+      btn.style.background = '#2563eb';
+      btn.style.color = 'white';
+      btn.style.border = 'none';
+      btn.style.borderRadius = '5px';
+      btn.style.padding = '5px 10px';
+      btn.style.cursor = 'pointer';
+      // Use a data attribute and event delegation (safer than onclick)
+      btn.setAttribute('data-product-id', productId);
+      btn.classList.add('product-view-button');
+      td.appendChild(btn);
+      row.appendChild(td);
+    });
+  }
+  
+  // Event delegation: listen for clicks on the whole table
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.product-view-button');
+    if (btn && btn.classList.contains('product-view-button')) {
+      e.preventDefault();
+      const productId = btn.getAttribute('data-product-id');
+      if (productId) {
+        window.open(`/product.html?id=${productId}`, '_blank');
+      }
+    }
+  });
+  
+  // Initial run
+  addViewButtons();
+  
+  // Observe table changes (when products are added/edited/deleted)
+  const observer = new MutationObserver(function() {
+    addViewButtons();
+  });
+  const productTbody = document.querySelector('#productTable tbody');
+  if (productTbody) observer.observe(productTbody, { childList: true, subtree: true });
+})();
+</script>
 
 </body>
 </html>
