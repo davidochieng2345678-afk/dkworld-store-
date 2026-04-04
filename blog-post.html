@@ -1,91 +1,326 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog Post | DK World Kenya</title>
+  <title id="metaTitle">Blog Post | DK World Kenya</title>
+  <meta name="description" id="metaDescription" content="Read our latest insights on web design, digital marketing, and business growth for Kenyan professionals.">
+  <meta name="author" id="metaAuthor" content="DK World Kenya">
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" id="ogTitle" content="Blog Post | DK World Kenya">
+  <meta property="og:description" id="ogDescription" content="Read our latest insights on web design, digital marketing, and business growth for Kenyan professionals.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" id="ogUrl" content="">
+  <meta property="og:image" id="ogImage" content="https://dkworldkenya.online/default-og.jpg">
+  <meta property="og:site_name" content="DK World Kenya">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" id="twitterTitle" content="Blog Post | DK World Kenya">
+  <meta name="twitter:description" id="twitterDescription" content="Read our latest insights...">
+  
   <style>
-    body { font-family: 'Segoe UI', sans-serif; margin:0; background:#f5f5f5; }
-    nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
-    nav a { color:white; text-decoration:none; font-weight:bold; }
-    nav a:hover { color:#25D366; }
-    .container { max-width:800px; margin:2rem auto; padding:1rem; background:white; border-radius:1rem; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-    .post-header { margin-bottom:2rem; }
-    .post-title { font-size:2rem; margin-bottom:0.5rem; }
-    .post-meta { color:#6b7280; font-size:0.9rem; }
-    .post-content { line-height:1.6; }
-    .back-link { display:inline-block; margin-top:2rem; color:#2563eb; text-decoration:none; }
-    .error { text-align:center; padding:2rem; color:#b91c1c; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+    nav {
+      background: #111827;
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: #25D366; }
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .post-card {
+      background: white;
+      border-radius: 1.5rem;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.02);
+      overflow: hidden;
+      padding: 2rem;
+    }
+    .post-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 0.75rem;
+      color: #111827;
+    }
+    .post-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      color: #6b7280;
+      font-size: 0.9rem;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .reading-time {
+      background: #f3f4f6;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+    }
+    .post-content {
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+    .post-content h1, .post-content h2, .post-content h3 {
+      margin-top: 1.8em;
+      margin-bottom: 0.5em;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .post-content h2 { font-size: 1.5rem; border-left: 4px solid #2563eb; padding-left: 1rem; }
+    .post-content h3 { font-size: 1.3rem; }
+    .post-content p { margin-bottom: 1.2em; }
+    .post-content strong, .post-content b { font-weight: 700; color: #111827; }
+    .post-content ul, .post-content ol { margin: 1em 0 1em 2em; }
+    .post-content li { margin-bottom: 0.4em; }
+    .post-content a { color: #2563eb; text-decoration: underline; }
+    .post-content img { max-width: 100%; height: auto; border-radius: 0.75rem; margin: 1.5rem 0; }
+    .post-content blockquote {
+      border-left: 4px solid #25D366;
+      background: #f0fdf4;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0.75rem;
+      font-style: italic;
+    }
+    .share-section {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e5e7eb;
+      text-align: center;
+    }
+    .share-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #f3f4f6;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .share-btn.whatsapp { background: #25D366; color: white; }
+    .share-btn.twitter { background: #1DA1F2; color: white; }
+    .share-btn.facebook { background: #1877F2; color: white; }
+    .share-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+    .back-link {
+      display: inline-block;
+      margin-top: 2rem;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .back-link:hover { text-decoration: underline; }
+    .loading, .error {
+      text-align: center;
+      padding: 3rem;
+      background: white;
+      border-radius: 1rem;
+    }
+    .error { color: #b91c1c; background: #fee2e2; }
+    @media (max-width: 640px) {
+      .post-card { padding: 1.2rem; }
+      .post-title { font-size: 1.6rem; }
+    }
   </style>
 </head>
 <body>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About Us</a>
-    <a href="contact.html">Contact</a>
-    <a href="blog.html">Blog</a>
-    <a href="policies.html">Policies</a>
-    <a href="admin.html">Admin</a>
-  </nav>
 
-  <div class="container" id="postContainer">
-    <div class="loading">📖 Loading post...</div>
-  </div>
+<nav>
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="contact.html">Contact</a>
+  <a href="blog.html">Blog</a>
+  <a href="policies.html">Policies</a>
+  <a href="admin.html">Admin</a>
+</nav>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<div class="container" id="postContainer">
+  <div class="loading">📖 Loading article...</div>
+</div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyABCVM1b9FEdXlJWf1SoL7dwQL1EXPXwgA",
-      authDomain: "dkworld-kenya.firebaseapp.com",
-      projectId: "dkworld-kenya",
-      storageBucket: "dkworld-kenya.firebasestorage.app",
-      messagingSenderId: "263537160242",
-      appId: "1:263537160242:web:a07511fae26faabf584c2b"
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyABCVM1b9FEdXlJWf1SoL7dwQL1EXPXwgA",
+    authDomain: "dkworld-kenya.firebaseapp.com",
+    projectId: "dkworld-kenya",
+    storageBucket: "dkworld-kenya.firebasestorage.app",
+    messagingSenderId: "263537160242",
+    appId: "1:263537160242:web:a07511fae26faabf584c2b"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const postId = urlParams.get('id');
+  const currentUrl = window.location.href;
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
+  }
+
+  function stripHtml(html) {
+    if (!html) return '';
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
+  }
+
+  function readingTime(htmlContent) {
+    const text = htmlContent.replace(/<[^>]*>/g, '');
+    const words = text.trim().split(/\s+/).length;
+    const minutes = Math.ceil(words / 200);
+    return minutes === 1 ? '1 min read' : `${minutes} min read`;
+  }
+
+  // Generate JSON-LD schema (Article + BlogPosting)
+  function addSchema(post, plainDescription, imageUrl) {
+    const existingScript = document.getElementById('blogSchema');
+    if (existingScript) existingScript.remove();
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": plainDescription,
+      "author": {
+        "@type": "Person",
+        "name": post.author || "DK World Kenya"
+      },
+      "datePublished": post.date ? new Date(post.date).toISOString() : new Date().toISOString(),
+      "dateModified": new Date().toISOString(),
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": currentUrl
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "DK World Kenya",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://dkworldkenya.online/logo.png"
+        }
+      },
+      "image": imageUrl || "https://dkworldkenya.online/default-og.jpg",
+      "articleBody": stripHtml(post.content || "").substring(0, 5000),
+      "keywords": post.category || "blog, web design, Kenya"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    const script = document.createElement('script');
+    script.id = 'blogSchema';
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+  }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get('id');
+  // Update meta tags for social sharing
+  function updateMetaTags(post, plainDescription, imageUrl) {
+    document.title = `${post.title} | DK World Kenya`;
+    document.querySelector('#metaTitle')?.setAttribute('content', post.title);
+    document.querySelector('#metaDescription')?.setAttribute('content', plainDescription);
+    document.querySelector('#metaAuthor')?.setAttribute('content', post.author || 'DK World Kenya');
+    
+    document.querySelector('#ogTitle')?.setAttribute('content', post.title);
+    document.querySelector('#ogDescription')?.setAttribute('content', plainDescription);
+    document.querySelector('#ogUrl')?.setAttribute('content', currentUrl);
+    if (imageUrl) document.querySelector('#ogImage')?.setAttribute('content', imageUrl);
+    
+    document.querySelector('#twitterTitle')?.setAttribute('content', post.title);
+    document.querySelector('#twitterDescription')?.setAttribute('content', plainDescription);
+  }
 
-    async function loadPost() {
-      const container = document.getElementById('postContainer');
-      if (!postId) {
-        container.innerHTML = '<div class="error">❌ No post specified.</div>';
+  async function loadPost() {
+    const container = document.getElementById('postContainer');
+    if (!postId) {
+      container.innerHTML = '<div class="error">❌ No post specified.</div>';
+      return;
+    }
+    try {
+      const postRef = doc(db, "blogs", postId);
+      const postSnap = await getDoc(postRef);
+      if (!postSnap.exists()) {
+        container.innerHTML = '<div class="error">Post not found.</div>';
         return;
       }
-      try {
-        const postRef = doc(db, "blogs", postId);
-        const postSnap = await getDoc(postRef);
-        if (!postSnap.exists()) {
-          container.innerHTML = '<div class="error">Post not found.</div>';
-          return;
-        }
-        const post = postSnap.data();
-        const dateStr = post.date ? new Date(post.date).toLocaleDateString() : 'Recent';
-        container.innerHTML = `
-          <div class="post-header">
-            <h1 class="post-title">${escapeHtml(post.title)}</h1>
-            <div class="post-meta">📅 ${dateStr} &nbsp;|&nbsp; ✍️ ${escapeHtml(post.author || 'Admin')}</div>
+      const post = postSnap.data();
+      const title = post.title || 'Untitled';
+      const author = post.author || 'Admin';
+      const dateStr = post.date ? new Date(post.date).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }) : 'Recent';
+      const contentHtml = post.content || '<p><em>No content yet.</em></p>';
+      const readTime = readingTime(contentHtml);
+      const plainDescription = stripHtml(contentHtml).substring(0, 160);
+      const imageUrl = post.imageUrl || null; // if you add image field in future
+
+      // Update SEO & Schema
+      updateMetaTags(post, plainDescription, imageUrl);
+      addSchema(post, plainDescription, imageUrl);
+
+      // Render HTML
+      container.innerHTML = `
+        <div class="post-card">
+          <h1 class="post-title">${escapeHtml(title)}</h1>
+          <div class="post-meta">
+            <span>📅 ${dateStr}</span>
+            <span>✍️ ${escapeHtml(author)}</span>
+            <span class="reading-time">⏱️ ${readTime}</span>
           </div>
-          <div class="post-content">${post.content || ''}</div>
+          <div class="post-content">
+            ${contentHtml}
+          </div>
+          <div class="share-section">
+            <strong>📢 Share this article</strong>
+            <div class="share-buttons">
+              <a href="https://wa.me/?text=${encodeURIComponent(title + ' - ' + currentUrl)}" target="_blank" class="share-btn whatsapp">📱 WhatsApp</a>
+              <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(currentUrl)}" target="_blank" class="share-btn twitter">🐦 Twitter</a>
+              <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}" target="_blank" class="share-btn facebook">📘 Facebook</a>
+            </div>
+          </div>
           <a href="blog.html" class="back-link">← Back to all articles</a>
-        `;
-      } catch (err) {
-        console.error(err);
-        container.innerHTML = '<div class="error">⚠️ Failed to load post.</div>';
-      }
+        </div>
+      `;
+    } catch (err) {
+      console.error(err);
+      container.innerHTML = '<div class="error">⚠️ Failed to load post. Please refresh.</div>';
     }
+  }
 
-    function escapeHtml(str) {
-      if (!str) return '';
-      return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
-    }
-
-    loadPost();
-  </script>
+  loadPost();
+</script>
 </body>
 </html>
