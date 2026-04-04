@@ -1,1 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | DK World Kenya</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin:0; background:#f5f5f5; }
+    nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
+    nav a { color:white; text-decoration:none; font-weight:bold; }
+    nav a:hover { color:#25D366; }
+    .container { max-width:1000px; margin:2rem auto; padding:1rem; }
+    .blog-card {
+      background:white; border-radius:1rem; padding:1.5rem; margin-bottom:1.5rem;
+      box-shadow:0 2px 8px rgba(0,0,0,0.05);
+    }
+    .blog-card h2 { margin:0 0 0.5rem; }
+    .meta { color:#6b7280; font-size:0.85rem; margin-bottom:1rem; }
+    .excerpt { color:#4b5563; }
+    .read-more { display:inline-block; margin-top:1rem; color:#2563eb; text-decoration:none; font-weight:500; }
+    .loading, .error { text-align:center; padding:2rem; }
+    .error { color:#b91c1c; background:#fee2e2; border-radius:0.75rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact</a>
+    <a href="blog.html">Blog</a>
+    <a href="policies.html">Policies</a>
+    <a href="admin.html">Admin</a>
+  </nav>
 
+  <div class="container">
+    <h1>Latest Blog Posts</h1>
+    <div id="blogList"></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyABCVM1b9FEdXlJWf1SoL7dwQL1EXPXwgA",
+      authDomain: "dkworld-kenya.firebaseapp.com",
+      projectId: "dkworld-kenya",
+      storageBucket: "dkworld-kenya.firebasestorage.app",
+      messagingSenderId: "263537160242",
+      appId: "1:263537160242:web:a07511fae26faabf584c2b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
+    }
+
+    function plainTextExcerpt(html, maxLen = 150) {
+      if (!html) return '';
+      const text = html.replace(/<[^>]*>/g, '').trim();
+      return text.length > maxLen ? text.slice(0, maxLen) + '…' : text;
+    }
+
+    async function loadBlogs() {
+      const container = document.getElementById('blogList');
+      container.innerHTML = '<div class="loading">📖 Loading articles...</div>';
+      try {
+        const q = query(collection(db, "blogs"), orderBy("date", "desc"));
+        const snapshot = await getDocs(q);
+        if (snapshot.empty) {
+          container.innerHTML = '<div class="loading">✨ No blog posts yet. Check back soon.</div>';
+          return;
+        }
+        let html = '';
+        snapshot.forEach(doc => {
+          const post = doc.data();
+          const title = post.title || 'Untitled';
+          const excerpt = plainTextExcerpt(post.content, 150);
+          const slug = encodeURIComponent(title.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+          const dateStr = post.date ? new Date(post.date).toLocaleDateString() : 'Recent';
+          const author = post.author || 'Admin';
+          html += `
+            <div class="blog-card">
+              <h2>${escapeHtml(title)}</h2>
+              <div class="meta">📅 ${dateStr} &nbsp;|&nbsp; ✍️ ${escapeHtml(author)}</div>
+              <div class="excerpt">${escapeHtml(excerpt)}</div>
+              <a href="blog-post.html?slug=${slug}&id=${doc.id}" class="read-more">Read full article →</a>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = '<div class="error">⚠️ Failed to load articles. Please refresh.</div>';
+      }
+    }
+    loadBlogs();
+  </script>
+</body>
+  </html>
