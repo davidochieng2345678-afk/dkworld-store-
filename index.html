@@ -336,7 +336,128 @@ searchInput.addEventListener("input", ()=>{
 
   displayProducts(filtered);
 });
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+  console.log("🔥 Firebase script started");
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyABCVM1b9FEdXlJWf1SoL7dwQL1EXPXwgA",
+    authDomain: "dkworld-kenya.firebaseapp.com",
+    projectId: "dkworld-kenya",
+    storageBucket: "dkworld-kenya.firebasestorage.app",
+    messagingSenderId: "263537160242",
+    appId: "1:263537160242:web:a07511fae26faabf584c2b"
+  };
+
+  try {
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    console.log("✅ Firebase initialized");
+
+    function plainTextExcerpt(html, maxLen = 120) {
+      if (!html) return '';
+      const text = html.replace(/<[^>]*>/g, '').trim();
+      return text.length > maxLen ? text.slice(0, maxLen) + '…' : text;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
+
+    // ---------- LOAD BLOGS ----------
+    async function loadBlogs() {
+      const container = document.getElementById("blogContainer");
+      console.log("📝 loadBlogs() started");
+      try {
+        const q = query(collection(db, "blogs"), orderBy("date", "desc"), limit(6));
+        console.log("🔍 Query created, fetching...");
+        const snapshot = await getDocs(q);
+        console.log(`📊 Got ${snapshot.size} blog documents`);
+
+        if (snapshot.empty) {
+          container.innerHTML = '<div class="empty-state">✨ No blog posts yet. Check back soon!</div>';
+          return;
+        }
+
+        let html = '';
+        snapshot.forEach(doc => {
+          const post = doc.data();
+          console.log("Blog doc:", post.title, post.date);
+          const title = post.title || 'Untitled';
+          const excerpt = plainTextExcerpt(post.content, 120);
+          const slug = encodeURIComponent(title.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+          const dateStr = post.date ? new Date(post.date).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }) : 'Recent';
+          const author = post.author || 'Admin';
+
+          html += `
+            <div class="blog-card">
+              <div class="card-content">
+                <h3>${escapeHtml(title)}</h3>
+                <div class="blog-meta">
+                  <span>📅 ${dateStr}</span>
+                  <span>✍️ ${escapeHtml(author)}</span>
+                </div>
+                <p>${escapeHtml(excerpt)}</p>
+                <a href="/blog/${slug}" class="read-more">Read more →</a>
+              </div>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+        console.log("✅ Blogs displayed");
+      } catch (error) {
+        console.error("❌ Error in loadBlogs:", error);
+        container.innerHTML = '<div class="error-message">⚠️ Unable to load articles. Check console.</div>';
+      }
+    }
+
+    // ---------- LOAD POLICIES ----------
+    async function loadPolicies() {
+      const container = document.getElementById("policiesContainer");
+      console.log("📜 loadPolicies() started");
+      try {
+        const snapshot = await getDocs(collection(db, "policies"));
+        console.log(`📊 Got ${snapshot.size} policy documents`);
+
+        if (snapshot.empty) {
+          container.innerHTML = '<div class="empty-state">No policies found.</div>';
+          return;
+        }
+
+        let html = '';
+        snapshot.forEach(doc => {
+          const policy = doc.data();
+          const policyName = policy.name || doc.id;
+          const displayName = policyName.charAt(0).toUpperCase() + policyName.slice(1);
+          html += `<a href="/policy/${encodeURIComponent(policyName)}" class="policy-link">${escapeHtml(displayName)}</a>`;
+        });
+        container.innerHTML = html;
+        console.log("✅ Policies displayed");
+      } catch (error) {
+        console.error("❌ Error in loadPolicies:", error);
+        container.innerHTML = '<div class="error-message">⚠️ Could not load policies. Check console.</div>';
+      }
+    }
+
+    // Run both
+    loadBlogs();
+    loadPolicies();
+  } catch (err) {
+    console.error("💥 Fatal Firebase init error:", err);
+    document.getElementById("blogContainer").innerHTML = '<div class="error-message">Firebase failed to initialize. Check console.</div>';
+    document.getElementById("policiesContainer").innerHTML = '<div class="error-message">Firebase error</div>';
+  }
+</script>
+
+  
 // ===== REVIEWS =====
 [
   "Amazing service, my store was ready fast!",
