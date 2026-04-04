@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Policy | DK World Kenya</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin:0; background:#f5f5f5; }
+    nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
+    nav a { color:white; text-decoration:none; font-weight:bold; }
+    nav a:hover { color:#25D366; }
+    .container { max-width:800px; margin:2rem auto; padding:1.5rem; background:white; border-radius:1rem; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+    .back-link { display:inline-block; margin-top:2rem; color:#2563eb; text-decoration:none; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact</a>
+    <a href="blog.html">Blog</a>
+    <a href="policies.html">Policies</a>
+    <a href="admin.html">Admin</a>
+  </nav>
+
+  <div class="container" id="policyContainer">
+    <div>📜 Loading policy...</div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyABCVM1b9FEdXlJWf1SoL7dwQL1EXPXwgA",
+      authDomain: "dkworld-kenya.firebaseapp.com",
+      projectId: "dkworld-kenya",
+      storageBucket: "dkworld-kenya.firebasestorage.app",
+      messagingSenderId: "263537160242",
+      appId: "1:263537160242:web:a07511fae26faabf584c2b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const policyName = urlParams.get('policy');
+
+    async function loadPolicy() {
+      const container = document.getElementById('policyContainer');
+      if (!policyName) {
+        container.innerHTML = '<div>❌ No policy specified.</div>';
+        return;
+      }
+      try {
+        const policyRef = doc(db, "policies", policyName);
+        const policySnap = await getDoc(policyRef);
+        if (!policySnap.exists()) {
+          container.innerHTML = '<div>Policy not found.</div>';
+          return;
+        }
+        const policy = policySnap.data();
+        const displayName = policy.name.charAt(0).toUpperCase() + policy.name.slice(1);
+        container.innerHTML = `
+          <h1>${escapeHtml(displayName)}</h1>
+          <div>${policy.content || '<em>No content yet.</em>'}</div>
+          <a href="policies.html" class="back-link">← Back to all policies</a>
+        `;
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = '<div>⚠️ Failed to load policy.</div>';
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
+    }
+
+    loadPolicy();
+  </script>
+</body>
+</html>
