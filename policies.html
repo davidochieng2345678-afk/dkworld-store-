@@ -1,1 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Policies | DK World Kenya</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin:0; background:#f5f5f5; }
+    nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
+    nav a { color:white; text-decoration:none; font-weight:bold; }
+    nav a:hover { color:#25D366; }
+    .container { max-width:800px; margin:2rem auto; padding:1rem; }
+    .policy-card {
+      background:white; border-radius:1rem; padding:1.5rem; margin-bottom:1rem;
+      box-shadow:0 2px 8px rgba(0,0,0,0.05);
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .policy-name { font-size:1.2rem; font-weight:600; }
+    .view-btn { background:#2563eb; color:white; padding:0.5rem 1rem; border-radius:2rem; text-decoration:none; font-size:0.9rem; }
+    .view-btn:hover { background:#1d4ed8; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact</a>
+    <a href="blog.html">Blog</a>
+    <a href="policies.html">Policies</a>
+    <a href="admin.html">Admin</a>
+  </nav>
 
+  <div class="container">
+    <h1>Our Policies</h1>
+    <div id="policiesList"></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyABCVM1b9FEdXlJWf1SoL7dwQL1EXPXwgA",
+      authDomain: "dkworld-kenya.firebaseapp.com",
+      projectId: "dkworld-kenya",
+      storageBucket: "dkworld-kenya.firebasestorage.app",
+      messagingSenderId: "263537160242",
+      appId: "1:263537160242:web:a07511fae26faabf584c2b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadPolicies() {
+      const container = document.getElementById('policiesList');
+      container.innerHTML = '<div>📜 Loading policies...</div>';
+      try {
+        const snapshot = await getDocs(collection(db, "policies"));
+        if (snapshot.empty) {
+          container.innerHTML = '<div>No policies found.</div>';
+          return;
+        }
+        let html = '';
+        snapshot.forEach(doc => {
+          const policy = doc.data();
+          const name = policy.name || doc.id;
+          const displayName = name.charAt(0).toUpperCase() + name.slice(1);
+          html += `
+            <div class="policy-card">
+              <span class="policy-name">${escapeHtml(displayName)}</span>
+              <a href="policy-view.html?policy=${encodeURIComponent(name)}" class="view-btn">View →</a>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = '<div class="error">⚠️ Could not load policies.</div>';
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
+    }
+
+    loadPolicies();
+  </script>
+</body>
+</html>
