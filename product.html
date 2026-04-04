@@ -714,5 +714,59 @@ document.querySelectorAll("nav a").forEach(link => {
 
 loadProduct();
 </script>
+
+ <script>
+// Add "View" buttons to products table (without replacing any existing code)
+(function() {
+  function addProductViewButtons() {
+    const table = document.querySelector('#productTable');
+    if (!table) return;
+    
+    // Add "View" column header if missing
+    const theadRow = table.querySelector('thead tr');
+    let hasViewHeader = false;
+    for (let th of theadRow.cells) {
+      if (th.innerText.trim().toLowerCase() === 'view') hasViewHeader = true;
+    }
+    if (!hasViewHeader) {
+      const th = document.createElement('th');
+      th.innerText = 'View';
+      theadRow.appendChild(th);
+    }
+    
+    // Add view button to each row
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      if (row.querySelector('.product-view-btn')) return;
+      const editBtn = row.querySelector('.edit');
+      if (!editBtn) return;
+      const onclickAttr = editBtn.getAttribute('onclick');
+      const match = onclickAttr && onclickAttr.match(/editProduct\('([^']+)'\)/);
+      const id = match ? match[1] : null;
+      if (!id) return;
+      
+      const td = document.createElement('td');
+      const btn = document.createElement('button');
+      btn.innerText = 'View →';
+      btn.className = 'product-view-btn';
+      btn.style.background = '#2563eb';
+      btn.style.color = 'white';
+      btn.style.border = 'none';
+      btn.style.borderRadius = '5px';
+      btn.style.padding = '5px 10px';
+      btn.style.cursor = 'pointer';
+      btn.onclick = () => window.open(`/product.html?id=${id}`, '_blank');
+      td.appendChild(btn);
+      row.appendChild(td);
+    });
+  }
+  
+  // Run initially and after table updates
+  addProductViewButtons();
+  const observer = new MutationObserver(() => addProductViewButtons());
+  const productTbody = document.querySelector('#productTable tbody');
+  if (productTbody) observer.observe(productTbody, { childList: true, subtree: true });
+})();
+</script>
 </body>
 </html>
