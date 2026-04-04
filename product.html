@@ -715,14 +715,13 @@ document.querySelectorAll("nav a").forEach(link => {
 loadProduct();
 </script>
 <script>
-// FIXED: Add clickable "View" buttons for products (using event delegation)
+// WORKING CLICKABLE VIEW BUTTON FOR PRODUCTS
 (function() {
-  // Function to add View column and buttons
   function addViewButtons() {
     const table = document.querySelector('#productTable');
     if (!table) return;
     
-    // Add "View" column header if missing
+    // Add "View" header if missing
     const theadRow = table.querySelector('thead tr');
     let hasView = false;
     for (let th of theadRow.cells) {
@@ -734,12 +733,11 @@ loadProduct();
       theadRow.appendChild(th);
     }
     
-    // Add view button cell to each row if not already present
+    // Add view button to each row
     const rows = table.querySelectorAll('tbody tr');
     rows.forEach(row => {
-      if (row.querySelector('.view-btn-cell')) return; // already has view cell
+      if (row.querySelector('.product-view-btn-cell')) return;
       
-      // Find the edit button to extract product ID
       const editBtn = row.querySelector('.edit');
       if (!editBtn) return;
       const onclickAttr = editBtn.getAttribute('onclick');
@@ -748,7 +746,7 @@ loadProduct();
       if (!productId) return;
       
       const td = document.createElement('td');
-      td.className = 'view-btn-cell';
+      td.className = 'product-view-btn-cell';
       const btn = document.createElement('button');
       btn.textContent = 'View →';
       btn.style.background = '#2563eb';
@@ -757,37 +755,27 @@ loadProduct();
       btn.style.borderRadius = '5px';
       btn.style.padding = '5px 10px';
       btn.style.cursor = 'pointer';
-      // Use a data attribute and event delegation (safer than onclick)
-      btn.setAttribute('data-product-id', productId);
-      btn.classList.add('product-view-button');
+      btn.style.fontWeight = 'bold';
+      btn.onclick = (function(id) {
+        return function() {
+          window.open(`/product.html?id=${id}`, '_blank');
+        };
+      })(productId);
       td.appendChild(btn);
       row.appendChild(td);
     });
   }
   
-  // Event delegation: listen for clicks on the whole table
-  document.addEventListener('click', function(e) {
-    const btn = e.target.closest('.product-view-button');
-    if (btn && btn.classList.contains('product-view-button')) {
-      e.preventDefault();
-      const productId = btn.getAttribute('data-product-id');
-      if (productId) {
-        window.open(`/product.html?id=${productId}`, '_blank');
-      }
-    }
-  });
-  
-  // Initial run
   addViewButtons();
-  
-  // Observe table changes (when products are added/edited/deleted)
   const observer = new MutationObserver(function() {
     addViewButtons();
   });
-  const productTbody = document.querySelector('#productTable tbody');
-  if (productTbody) observer.observe(productTbody, { childList: true, subtree: true });
+  const tbody = document.querySelector('#productTable tbody');
+  if (tbody) observer.observe(tbody, { childList: true, subtree: true });
 })();
 </script>
+ 
+
 
 </body>
 </html>
