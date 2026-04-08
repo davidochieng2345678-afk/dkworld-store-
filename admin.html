@@ -8,13 +8,12 @@
 <meta name="author" content="David Ochieng">
 <meta name="robots" content="noindex, nofollow">
 
+<!-- ===== STYLES ===== -->
 <style>
 body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:0; background:#f5f5f5; }
-nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px; align-items:center; }
+nav { background:#111827; color:white; padding:15px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
 nav a { color:white; text-decoration:none; font-weight:bold; }
 nav a:hover, nav a.active { color:#25D366; }
-#logoutBtn { background:#dc2626; padding:5px 12px; border-radius:6px; cursor:pointer; }
-#logoutBtn:hover { background:#b91c1c; }
 
 .container { max-width:1100px; margin:auto; padding:20px; background:white; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.1); }
 h1,h2 { text-align:center; margin-bottom:20px; color:#111827; }
@@ -42,414 +41,618 @@ h2 { margin-top:40px; }
 #importProductsBtn:hover { background:#1E3A8A; }
 #importCSVBtn { background:#FF8C00; margin-bottom:15px; }
 #importCSVBtn:hover { background:#FF7F00; }
-
-/* Login form styles */
-.login-container { max-width:400px; margin:100px auto; background:white; padding:2rem; border-radius:12px; box-shadow:0 10px 25px -5px rgba(0,0,0,0.1); text-align:center; }
-.login-container input { width:100%; padding:0.75rem; margin-bottom:1rem; border:1px solid #cbd5e1; border-radius:0.5rem; }
-.login-container button { width:100%; background:#2563eb; }
-.error { color:#dc2626; margin-top:0.5rem; }
 </style>
 </head>
 <body>
-
-<!-- This div will show either login form or admin content -->
-<div id="appContainer"></div>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyABCVM1b9FEdXlJWf1SoL7dwQL1EXPXwgA",
-    authDomain: "dkworld-kenya.firebaseapp.com",
-    projectId: "dkworld-kenya",
-    storageBucket: "dkworld-kenya.firebasestorage.app",
-    messagingSenderId: "263537160242",
-    appId: "1:263537160242:web:a07511fae26faabf584c2b"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
-
-  // ========== YOUR EXISTING HELPER FUNCTIONS (unchanged) ==========
-  async function fetchCollection(colName) {
-    const snapshot = await getDocs(collection(db, colName));
-    return snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-  }
-  function parseCSV(text) {
-    const rows = text.split("\n").filter(r=>r.trim());
-    const headers = rows[0].split(",").map(h=>h.trim().toLowerCase());
-    const data = [];
-    for(let i=1;i<rows.length;i++){
-      const values = rows[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g).map(v=>v.replace(/^"|"$/g,''));
-      const obj = {};
-      headers.forEach((h,idx)=> obj[h]=values[idx] || "");
-      data.push(obj);
-    }
-    return data;
-  }
-
-  // Products
-  const productForm = document.getElementById("productForm");
-  const productTableBody = document.querySelector("#productTable tbody");
-  const defaultProducts = [
-    { name:"Basic E-commerce Website", description:"<p>Responsive HTML e-commerce template for small businesses.</p>", category:"e-commerce", price:12000, stock:50, sku:"ECOM-001", image:"https://example.com/images/ecom1.jpg", video:"" },
-    { name:"Digital Marketing Template", description:"<p>HTML template for digital marketing agencies.</p>", category:"digital", price:8000, stock:40, sku:"DIGI-001", image:"https://example.com/images/digital1.jpg", video:"" },
-    { name:"Local Business Website", description:"<p>HTML site template suitable for local shops or services.</p>", category:"local", price:5000, stock:30, sku:"LOC-001", image:"https://example.com/images/local1.jpg", video:"" }
-  ];
-
-  async function displayProducts(){
-    if(!productTableBody) return;
-    productTableBody.innerHTML = "";
-    const products = await fetchCollection("products");
-    products.forEach(p=>{
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${p.name}${p.category}Ksh ${p.price}${p.stock}${p.sku}
-        <td>
-          <button class="edit" onclick="editProduct('${p.id}')">Edit</button>
-          <button class="delete" onclick="deleteProduct('${p.id}')">Delete</button>
-        </td>`;
-      productTableBody.appendChild(tr);
-    });
-  }
-
-  window.editProduct = async id => {
-    const snap = await getDoc(doc(db,"products",id));
-    if(!snap.exists()){ alert("Product not found!"); return; }
-    const p = snap.data();
-    document.getElementById("productName").value=p.name;
-    document.getElementById("productDescription").value=p.description;
-    document.getElementById("productCategory").value=p.category;
-    document.getElementById("productPrice").value=p.price;
-    document.getElementById("productStock").value=p.stock;
-    document.getElementById("productSKU").value=p.sku;
-    document.getElementById("productImage").value=p.image;
-    document.getElementById("productVideo").value=p.video || "";
-    document.getElementById("editProductId").value=id;
-  };
-  window.deleteProduct = async id=>{ if(confirm("Delete this product?")){ await deleteDoc(doc(db,"products",id)); displayProducts(); } };
-
-  // Policies
-  const policyTableBody = document.querySelector("#policyTable tbody");
-  async function displayPolicies(){
-    if(!policyTableBody) return;
-    policyTableBody.innerHTML="";
-    const policies = await fetchCollection("policies");
-    policies.forEach(p=>{
-      const tr = document.createElement("tr");
-      tr.innerHTML=`<td>${p.name}}<td><button class="edit" onclick="editPolicy('${p.id}')">Edit</button>`;
-      policyTableBody.appendChild(tr);
-    });
-  }
-  window.editPolicy = async id=>{
-    const snap=await getDoc(doc(db,"policies",id));
-    if(!snap.exists()){ alert("Policy not found!"); return; }
-    const p=snap.data();
-    document.getElementById("policySelect").value=p.name;
-    document.getElementById("policyText").value=p.content;
-  };
-
-  // Blogs
-  const blogTableBody = document.querySelector("#blogTable tbody");
-  async function displayBlogs(){
-    if(!blogTableBody) return;
-    blogTableBody.innerHTML="";
-    const blogs=await fetchCollection("blogs");
-    blogs.forEach(b=>{
-      const tr=document.createElement("tr");
-      tr.innerHTML=`<td>${b.title}${b.category||""}${b.author}${b.date}
-        <td>
-          <button class="edit" onclick="editBlog('${b.id}')">Edit</button>
-          <button class="delete" onclick="deleteBlog('${b.id}')">Delete</button>
-        </td>`;
-      blogTableBody.appendChild(tr);
-    });
-  }
-  window.editBlog=async id=>{
-    const snap=await getDoc(doc(db,"blogs",id));
-    if(!snap.exists()){ alert("Blog not found!"); return; }
-    const b=snap.data();
-    document.getElementById("blogTitle").value=b.title;
-    document.getElementById("blogContent").value=b.content;
-    document.getElementById("blogCategory").value=b.category||"";
-    document.getElementById("blogAuthor").value=b.author;
-    document.getElementById("blogDate").value = b.date;
-    document.getElementById("editBlogId").value = id;
-  };
-  window.deleteBlog = async id => {
-    if(confirm("Delete this blog post?")) {
-      await deleteDoc(doc(db, "blogs", id));
-      displayBlogs();
-    }
-  };
-
-  // Attach event listeners (will be called after admin content is rendered)
-  function attachEventListeners() {
-    // Product form
-    const productFormEl = document.getElementById("productForm");
-    if(productFormEl) {
-      productFormEl.onsubmit = async (e) => {
-        e.preventDefault();
-        const data = {
-          name: document.getElementById("productName").value,
-          description: document.getElementById("productDescription").value,
-          category: document.getElementById("productCategory").value,
-          price: Number(document.getElementById("productPrice").value),
-          stock: Number(document.getElementById("productStock").value),
-          sku: document.getElementById("productSKU").value.toUpperCase(),
-          image: document.getElementById("productImage").value,
-          video: document.getElementById("productVideo").value || ""
-        };
-        try {
-          const editId = document.getElementById("editProductId").value;
-          if(editId){
-            await updateDoc(doc(db,"products",editId), data);
-            alert("Product updated!");
-          } else {
-            await addDoc(collection(db,"products"), data);
-            alert("✅ Product added successfully!");
-          }
-          productFormEl.reset();
-          document.getElementById("editProductId").value = "";
-          displayProducts();
-        } catch(error) {
-          console.error(error);
-          alert("❌ Error adding product.");
-        }
-      };
-    }
-    // Policy form
-    const policyFormEl = document.getElementById("policyForm");
-    if(policyFormEl) {
-      policyFormEl.onsubmit = async (e) => {
-        e.preventDefault();
-        const name = document.getElementById("policySelect").value;
-        const content = document.getElementById("policyText").value;
-        await setDoc(doc(db,"policies",name), { name, content });
-        displayPolicies();
-        alert("Policy saved!");
-      };
-    }
-    // Blog form
-    const blogFormEl = document.getElementById("blogForm");
-    if(blogFormEl) {
-      blogFormEl.onsubmit = async (e) => {
-        e.preventDefault();
-        const data = {
-          title: document.getElementById("blogTitle").value,
-          content: document.getElementById("blogContent").value,
-          category: document.getElementById("blogCategory").value,
-          author: document.getElementById("blogAuthor").value,
-          date: document.getElementById("blogDate").value
-        };
-        const editId = document.getElementById("editBlogId").value;
-        if(editId){
-          await updateDoc(doc(db,"blogs",editId), data);
-        } else {
-          await addDoc(collection(db,"blogs"), data);
-        }
-        blogFormEl.reset();
-        document.getElementById("editBlogId").value = "";
-        displayBlogs();
-        alert("Blog saved!");
-      };
-    }
-    // Import buttons
-    const importProductsBtn = document.getElementById("importProductsBtn");
-    if(importProductsBtn) {
-      importProductsBtn.onclick = async () => {
-        if(!confirm("Import default products?")) return;
-        const products = await fetchCollection("products");
-        const existing = products.map(p=>p.sku.toUpperCase());
-        for(const p of defaultProducts){
-          if(!existing.includes(p.sku.toUpperCase())) await addDoc(collection(db,"products"), p);
-        }
-        displayProducts();
-      };
-    }
-    const importProductsCSVBtn = document.getElementById("importProductsCSVBtn");
-    const productsCSVInput = document.getElementById("productsCSVInput");
-    if(importProductsCSVBtn && productsCSVInput) {
-      importProductsCSVBtn.onclick = () => productsCSVInput.click();
-      productsCSVInput.onchange = async (e) => {
-        const file = e.target.files[0]; if(!file) return;
-        const text = await file.text();
-        const rows = parseCSV(text);
-        const products = await fetchCollection("products");
-        const existing = products.map(p=>p.sku.toUpperCase());
-        for(const r of rows){
-          if(!r.sku) continue;
-          if(!existing.includes(r.sku.toUpperCase())){
-            r.price=Number(r.price)||0; r.stock=Number(r.stock)||0;
-            await addDoc(collection(db,"products"), r);
-          }
-        }
-        alert("Products CSV uploaded!"); displayProducts();
-      };
-    }
-    // Policies CSV
-    const importPoliciesCSVBtn = document.getElementById("importPoliciesCSVBtn");
-    const policiesCSVInput = document.getElementById("policiesCSVInput");
-    if(importPoliciesCSVBtn && policiesCSVInput) {
-      importPoliciesCSVBtn.onclick = () => policiesCSVInput.click();
-      policiesCSVInput.onchange = async (e) => {
-        const file = e.target.files[0]; if(!file) return;
-        const rows = parseCSV(await file.text());
-        for(const r of rows){ if(r.name && r.content){ await setDoc(doc(db,"policies",r.name), { name:r.name, content:r.content }); } }
-        alert("Policies CSV uploaded!"); displayPolicies();
-      };
-    }
-    // Blogs CSV
-    const importBlogsCSVBtn = document.getElementById("importBlogsCSVBtn");
-    const blogsCSVInput = document.getElementById("blogsCSVInput");
-    if(importBlogsCSVBtn && blogsCSVInput) {
-      importBlogsCSVBtn.onclick = () => blogsCSVInput.click();
-      blogsCSVInput.onchange = async (e) => {
-        const file = e.target.files[0]; if(!file) return;
-        const rows = parseCSV(await file.text());
-        for(const r of rows){
-          if(r.title && r.content){
-            await addDoc(collection(db, "blogs"), {
-              title: r.title,
-              content: r.content,
-              category: r.category || "",
-              author: r.author || "",
-              date: r.date || new Date().toISOString().split("T")[0]
-            });
-          }
-        }
-        alert("Blogs CSV uploaded!");
-        displayBlogs();
-      };
-    }
-  }
-
-  // ========== RENDER ADMIN CONTENT (HTML structure) ==========
-  function renderAdminContent() {
-    const container = document.getElementById("appContainer");
-    container.innerHTML = `
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About Us</a>
-        <a href="contact.html">Contact</a>
-        <a href="admin.html" class="active">Admin</a>
-        <button id="logoutBtn">Logout</button>
-      </nav>
-      <div class="container">
-        <h1>DK World Kenya Admin Panel</h1>
-
-        <!-- PRODUCTS -->
-        <section id="productsSection">
-          <h2>Manage Products</h2>
-          <button id="importProductsBtn">Import Default Products</button>
-          <button id="importProductsCSVBtn">Upload Products CSV</button>
-          <input type="file" id="productsCSVInput" accept=".csv" style="display:none;">
-          <form id="productForm">
-            <input type="hidden" id="editProductId">
-            <input type="text" id="productName" placeholder="Product Name (HTML allowed)" required>
-            <textarea id="productDescription" placeholder="Product Description (HTML allowed)" rows="3" required></textarea>
-            <select id="productCategory" required>
-              <option value="">Select Category</option>
-              <option value="e-commerce">E-commerce Websites</option>
-              <option value="digital">Digital Products</option>
-              <option value="local">Local HTML Sites</option>
-            </select>
-            <input type="number" id="productPrice" placeholder="Price (KES)" required>
-            <input type="number" id="productStock" placeholder="Stock Quantity" required>
-            <input type="text" id="productSKU" placeholder="SKU (Unique)" required>
-            <input type="url" id="productImage" placeholder="Image URL" required>
-            <input type="url" id="productVideo" placeholder="Video URL (optional)">
-            <button type="submit">Add / Update Product</button>
-          </form>
-          <table id="productTable"><thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>SKU</th><th>Actions</th></tr></thead><tbody></tbody></table>
-        </section>
-
-        <!-- POLICIES -->
-        <section id="policiesSection">
-          <h2>Manage Policies (HTML Allowed)</h2>
-          <button id="importPoliciesCSVBtn">Upload Policies CSV</button>
-          <input type="file" id="policiesCSVInput" accept=".csv" style="display:none;">
-          <form id="policyForm">
-            <select id="policySelect" required>
-              <option value="">-- Select Policy --</option>
-              <option value="terms">Terms of Service</option>
-              <option value="privacy">Privacy Policy</option>
-              <option value="refund">Refund Policy</option>
-              <option value="shipping">Shipping Policy</option>
-            </select>
-            <textarea id="policyText" rows="8" placeholder="Enter policy content here (HTML allowed)"></textarea>
-            <button type="submit">Save / Update Policy</button>
-          </form>
-          <table id="policyTable"><thead><tr><th>Policy Name</th><th>Actions</th></tr></thead><tbody></tbody></table>
-        </section>
-
-        <!-- BLOGS -->
-        <section id="blogsSection">
-          <h2>Manage Blog Posts (HTML Allowed)</h2>
-          <button id="importBlogsCSVBtn">Upload Blogs CSV</button>
-          <input type="file" id="blogsCSVInput" accept=".csv" style="display:none;">
-          <form id="blogForm">
-            <input type="hidden" id="editBlogId">
-            <input type="text" id="blogTitle" placeholder="Blog Title (HTML allowed)" required>
-            <textarea id="blogContent" placeholder="Blog Content (HTML allowed)" rows="5" required></textarea>
-            <input type="text" id="blogCategory" placeholder="Category (optional)">
-            <input type="text" id="blogAuthor" placeholder="Author Name" required>
-            <input type="date" id="blogDate" required>
-            <button type="submit">Add / Update Blog Post</button>
-          </form>
-          <table id="blogTable"><thead><tr><th>Title</th><th>Category</th><th>Author</th><th>Date</th><th>Actions</th></tr></thead><tbody></tbody></table>
-        </section>
+<!-- PASSWORD PROTECTION (paste after <body>) -->
+<div id="adminLock" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#f1f5f9; z-index:9999; display:flex; align-items:center; justify-content:center; font-family:'Segoe UI',sans-serif;">
+  <div style="background:white; padding:2rem; border-radius:1rem; box-shadow:0 10px 25px -5px rgba(0,0,0,0.1); width:340px; text-align:center;">
+    <h2>Admin Login</h2>
+    <div style="position:relative;">
+      <input type="password" id="adminPw" placeholder="Enter password" style="width:100%; padding:0.75rem; margin-bottom:0.5rem; border:1px solid #cbd5e1; border-radius:0.5rem;">
+      <div style="text-align:left; margin-bottom:1rem;">
+        <input type="checkbox" id="showPwCheckbox" style="margin-right:5px;">
+        <label for="showPwCheckbox" style="font-size:0.85rem;">Show password</label>
       </div>
-    `;
+    </div>
+    <button id="adminLoginBtn" style="background:#2563eb; color:white; border:none; padding:0.75rem; width:100%; border-radius:0.5rem; font-weight:bold; cursor:pointer;">Login</button>
+    <div id="adminError" style="color:#dc2626; margin-top:1rem;"></div>
+  </div>
+</div>
 
-    // Re-attach all event listeners and display data
-    attachEventListeners();
-    displayProducts();
-    displayPolicies();
-    displayBlogs();
+<script>
+  // 🔐 YOUR PASSWORD (change if needed)
+  const ADMIN_PASSWORD = "Milly@1kiruo";
 
-    // Logout button
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
-      await signOut(auth);
-      location.reload(); // will show login screen again
-    });
-  }
-
-  // ========== LOGIN FORM ==========
-  function showLoginForm() {
-    const container = document.getElementById("appContainer");
-    container.innerHTML = `
-      <div class="login-container">
-        <h2>Admin Login</h2>
-        <input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
-        <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
-        <button id="loginButton">Login</button>
-        <div id="loginError" class="error"></div>
-      </div>
-    `;
-    document.getElementById("loginButton").addEventListener("click", async () => {
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPassword").value;
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        // onAuthStateChanged will trigger renderAdminContent
-      } catch (error) {
-        document.getElementById("loginError").innerText = "Invalid email or password.";
-      }
-    });
-  }
-
-  // ========== AUTH STATE LISTENER ==========
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      renderAdminContent();
+  function checkPassword() {
+    const input = document.getElementById("adminPw").value;
+    if (input === ADMIN_PASSWORD) {
+      sessionStorage.setItem("adminAuthenticated", "true");
+      document.getElementById("adminLock").style.display = "none";
     } else {
-      showLoginForm();
+      document.getElementById("adminError").innerText = "Wrong password. Try again.";
     }
+  }
+
+  // Toggle password visibility
+  const pwField = document.getElementById("adminPw");
+  const showCheckbox = document.getElementById("showPwCheckbox");
+  showCheckbox.addEventListener("change", function() {
+    pwField.type = this.checked ? "text" : "password";
   });
+
+  document.getElementById("adminLoginBtn").onclick = checkPassword;
+  document.getElementById("adminPw").onkeypress = function(e) {
+    if (e.key === "Enter") checkPassword();
+  };
+
+  // If already authenticated, skip the lock screen
+  if (sessionStorage.getItem("adminAuthenticated") === "true") {
+    document.getElementById("adminLock").style.display = "none";
+  }
+</script>
+<!-- END PASSWORD PROTECTION -->
+
+<!-- ===== NAVIGATION ===== -->
+<nav>
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="contact.html">Contact</a>
+  <a href="admin.html" class="active">Admin</a>
+</nav>
+
+<div class="container">
+  <h1>DK World Kenya Admin Panel</h1>
+
+  <!-- ===== PRODUCTS MANAGEMENT ===== -->
+  <section id="productsSection">
+    <h2>Manage Products</h2>
+    <button id="importProductsBtn">Import Default Products</button>
+    <button id="importProductsCSVBtn">Upload Products CSV</button>
+    <input type="file" id="productsCSVInput" accept=".csv" style="display:none;">
+    <form id="productForm">
+      <input type="hidden" id="editProductId">
+      <input type="text" id="productName" placeholder="Product Name (HTML allowed)" required>
+      <textarea id="productDescription" placeholder="Product Description (HTML allowed)" rows="3" required></textarea>
+      <select id="productCategory" required>
+        <option value="">Select Category</option>
+        <option value="e-commerce">E-commerce Websites</option>
+        <option value="digital">Digital Products</option>
+        <option value="local">Local HTML Sites</option>
+      </select>
+      <input type="number" id="productPrice" placeholder="Price (KES)" required>
+      <input type="number" id="productStock" placeholder="Stock Quantity" required>
+      <input type="text" id="productSKU" placeholder="SKU (Unique)" required>
+      <input type="url" id="productImage" placeholder="Image URL" required>
+      <input type="url" id="productVideo" placeholder="Video URL (optional)">
+      <button type="submit">Add / Update Product</button>
+    </form>
+
+    <table id="productTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>SKU</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- ===== POLICIES MANAGEMENT ===== -->
+  <section id="policiesSection">
+    <h2>Manage Policies (HTML Allowed)</h2>
+    <button id="importPoliciesCSVBtn">Upload Policies CSV</button>
+    <input type="file" id="policiesCSVInput" accept=".csv" style="display:none;">
+    <form id="policyForm">
+      <select id="policySelect" required>
+        <option value="">-- Select Policy --</option>
+        <option value="terms">Terms of Service</option>
+        <option value="privacy">Privacy Policy</option>
+        <option value="refund">Refund Policy</option>
+        <option value="shipping">Shipping Policy</option>
+      </select>
+      <textarea id="policyText" rows="8" placeholder="Enter policy content here (HTML allowed)"></textarea>
+      <button type="submit">Save / Update Policy</button>
+    </form>
+
+    <table id="policyTable">
+      <thead>
+        <tr>
+          <th>Policy Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- ===== BLOG POSTS MANAGEMENT ===== -->
+  <section id="blogsSection">
+    <h2>Manage Blog Posts (HTML Allowed)</h2>
+    <button id="importBlogsCSVBtn">Upload Blogs CSV</button>
+    <input type="file" id="blogsCSVInput" accept=".csv" style="display:none;">
+    <form id="blogForm">
+      <input type="hidden" id="editBlogId">
+      <input type="text" id="blogTitle" placeholder="Blog Title (HTML allowed)" required>
+      <textarea id="blogContent" placeholder="Blog Content (HTML allowed)" rows="5" required></textarea>
+      <input type="text" id="blogCategory" placeholder="Category (optional)">
+      <input type="text" id="blogAuthor" placeholder="Author Name" required>
+      <input type="date" id="blogDate" required>
+      <button type="submit">Add / Update Blog Post</button>
+    </form>
+
+    <table id="blogTable">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Author</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+</div>
+
+<!-- ===== FIREBASE ADMIN SCRIPT ===== -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// Firebase Config
+const firebaseConfig = {
+  apiKey: "AIzaSyABCVM1b9FEdXlJWf1SoL7dwQL1EXPXwgA",
+  authDomain: "dkworld-kenya.firebaseapp.com",
+  projectId: "dkworld-kenya",
+  storageBucket: "dkworld-kenya.firebasestorage.app",
+  messagingSenderId: "263537160242",
+  appId: "1:263537160242:web:a07511fae26faabf584c2b"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* ------------------- HELPER ------------------- */
+async function fetchCollection(colName) {
+  const snapshot = await getDocs(collection(db, colName));
+  return snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+}
+function parseCSV(text) {
+  const rows = text.split("\n").filter(r=>r.trim());
+  const headers = rows[0].split(",").map(h=>h.trim().toLowerCase());
+  const data = [];
+  for(let i=1;i<rows.length;i++){
+    const values = rows[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g).map(v=>v.replace(/^"|"$/g,''));
+    const obj = {};
+    headers.forEach((h,idx)=> obj[h]=values[idx] || "");
+    data.push(obj);
+  }
+  return data;
+}
+
+/* ------------------- PRODUCTS ------------------- */
+const productForm = document.getElementById("productForm");
+const productTableBody = document.querySelector("#productTable tbody");
+const defaultProducts = [
+  { name:"Basic E-commerce Website", description:"<p>Responsive HTML e-commerce template for small businesses.</p>", category:"e-commerce", price:12000, stock:50, sku:"ECOM-001", image:"https://example.com/images/ecom1.jpg", video:"" },
+  { name:"Digital Marketing Template", description:"<p>HTML template for digital marketing agencies.</p>", category:"digital", price:8000, stock:40, sku:"DIGI-001", image:"https://example.com/images/digital1.jpg", video:"" },
+  { name:"Local Business Website", description:"<p>HTML site template suitable for local shops or services.</p>", category:"local", price:5000, stock:30, sku:"LOC-001", image:"https://example.com/images/local1.jpg", video:"" }
+];
+
+async function displayProducts(){
+  productTableBody.innerHTML = "";
+  const products = await fetchCollection("products");
+  products.forEach(p=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${p.name}</td><td>${p.category}</td><td>Ksh ${p.price}</td><td>${p.stock}</td><td>${p.sku}</td>
+      <td>
+        <button class="edit" onclick="editProduct('${p.id}')">Edit</button>
+        <button class="delete" onclick="deleteProduct('${p.id}')">Delete</button>
+      </td>`;
+    productTableBody.appendChild(tr);
+  });
+}
+displayProducts();
+
+
+  productForm.addEventListener("submit", async e=>{
+  e.preventDefault();
+
+  const data = {
+    name: document.getElementById("productName").value,
+    description: document.getElementById("productDescription").value,
+    category: document.getElementById("productCategory").value,
+    price: Number(document.getElementById("productPrice").value),
+    stock: Number(document.getElementById("productStock").value),
+    sku: document.getElementById("productSKU").value.toUpperCase(),
+    image: document.getElementById("productImage").value,
+    video: document.getElementById("productVideo").value || ""
+  };
+
+  try {
+    const editId = document.getElementById("editProductId").value;
+
+    if(editId){
+      await updateDoc(doc(db,"products",editId), data);
+      alert("Product updated!");
+    } else {
+      await addDoc(collection(db,"products"), data);
+      alert("✅ Product added successfully!");
+    }
+
+    productForm.reset();
+    document.getElementById("editProductId").value = "";
+    displayProducts();
+
+  } catch(error) {
+    console.error("🔥 Firebase Error:", error);
+    alert("❌ Error adding product. Check console.");
+  }
+});
+
+window.editProduct = async id => {
+  const snap = await getDoc(doc(db,"products",id));
+  if(!snap.exists()){ alert("Product not found!"); return; }
+  const p = snap.data();
+  document.getElementById("productName").value=p.name;
+  document.getElementById("productDescription").value=p.description;
+  document.getElementById("productCategory").value=p.category;
+  document.getElementById("productPrice").value=p.price;
+  document.getElementById("productStock").value=p.stock;
+  document.getElementById("productSKU").value=p.sku;
+  document.getElementById("productImage").value=p.image;
+  document.getElementById("productVideo").value=p.video || "";
+  document.getElementById("editProductId").value=id;
+};
+window.deleteProduct = async id=>{ if(confirm("Delete this product?")){ await deleteDoc(doc(db,"products",id)); displayProducts(); }};
+
+/* IMPORT DEFAULT PRODUCTS */
+document.getElementById("importProductsBtn").addEventListener("click", async ()=>{
+  if(!confirm("Import default products?")) return;
+  const products = await fetchCollection("products");
+  const existing = products.map(p=>p.sku.toUpperCase());
+  for(const p of defaultProducts){
+    if(!existing.includes(p.sku.toUpperCase())) await addDoc(collection(db,"products"), p);
+  }
+  displayProducts();
+});
+
+/* CSV UPLOAD PRODUCTS */
+const productsCSVInput = document.getElementById("productsCSVInput");
+document.getElementById("importProductsCSVBtn").addEventListener("click", ()=>productsCSVInput.click());
+productsCSVInput.addEventListener("change", async e=>{
+  const file = e.target.files[0]; if(!file) return;
+  const text = await file.text();
+  const rows = parseCSV(text);
+  const products = await fetchCollection("products");
+  const existing = products.map(p=>p.sku.toUpperCase());
+  for(const r of rows){
+    if(!r.sku) continue;
+    if(!existing.includes(r.sku.toUpperCase())){
+      r.price=Number(r.price)||0; r.stock=Number(r.stock)||0;
+      await addDoc(collection(db,"products"), r);
+    }
+  }
+  alert("Products CSV uploaded!"); displayProducts();
+});
+
+/* ------------------- POLICIES ------------------- */
+const policyForm = document.getElementById("policyForm");
+const policyTableBody = document.querySelector("#policyTable tbody");
+async function displayPolicies(){
+  policyTableBody.innerHTML="";
+  const policies = await fetchCollection("policies");
+  policies.forEach(p=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML=`<td>${p.name}</td><td><button class="edit" onclick="editPolicy('${p.id}')">Edit</button></td>`;
+    policyTableBody.appendChild(tr);
+  });
+}
+displayPolicies();
+
+policyForm.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const name=document.getElementById("policySelect").value;
+  const content=document.getElementById("policyText").value;
+  await setDoc(doc(db,"policies",name), { name, content });
+  displayPolicies(); alert("Policy saved!");
+});
+window.editPolicy = async id=>{
+  const snap=await getDoc(doc(db,"policies",id));
+  if(!snap.exists()){ alert("Policy not found!"); return; }
+  const p=snap.data();
+  document.getElementById("policySelect").value=p.name;
+  document.getElementById("policyText").value=p.content;
+};
+
+/* CSV UPLOAD POLICIES */
+const policiesCSVInput=document.getElementById("policiesCSVInput");
+document.getElementById("importPoliciesCSVBtn").addEventListener("click", ()=>policiesCSVInput.click());
+policiesCSVInput.addEventListener("change", async e=>{
+  const file=e.target.files[0]; if(!file) return;
+  const rows=parseCSV(await file.text());
+  for(const r of rows){ if(r.name && r.content){ await setDoc(doc(db,"policies",r.name), { name:r.name, content:r.content }); } }
+  alert("Policies CSV uploaded!"); displayPolicies();
+});
+
+/* ------------------- BLOGS ------------------- */
+const blogForm=document.getElementById("blogForm");
+const blogTableBody=document.querySelector("#blogTable tbody");
+async function displayBlogs(){
+  blogTableBody.innerHTML="";
+  const blogs=await fetchCollection("blogs");
+  blogs.forEach(b=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${b.title}</td><td>${b.category||""}</td><td>${b.author}</td><td>${b.date}</td>
+      <td>
+        <button class="edit" onclick="editBlog('${b.id}')">Edit</button>
+        <button class="delete" onclick="deleteBlog('${b.id}')">Delete</button>
+      </td>`;
+    blogTableBody.appendChild(tr);
+  });
+}
+displayBlogs();
+
+blogForm.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const data={
+    title:document.getElementById("blogTitle").value,
+    content:document.getElementById("blogContent").value,
+    category:document.getElementById("blogCategory").value,
+    author:document.getElementById("blogAuthor").value,
+    date:document.getElementById("blogDate").value
+  };
+  const editId=document.getElementById("editBlogId").value;
+  if(editId){ await updateDoc(doc(db,"blogs",editId), data); } else { await addDoc(collection(db,"blogs"), data); }
+  blogForm.reset(); document.getElementById("editBlogId").value="";
+  displayBlogs(); alert("Blog saved!");
+});
+window.editBlog=async id=>{
+  const snap=await getDoc(doc(db,"blogs",id));
+  if(!snap.exists()){ alert("Blog not found!"); return; }
+  const b=snap.data();
+  document.getElementById("blogTitle").value=b.title;
+  document.getElementById("blogContent").value=b.content;
+  document.getElementById("blogCategory").value=b.category||"";
+  document.getElementById("blogAuthor").value=b.author;
+  document.getElementById("blogDate").value = b.date;
+  document.getElementById("editBlogId").value = id;
+};
+window.deleteBlog = async id => {
+  if(confirm("Delete this blog post?")) {
+    await deleteDoc(doc(db, "blogs", id));
+    displayBlogs();
+  }
+};
+
+/* CSV UPLOAD BLOGS */
+const blogsCSVInput = document.getElementById("blogsCSVInput");
+document.getElementById("importBlogsCSVBtn").addEventListener("click", () => blogsCSVInput.click());
+blogsCSVInput.addEventListener("change", async e => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const rows = parseCSV(await file.text());
+  for(const r of rows){
+    if(r.title && r.content){
+      await addDoc(collection(db, "blogs"), {
+        title: r.title,
+        content: r.content,
+        category: r.category || "",
+        author: r.author || "",
+        date: r.date || new Date().toISOString().split("T")[0]
+      });
+    }
+  }
+  alert("Blogs CSV uploaded!");
+  displayBlogs();
+});
+
+  [
+  {
+    "name": "E-Commerce Starter Kit",
+    "description": "Complete starter e-commerce website ready for Kenya market.",
+    "category": "e-commerce",
+    "price": 5000,
+    "stock": 10,
+    "sku": "EC001",
+    "image": "https://via.placeholder.com/300x180",
+    "video": ""
+  },
+  {
+    "name": "E-Commerce Advanced Pack",
+    "description": "Advanced e-commerce website with multi-product setup and payment integration.",
+    "category": "e-commerce",
+    "price": 12000,
+    "stock": 5,
+    "sku": "EC002",
+    "image": "https://via.placeholder.com/300x180",
+    "video": ""
+  },
+  {
+    "name": "E-Commerce Pro Template",
+    "description": "Professional e-commerce template for fast deployment.",
+    "category": "e-commerce",
+    "price": 8000,
+    "stock": 7,
+    "sku": "EC003",
+    "image": "https://via.placeholder.com/300x180",
+    "video": ""
+  },
+  {
+    "name": "Digital Marketing Guide",
+    "description": "Step-by-step guide to marketing your products online.",
+    "category": "digital",
+    "price": 1200,
+    "stock": 50,
+    "sku": "DM001",
+    "image": "https://via.placeholder.com/300x180",
+    "video": ""
+  },
+  {
+    "name": "Social Media Toolkit",
+    "description": "Pre-made templates and strategy guide for social media marketing.",
+    "category": "digital",
+    "price": 800,
+    "stock": 30,
+    "sku": "DM002",
+    "image": "https://via.placeholder.com/300x180",
+    "video": ""
+  },
+  {
+    "name": "SEO Starter Pack",
+    "description": "Learn SEO basics to boost your website visibility.",
+    "category": "digital",
+    "price": 1500,
+    "stock": 25,
+    "sku": "DM003",
+    "image": "https://via.placeholder.com/300x180",
+    "video": ""
+  },
+  {
+    "name": "Local Business HTML Site",
+    "description": "Professional local HTML website for small businesses.",
+    "category": "local",
+    "price": 2500,
+    "stock": 15,
+    "sku": "LB001",
+    "image": "https://via.placeholder.com/300x180",
+    "video": ""
+  },
+  {
+    "name": "Portfolio HTML Template",
+    "description": "Clean HTML template for creatives and freelancers.",
+    "category": "local",
+    "price": 2000,
+    "stock": 20,
+    "sku": "LB002",
+    "image": "https://via.placeholder.com/300x180",
+    "video": ""
+  },
+  {
+    "name": "Restaurant HTML Template",
+    "description": "Modern HTML website template for restaurants and cafes.",
+    "category": "local",
+    "price": 3000,
+    "stock": 10,
+    "sku": "LB003",
+    "image": "https://via.placeholder.com/300x180",
+    "video": ""
+  }
+]
+    
 </script>
 
+  <script>
+(function() {
+  function addCopyIdButtons() {
+    const table = document.querySelector('#productTable');
+    if (!table) return;
+    
+    // Add "Product ID" column header
+    const theadRow = table.querySelector('thead tr');
+    let hasIdCol = false;
+    for (let th of theadRow.cells) {
+      if (th.innerText.trim() === 'Product ID') hasIdCol = true;
+    }
+    if (!hasIdCol) {
+      const th = document.createElement('th');
+      th.innerText = 'Product ID';
+      theadRow.appendChild(th);
+    }
+    
+    // Add ID cell to each row
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      if (row.querySelector('.product-id-cell')) return;
+      const editBtn = row.querySelector('.edit');
+      if (!editBtn) return;
+      const onclickAttr = editBtn.getAttribute('onclick');
+      const match = onclickAttr && onclickAttr.match(/editProduct\('([^']+)'\)/);
+      const productId = match ? match[1] : null;
+      if (!productId) return;
+      
+      const td = document.createElement('td');
+      td.className = 'product-id-cell';
+      td.style.fontFamily = 'monospace';
+      td.style.fontSize = '0.8rem';
+      td.style.wordBreak = 'break-all';
+      td.textContent = productId;
+      row.appendChild(td);
+    });
+  }
+  
+  addCopyIdButtons();
+  const observer = new MutationObserver(() => addCopyIdButtons());
+  const tbody = document.querySelector('#productTable tbody');
+  if (tbody) observer.observe(tbody, { childList: true, subtree: true });
+})();
+</script>
+
+<script>
+// ADD CLICKABLE VIEW BUTTONS FOR BLOG POSTS
+(function() {
+  function addBlogViewButtons() {
+    const table = document.querySelector('#blogTable');
+    if (!table) return;
+    
+    // Add "View" header if missing
+    const theadRow = table.querySelector('thead tr');
+    let hasView = false;
+    for (let th of theadRow.cells) {
+      if (th.innerText.trim().toLowerCase() === 'view') hasView = true;
+    }
+    if (!hasView) {
+      const th = document.createElement('th');
+      th.innerText = 'View';
+      theadRow.appendChild(th);
+    }
+    
+    // Add view button to each row
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      if (row.querySelector('.blog-view-btn-cell')) return;
+      
+      const editBtn = row.querySelector('.edit');
+      if (!editBtn) return;
+      const onclickAttr = editBtn.getAttribute('onclick');
+      const match = onclickAttr && onclickAttr.match(/editBlog\('([^']+)'\)/);
+      const blogId = match ? match[1] : null;
+      if (!blogId) return;
+      
+      const td = document.createElement('td');
+      td.className = 'blog-view-btn-cell';
+      const btn = document.createElement('button');
+      btn.textContent = 'View →';
+      btn.style.background = '#2563eb';
+      btn.style.color = 'white';
+      btn.style.border = 'none';
+      btn.style.borderRadius = '5px';
+      btn.style.padding = '5px 10px';
+      btn.style.cursor = 'pointer';
+      btn.style.fontWeight = 'bold';
+      btn.onclick = (function(id) {
+        return function() {
+          window.open(`/blog-post.html?id=${id}`, '_blank');
+        };
+      })(blogId);
+      td.appendChild(btn);
+      row.appendChild(td);
+    });
+  }
+  
+  addBlogViewButtons();
+  const observer = new MutationObserver(function() {
+    addBlogViewButtons();
+  });
+  const tbody = document.querySelector('#blogTable tbody');
+  if (tbody) observer.observe(tbody, { childList: true, subtree: true });
+})();
+</script>
 </body>
 </html>
