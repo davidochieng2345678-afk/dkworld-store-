@@ -44,6 +44,40 @@ h2 { margin-top:40px; }
 </style>
 </head>
 <body>
+  <!-- SIMPLE PASSWORD PROTECTION (add right after <body>) -->
+<div id="adminLock" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#f1f5f9; z-index:9999; display:flex; align-items:center; justify-content:center; font-family:'Segoe UI',sans-serif;">
+  <div style="background:white; padding:2rem; border-radius:1rem; box-shadow:0 10px 25px -5px rgba(0,0,0,0.1); width:320px; text-align:center;">
+    <h2>Admin Login</h2>
+    <input type="password" id="adminPw" placeholder="Enter password" style="width:100%; padding:0.75rem; margin-bottom:1rem; border:1px solid #cbd5e1; border-radius:0.5rem;">
+    <button id="adminLoginBtn" style="background:#2563eb; color:white; border:none; padding:0.75rem; width:100%; border-radius:0.5rem; font-weight:bold; cursor:pointer;">Login</button>
+    <div id="adminError" style="color:#dc2626; margin-top:1rem;"></div>
+  </div>
+</div>
+
+<script>
+  // 🔐 CHANGE THIS PASSWORD TO YOUR OWN
+  const ADMIN_PASSWORD = "YourSecretPass123";
+
+  function checkPassword() {
+    const input = document.getElementById("adminPw").value;
+    if (input === ADMIN_PASSWORD) {
+      sessionStorage.setItem("adminAuthenticated", "true");
+      document.getElementById("adminLock").style.display = "none";
+    } else {
+      document.getElementById("adminError").innerText = "Wrong password";
+    }
+  }
+
+  document.getElementById("adminLoginBtn").onclick = checkPassword;
+  document.getElementById("adminPw").onkeypress = function(e) {
+    if (e.key === "Enter") checkPassword();
+  };
+
+  if (sessionStorage.getItem("adminAuthenticated") === "true") {
+    document.getElementById("adminLock").style.display = "none";
+  }
+</script>
+<!-- END PASSWORD PROTECTION -->
 
 <!-- ===== NAVIGATION ===== -->
 <nav>
