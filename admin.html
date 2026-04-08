@@ -44,7 +44,54 @@ h2 { margin-top:40px; }
 </style>
 </head>
 <body>
+<!-- PASSWORD PROTECTION (paste after <body>) -->
+<div id="adminLock" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#f1f5f9; z-index:9999; display:flex; align-items:center; justify-content:center; font-family:'Segoe UI',sans-serif;">
+  <div style="background:white; padding:2rem; border-radius:1rem; box-shadow:0 10px 25px -5px rgba(0,0,0,0.1); width:340px; text-align:center;">
+    <h2>Admin Login</h2>
+    <div style="position:relative;">
+      <input type="password" id="adminPw" placeholder="Enter password" style="width:100%; padding:0.75rem; margin-bottom:0.5rem; border:1px solid #cbd5e1; border-radius:0.5rem;">
+      <div style="text-align:left; margin-bottom:1rem;">
+        <input type="checkbox" id="showPwCheckbox" style="margin-right:5px;">
+        <label for="showPwCheckbox" style="font-size:0.85rem;">Show password</label>
+      </div>
+    </div>
+    <button id="adminLoginBtn" style="background:#2563eb; color:white; border:none; padding:0.75rem; width:100%; border-radius:0.5rem; font-weight:bold; cursor:pointer;">Login</button>
+    <div id="adminError" style="color:#dc2626; margin-top:1rem;"></div>
+  </div>
+</div>
 
+<script>
+  // 🔐 YOUR PASSWORD (change if needed)
+  const ADMIN_PASSWORD = "Milly@1kiruo";
+
+  function checkPassword() {
+    const input = document.getElementById("adminPw").value;
+    if (input === ADMIN_PASSWORD) {
+      sessionStorage.setItem("adminAuthenticated", "true");
+      document.getElementById("adminLock").style.display = "none";
+    } else {
+      document.getElementById("adminError").innerText = "Wrong password. Try again.";
+    }
+  }
+
+  // Toggle password visibility
+  const pwField = document.getElementById("adminPw");
+  const showCheckbox = document.getElementById("showPwCheckbox");
+  showCheckbox.addEventListener("change", function() {
+    pwField.type = this.checked ? "text" : "password";
+  });
+
+  document.getElementById("adminLoginBtn").onclick = checkPassword;
+  document.getElementById("adminPw").onkeypress = function(e) {
+    if (e.key === "Enter") checkPassword();
+  };
+
+  // If already authenticated, skip the lock screen
+  if (sessionStorage.getItem("adminAuthenticated") === "true") {
+    document.getElementById("adminLock").style.display = "none";
+  }
+</script>
+<!-- END PASSWORD PROTECTION -->
 
 <!-- ===== NAVIGATION ===== -->
 <nav>
