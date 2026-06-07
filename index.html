@@ -1,1 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>BeltCraft | Premium Belts Collection</title>
+  <!-- Google Fonts & Simple CSS Reset -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fefcf8;
+      color: #1e1e1e;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Typography */
+    h1, h2, h3 {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: 3.2rem;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-title h2 {
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title p {
+      color: #5b5b5b;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Buttons & links */
+    .btn {
+      display: inline-block;
+      background-color: #2c2c2c;
+      color: white;
+      padding: 10px 28px;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #2c2c2c;
+      color: #2c2c2c;
+    }
+
+    .btn-outline:hover {
+      background: #2c2c2c;
+      color: white;
+    }
+
+    .btn:hover {
+      background-color: #4a4a4a;
+      transform: translateY(-2px);
+    }
+
+    /* Header / Nav */
+    header {
+      padding: 24px 0;
+      border-bottom: 1px solid #eae6df;
+      background: #fefcf8;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+      background: rgba(254, 252, 248, 0.92);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span {
+      color: #b47c4a;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #2c2c2c;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #b47c4a;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 80px 0 64px;
+      text-align: center;
+      background: linear-gradient(145deg, #fff8ef 0%, #fef4e6 100%);
+      border-radius: 0 0 48px 48px;
+      margin-bottom: 40px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #4a4a4a;
+      max-width: 700px;
+      margin: 0 auto 2rem;
+    }
+
+    /* Product grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0 4rem;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.05);
+      transition: all 0.25s ease;
+      border: 1px solid #f0ebe3;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.1);
+      border-color: #e0d6ca;
+    }
+
+    .product-img {
+      width: 100%;
+      height: 260px;
+      background-color: #f3efe9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .product-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-img img {
+      transform: scale(1.02);
+    }
+
+    .product-info {
+      padding: 1.5rem;
+    }
+
+    .product-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-desc {
+      color: #5a5a5a;
+      font-size: 0.9rem;
+      margin: 0.75rem 0;
+      line-height: 1.45;
+    }
+
+    .price {
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin: 0.75rem 0;
+      color: #b47c4a;
+    }
+
+    .card-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .btn-small {
+      padding: 6px 18px;
+      font-size: 0.8rem;
+      background-color: #2c2c2c;
+    }
+
+    /* About / Craftsmanship */
+    .about {
+      background: #f7f2ea;
+      border-radius: 48px;
+      padding: 3rem 2rem;
+      margin: 3rem 0;
+      text-align: center;
+    }
+
+    .about h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .about p {
+      max-width: 700px;
+      margin: 0 auto 1.5rem;
+      color: #3e3e3e;
+    }
+
+    /* contact & footer */
+    .contact {
+      text-align: center;
+      padding: 2rem 0 3rem;
+    }
+
+    footer {
+      border-top: 1px solid #e8e2d9;
+      padding: 2rem 0;
+      text-align: center;
+      color: #6b5e52;
+      font-size: 0.85rem;
+      margin-top: 2rem;
+    }
+
+    /* image replacement hint */
+    .img-note {
+      background: #fff4e6;
+      border-radius: 28px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      font-size: 0.85rem;
+      border-left: 4px solid #b47c4a;
+      color: #4a3b2c;
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      h1 {
+        font-size: 2.4rem;
+      }
+      .hero {
+        padding: 48px 0;
+      }
+      .products-grid {
+        gap: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="nav">
+      <div class="logo">BELT<span>CRAFT</span></div>
+      <div class="nav-links">
+        <a href="#products">Collection</a>
+        <a href="#about">Craftsmanship</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="container">
+      <h1>Elevate Every Fit<br>With Timeless Belts</h1>
+      <p>Handcrafted from premium leather & durable materials — designed to last, built for style. Discover the perfect belt for any occasion.</p>
+      <a href="#products" class="btn">Shop Collection →</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- INSTRUCTION NOTE FOR IMAGES REPLACEMENT -->
+    <div class="img-note">
+      📸 <strong>How to add your own images:</strong> This template includes <strong>placeholder images</strong> (grey background + belt icon). To replace with your images: 
+      <ol style="margin-top: 8px; margin-left: 20px;">
+        <li>Save your belt photos as .jpg or .png files (e.g., "leather-belt.jpg", "canvas-belt.jpg")</li>
+        <li>Upload them to the same folder as this HTML file (or use an images/ folder)</li>
+        <li>Change the <code>src="..."</code> attribute inside each <code>&lt;img&gt;</code> tag to your image path (example: <code>src="images/my-belt1.jpg"</code>)</li>
+        <li>Refresh the page — your images will appear instantly!</li>
+      </ol>
+      ✨ <strong>Product descriptions below are ready to use</strong>, professionally written for each belt style. You can also edit text directly.
+    </div>
+
+    <!-- PRODUCT SECTION -->
+    <div id="products" style="scroll-margin-top: 90px;">
+      <div class="section-title">
+        <h2>Signature Belt Collection</h2>
+        <p>Finest materials, exact stitching, and hardware that complements your unique style.</p>
+      </div>
+
+      <div class="products-grid">
+        <!-- 1. Classic Leather Belt -->
+        <div class="product-card">
+          <div class="product-img">
+            <!-- ⚠️ REPLACE 'src' WITH YOUR OWN IMAGE URL/FILENAME -->
+            <img src="https://placehold.co/600x400/F0E5D8/9C7C5B?text=Leather+Belt+Image" alt="Classic Leather Belt">
+          </div>
+          <div class="product-info">
+            <div class="product-title">Heritage Leather Belt</div>
+            <div class="product-desc">Full-grain Italian leather with a polished brass buckle. Ages beautifully, develops a rich patina over time. Perfect for denim, chinos, or dress trousers. Width: 35mm.</div>
+            <div class="price">$79 USD</div>
+            <div class="card-actions">
+              <span style="font-size: 0.75rem; color:#9b7b5c;">✦ Best seller</span>
+              <a href="#" class="btn btn-small">Shop now →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Casual Canvas Web Belt -->
+        <div class="product-card">
+          <div class="product-img">
+            <img src="https://placehold.co/600x400/E8E0D5/B89B7A?text=Canvas+Belt+Image" alt="Casual Canvas Belt">
+          </div>
+          <div class="product-info">
+            <div class="product-title">Adventure Canvas Belt</div>
+            <div class="product-desc">Durable nylon-weave canvas with matte aluminum buckle. Lightweight and adjustable — ideal for outdoor wear, cargo shorts, and relaxed weekends. Color: Olive & Sand.</div>
+            <div class="price">$34 USD</div>
+            <div class="card-actions">
+              <span style="font-size: 0.75rem; color:#9b7b5c;">✦ 3 colors</span>
+              <a href="#" class="btn btn-small">Shop now →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Formal Dress Belt (slim) -->
+        <div class="product-card">
+          <div class="product-img">
+            <img src="https://placehold.co/600x400/E3D9CD/AF8F6A?text=Dress+Belt+Image" alt="Formal Dress Belt">
+          </div>
+          <div class="product-info">
+            <div class="product-title">Slim Dress Belt</div>
+            <div class="product-desc">Refined 30mm width, genuine polished calf leather with a sleek silver-toned buckle. Minimalist elegance for suits, blazers, and formal events. Made in Portugal.</div>
+            <div class="price">$98 USD</div>
+            <div class="card-actions">
+              <span style="font-size: 0.75rem; color:#9b7b5c;">✦ Hand-burnished</span>
+              <a href="#" class="btn btn-small">Shop now →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Reversible Belt (2 in 1) -->
+        <div class="product-card">
+          <div class="product-img">
+            <img src="https://placehold.co/600x400/DBCEBD/A9875F?text=Reversible+Belt" alt="Reversible Belt">
+          </div>
+          <div class="product-info">
+            <div class="product-title">Reversible 2-in-1 Belt</div>
+            <div class="product-desc">Black on one side, rich brown on the other. Smooth leather with a 360° swivel buckle — double the versatility for travel or everyday use. Width 32mm.</div>
+            <div class="price">$64 USD</div>
+            <div class="card-actions">
+              <span style="font-size: 0.75rem; color:#9b7b5c;">✦ Smart design</span>
+              <a href="#" class="btn btn-small">Shop now →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Braided Leather Belt -->
+        <div class="product-card">
+          <div class="product-img">
+            <img src="https://placehold.co/600x400/EADDCB/B59164?text=Braided+Belt" alt="Braided Leather Belt">
+          </div>
+          <div class="product-info">
+            <div class="product-title">Braided Leather Belt</div>
+            <div class="product-desc">Artisan hand-braided genuine leather, elastic-free stretch construction. Breathable and adjustable — adds texture to casual outfits or resort wear. Unisex style.</div>
+            <div class="price">$54 USD</div>
+            <div class="card-actions">
+              <span style="font-size: 0.75rem; color:#9b7b5c;">✦ Elastic comfort</span>
+              <a href="#" class="btn btn-small">Shop now →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Military Style Utility Belt -->
+        <div class="product-card">
+          <div class="product-img">
+            <img src="https://placehold.co/600x400/CFC2B1/9C825E?text=Tactical+Belt" alt="Military Style Belt">
+          </div>
+          <div class="product-info">
+            <div class="product-title">Utility Rigger Belt</div>
+            <div class="product-desc">Heavy-duty 1.75" nylon webbing with quick-release cobra buckle. Reinforced stitching, load-rated. Great for work, hiking, or streetwear edge. Black / Coyote Brown.</div>
+            <div class="price">$49 USD</div>
+            <div class="card-actions">
+              <span style="font-size: 0.75rem; color:#9b7b5c;">✦ Cobra buckle</span>
+              <a href="#" class="btn btn-small">Shop now →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRAFTSMANSHIP / ABOUT SECTION -->
+    <div id="about" style="scroll-margin-top: 100px;">
+      <div class="about">
+        <h3>🪡 Craftsmanship That Holds True</h3>
+        <p>Each belt is designed with purpose: premium full-grain leathers, reinforced stitching, and solid metal hardware. We believe accessories should elevate your daily uniform, blending functionality with quiet luxury.</p>
+        <p>✓ 1-year quality guarantee  ✓ Free sizing exchanges  ✓ Sustainable packaging</p>
+        <a href="#" class="btn btn-outline" style="margin-top: 12px;">Learn our process</a>
+      </div>
+    </div>
+
+    <!-- CONTACT / NEWSLETTER (optional) -->
+    <div id="contact" style="scroll-margin-top: 90px;" class="contact">
+      <h3 style="margin-bottom: 0.5rem;">Need help finding your size?</h3>
+      <p style="max-width: 500px; margin: 0 auto 1.5rem;">Email our belt experts or follow us for styling inspiration.</p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="#" class="btn btn-outline">📧 hello@beltcraft.com</a>
+        <a href="#" class="btn btn-outline">📸 @beltcraft</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>© 2025 BeltCraft — One‑page collection. Replace placeholder images with your own belt photos.<br>
+    Designed for timeless style. All product descriptions are original and ready to use.</p>
+  </div>
+</footer>
+
+<!-- simple dummy cart message (no actual cart, just UX) -->
+<script>
+  // Add a smooth interaction for "Shop now" buttons to show demo message
+  const btns = document.querySelectorAll('.btn-small');
+  btns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      alert('🛒 This is a demo website. Replace product images with your own files, and connect your checkout system. Product description & HTML are fully customizable.');
+    });
+  });
+  // also for other buttons with hash
+  document.querySelectorAll('.btn-outline, .btn:not(.btn-small)').forEach(btn => {
+    if(btn.getAttribute('href') === '#') {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('✨ This is your belt website template. Add your own images and launch your store!');
+      });
+    }
+  });
+</script>
+</body>
+</html>
