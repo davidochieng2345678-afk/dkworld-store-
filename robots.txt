@@ -1,4 +1,6 @@
+# Allow all crawlers to access everything
 User-agent: *
 Allow: /
 
-Sitemap: https://dkworldkenya.online/sitemap.txt
+# Sitemap location
+Sitemap: https://voltplughub.shop/sitemap.xml
