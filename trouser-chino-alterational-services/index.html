@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trouser & Chino Tailoring Services — Bespoke & Co. Tailors Fit Kenya</title>
+    <meta name="description" content="Expert trouser, chino, and jeans alterations in Nairobi CBD. Length, waist, bottom hem, slimming, turn-up, and more at great prices." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ── reset & root ── */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        :root {
+            --ink: #1c1a17;
+            --ivory: #f5f0e6;
+            --brass: #b08d57;
+            --thread: #7a2e2a;
+            --slate: #6b6459;
+            --line: rgba(28, 26, 23, 0.14);
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background: var(--ivory);
+            color: var(--ink);
+            font-family: 'Work Sans', sans-serif;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            line-height: 1.1;
+            margin: 0 0 0.4em;
+        }
+        p {
+            max-width: 62ch;
+            color: var(--slate);
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .wrap {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ── tape ── */
+        .tape {
+            height: 20px;
+            background-image: repeating-linear-gradient(90deg, var(--ink) 0 1.5px, transparent 1.5px 20px);
+            opacity: 0.16;
+        }
+
+        /* ── buttons ── */
+        .btn {
+            display: inline-block;
+            padding: 13px 26px;
+            border-radius: 3px;
+            font-weight: 500;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .btn-primary {
+            background: var(--thread);
+            color: var(--ivory);
+        }
+        .btn-primary:hover {
+            background: #5f2320;
+        }
+        .btn-secondary {
+            background: transparent;
+            border: 1.5px solid var(--ink);
+            color: var(--ink);
+        }
+        .btn-secondary:hover {
+            background: var(--ink);
+            color: var(--ivory);
+        }
+
+        /* ── header ── */
+        header {
+            position: sticky;
+            top: 0;
+            background: var(--ivory);
+            border-bottom: 1px solid var(--line);
+            z-index: 20;
+        }
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .brand {
+            font-family: 'Fraunces', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        .brand span {
+            color: var(--thread);
+        }
+        .nav-cta {
+            background: var(--ink);
+            color: var(--ivory);
+            padding: 10px 18px;
+            border-radius: 3px;
+            font-size: 0.88rem;
+        }
+        .nav-cta:hover {
+            background: var(--thread);
+        }
+
+        /* ── page intro ── */
+        .page-intro {
+            padding: 48px 0 24px;
+            text-align: center;
+        }
+        .page-intro h1 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+        }
+        .page-intro p {
+            font-size: 1.1rem;
+            max-width: 56ch;
+            margin: 0 auto;
+        }
+
+        /* ── service category ── */
+        .service-category {
+            padding: 40px 0 60px;
+        }
+        .service-category h2 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            justify-content: center;
+            text-align: center;
+        }
+        .service-category h2 small {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.8rem;
+            color: var(--brass);
+            font-weight: 500;
+            letter-spacing: 0.04em;
+        }
+        .service-desc {
+            max-width: 60ch;
+            margin: 0 auto 20px;
+            text-align: center;
+        }
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px 24px;
+            background: #fff;
+            padding: 24px 28px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            max-width: 780px;
+            margin: 0 auto;
+            border: 1px solid var(--line);
+        }
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--line);
+            font-size: 0.95rem;
+        }
+        .service-item:last-child {
+            border-bottom: none;
+        }
+        .service-item .price {
+            font-weight: 600;
+            color: var(--ink);
+            white-space: nowrap;
+        }
+        .service-note {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--slate);
+            background: rgba(176,141,87,0.08);
+            padding: 12px 16px;
+            border-left: 3px solid var(--brass);
+            max-width: 780px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        /* ── CTA to book ── */
+        .cta-booking {
+            padding: 40px 0 60px;
+            text-align: center;
+            background: #efe9db;
+        }
+        .cta-booking h2 {
+            font-size: 2rem;
+        }
+        .cta-booking .btn-group {
+            margin-top: 24px;
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ── footer ── */
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 32px 0;
+        }
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .footer-row p {
+            margin: 0;
+            font-size: 0.86rem;
+        }
+
+        /* ── WhatsApp float ── */
+        .wa-float {
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            background: var(--ink);
+            color: var(--ivory);
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+            z-index: 30;
+            transition: 0.2s;
+        }
+        .wa-float:hover {
+            transform: scale(1.06);
+            background: var(--thread);
+        }
+
+        /* ── responsive ── */
+        @media (max-width: 860px) {
+            .service-grid {
+                grid-template-columns: 1fr;
+                padding: 16px 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .service-category {
+                padding: 20px 0 40px;
+            }
+            .service-grid {
+                padding: 12px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══ HEADER ═══ -->
+    <header>
+        <div class="wrap nav">
+            <div class="brand">Bespoke &amp; Co. <span>Tailors</span></div>
+            <a href="https://wa.me/254705728896" class="nav-cta">Book on WhatsApp</a>
+        </div>
+    </header>
+
+    <div class="tape"></div>
+
+    <!-- ═══ PAGE INTRO ═══ -->
+    <section class="page-intro">
+        <div class="wrap">
+            <h1>Trouser, chino &amp; jeans alterations</h1>
+            <p>Expert tailoring for all types of trousers — from formal dress pants to casual chinos and denim jeans. We adjust length, waist, taper, and offer a range of hemming styles to get the perfect fit.</p>
+        </div>
+    </section>
+
+    <div class="tape"></div>
+
+    <!-- ═══ TROUSER SERVICES ═══ -->
+    <section class="service-category" id="trousers">
+        <div class="wrap">
+            <h2>Trousers, Chinos &amp; Jeans <small>MEN'S</small></h2>
+            <p class="service-desc">We handle all trouser alterations with precision — whether it's a simple hem or a complete restyle. Prices are per garment.</p>
+            <div class="service-grid">
+                <div class="service-item"><span>Length adjustment (hem)</span><span class="price">KSh 1,000</span></div>
+                <div class="service-item"><span>Waist adjustment (take in / let out)</span><span class="price">KSh 1,500</span></div>
+                <div class="service-item"><span>Bottom hem (standard)</span><span class="price">KSh 1,000</span></div>
+                <div class="service-item"><span>Slimming / leg taper</span><span class="price">KSh 1,500</span></div>
+                <div class="service-item"><span>Turn-up (cuff) hemming</span><span class="price">KSh 1,200</span></div>
+                <div class="service-item"><span>Machine straight hem</span><span class="price">KSh 1,000</span></div>
+                <div class="service-item"><span>Overlock (OB) finish</span><span class="price">KSh 300</span></div>
+            </div>
+            <div class="service-note">
+                <strong>Hemming options:</strong> Choose between machine straight, turn-up (cuff), or overlock finish. We also adjust the rise and seat — just ask on WhatsApp.
+            </div>
+        </div>
+    </section>
+
+    <div class="tape"></div>
+
+    <!-- ═══ CTA TO BOOK ═══ -->
+    <section class="cta-booking">
+        <div class="wrap">
+            <h2>Ready for the perfect fit?</h2>
+            <p>Send us a photo of your trousers, chinos, or jeans on WhatsApp, and we'll give you a quick, accurate quote.</p>
+            <div class="btn-group">
+                <a href="https://wa.me/254705728896" class="btn btn-primary">Chat on WhatsApp</a>
+                <a href="mailto:davidochieng2345678@gmail.com" class="btn btn-secondary">Email us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer>
+        <div class="wrap footer-row">
+            <p>&copy; 2026 Bespoke &amp; Co. Tailors Fit Kenya. All rights reserved.</p>
+            <p>Nairobi CBD · Mon–Sat 8am–6pm</p>
+        </div>
+    </footer>
+
+    <!-- ═══ WHATSAPP FLOAT ═══ -->
+    <a href="https://wa.me/254705728896" class="wa-float" aria-label="Chat on WhatsApp">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.6 6.32A8.86 8.86 0 0012 4a8.9 8.9 0 00-7.7 13.4L3 21l3.7-1.28A8.9 8.9 0 0012 20.9a8.9 8.9 0 006.3-15.2A8.86 8.86 0 0017.6 6.32zM12 19.2a7.2 7.2 0 01-3.68-1l-.26-.16-2.74.95.9-2.67-.17-.27A7.24 7.24 0 1119.24 12 7.25 7.25 0 0112 19.2zm3.96-5.42c-.22-.11-1.28-.63-1.47-.7s-.34-.11-.48.11-.55.7-.68.84-.25.16-.47.05a5.93 5.93 0 01-1.75-1.08 6.6 6.6 0 01-1.21-1.5c-.13-.22 0-.34.1-.45s.22-.25.33-.38a1.5 1.5 0 00.22-.36.4.4 0 000-.38c-.06-.11-.48-1.16-.66-1.58s-.35-.36-.48-.37h-.41a.79.79 0 00-.57.27 2.4 2.4 0 00-.75 1.78 4.16 4.16 0 00.87 2.21 9.5 9.5 0 003.64 3.22c.51.22.9.35 1.21.45a2.9 2.9 0 001.34.08 2.2 2.2 0 001.44-1 1.8 1.8 0 00.13-1c-.06-.09-.2-.14-.42-.25z" />
+        </svg>
+    </a>
+
+</body>
+</html>
