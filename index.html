@@ -1,366 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bespoke & Co. Tailors Fit Kenya — Men's Tailoring & Alterations</title>
-<meta name="description" content="Men's tailoring and alterations in Nairobi CBD, Kenya. Shirts, trousers, jackets, blazers, coats, joggers — length, sleeves, waist, zippers, and full alterations.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Services — Bespoke & Co. Tailors Fit Kenya</title>
+    <meta name="description" content="Detailed men's tailoring and alteration services in Nairobi CBD: shirts, trousers, jackets, coats, joggers, and more. Precision work, fair prices." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 
-<style>
-  :root {
-    --ink: #1c1a17;
-    --ivory: #f5f0e6;
-    --brass: #b08d57;
-    --thread: #7a2e2a;
-    --slate: #6b6459;
-    --line: rgba(28,26,23,0.14);
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    margin: 0;
-    background: var(--ivory);
-    color: var(--ink);
-    font-family: 'Work Sans', sans-serif;
-    font-size: 17px;
-    line-height: 1.6;
-  }
-  h1, h2, h3 { font-family: 'Fraunces', serif; font-weight: 600; line-height: 1.1; margin: 0 0 0.4em; }
-  p { max-width: 62ch; color: var(--slate); }
-  a { color: inherit; }
-  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    <style>
+        /* ── reset & root ── */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        :root {
+            --ink: #1c1a17;
+            --ivory: #f5f0e6;
+            --brass: #b08d57;
+            --thread: #7a2e2a;
+            --slate: #6b6459;
+            --line: rgba(28, 26, 23, 0.14);
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background: var(--ivory);
+            color: var(--ink);
+            font-family: 'Work Sans', sans-serif;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            line-height: 1.1;
+            margin: 0 0 0.4em;
+        }
+        p {
+            max-width: 62ch;
+            color: var(--slate);
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .wrap {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
 
-  .tape {
-    height: 20px;
-    background-image: repeating-linear-gradient(90deg, var(--ink) 0 1.5px, transparent 1.5px 20px);
-    opacity: 0.18;
-  }
+        /* ── tape ── */
+        .tape {
+            height: 20px;
+            background-image: repeating-linear-gradient(90deg, var(--ink) 0 1.5px, transparent 1.5px 20px);
+            opacity: 0.16;
+        }
 
-  header { position: sticky; top: 0; background: var(--ivory); border-bottom: 1px solid var(--line); z-index: 20; }
-  .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
-  .brand { font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 600; }
-  .brand span { color: var(--thread); }
-  .nav-links { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
-  .nav-links a { text-decoration: none; font-size: 0.92rem; border-bottom: 2px solid transparent; padding-bottom: 3px; }
-  .nav-links a:hover { border-color: var(--brass); }
-  .nav-cta { background: var(--ink); color: var(--ivory); padding: 10px 18px; border-radius: 3px; text-decoration: none; font-size: 0.88rem; }
+        /* ── buttons ── */
+        .btn {
+            display: inline-block;
+            padding: 13px 26px;
+            border-radius: 3px;
+            font-weight: 500;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .btn-primary {
+            background: var(--thread);
+            color: var(--ivory);
+        }
+        .btn-primary:hover {
+            background: #5f2320;
+        }
+        .btn-secondary {
+            background: transparent;
+            border: 1.5px solid var(--ink);
+            color: var(--ink);
+        }
+        .btn-secondary:hover {
+            background: var(--ink);
+            color: var(--ivory);
+        }
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
 
-  .hero { padding: 64px 0 48px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center; }
-  .hero-eyebrow { color: var(--thread); font-size: 0.9rem; margin-bottom: 16px; }
-  .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); max-width: 12ch; }
-  .lede { font-size: 1.1rem; margin-top: 18px; max-width: 46ch; }
-  .hero-actions { margin-top: 28px; display: flex; gap: 14px; flex-wrap: wrap; }
-  .btn { display: inline-block; padding: 13px 24px; border-radius: 3px; text-decoration: none; font-weight: 500; }
-  .btn-primary { background: var(--thread); color: var(--ivory); }
-  .btn-secondary { background: transparent; border: 1.5px solid var(--ink); }
-  .swatch { aspect-ratio: 4/5; background: var(--ink); border-radius: 4px; position: relative; box-shadow: 8px 8px 0 var(--brass); }
-  .swatch::before { content:''; position:absolute; inset:18px; border:1px dashed rgba(245,240,230,0.35); }
-  .swatch-label { position:absolute; bottom:24px; left:24px; right:24px; color:var(--ivory); font-family:'Fraunces',serif; font-size:1rem; }
+        /* ── header ── */
+        header {
+            position: sticky;
+            top: 0;
+            background: var(--ivory);
+            border-bottom: 1px solid var(--line);
+            z-index: 20;
+        }
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .brand {
+            font-family: 'Fraunces', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        .brand span {
+            color: var(--thread);
+        }
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+        .nav-links a {
+            font-size: 0.92rem;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 3px;
+        }
+        .nav-links a:hover {
+            border-color: var(--brass);
+        }
+        .nav-cta {
+            background: var(--ink);
+            color: var(--ivory);
+            padding: 10px 18px;
+            border-radius: 3px;
+            font-size: 0.88rem;
+        }
+        .nav-cta:hover {
+            background: var(--thread);
+        }
 
-  .section { padding: 60px 0; }
-  .section-head { max-width: 60ch; margin-bottom: 36px; }
+        /* ── page intro ── */
+        .page-intro {
+            padding: 48px 0 24px;
+        }
+        .page-intro h1 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+        }
+        .page-intro p {
+            font-size: 1.1rem;
+            max-width: 56ch;
+        }
 
-  .garment-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-  .garment { background: var(--ivory); padding: 26px 24px; }
-  .garment h3 { font-size: 1.15rem; margin-bottom: 12px; display:flex; align-items:baseline; gap:8px; }
-  .garment h3 small { font-family:'Work Sans',sans-serif; font-size:0.7rem; color:var(--brass); font-weight:600; }
-  .garment ul { list-style:none; margin:0; padding:0; }
-  .garment li { padding:6px 0; border-top:1px solid var(--line); font-size:0.92rem; display:flex; justify-content:space-between; gap:10px; }
-  .garment li:first-child { border-top:none; }
-  .garment li .price { color: var(--ink); font-weight:500; white-space:nowrap; }
+        /* ── service category ── */
+        .service-category {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--line);
+        }
+        .service-category:last-of-type {
+            border-bottom: none;
+        }
+        .service-category h2 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+        }
+        .service-category h2 small {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.8rem;
+            color: var(--brass);
+            font-weight: 500;
+            letter-spacing: 0.04em;
+        }
+        .service-desc {
+            max-width: 60ch;
+            margin-bottom: 20px;
+        }
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px 24px;
+            background: #fff;
+            padding: 20px 24px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--line);
+            font-size: 0.95rem;
+        }
+        .service-item:last-child {
+            border-bottom: none;
+        }
+        .service-item .price {
+            font-weight: 600;
+            color: var(--ink);
+            white-space: nowrap;
+        }
+        .service-note {
+            margin-top: 14px;
+            font-size: 0.9rem;
+            color: var(--slate);
+            background: rgba(176,141,87,0.08);
+            padding: 12px 16px;
+            border-left: 3px solid var(--brass);
+        }
 
-  .note-box { margin-top: 28px; padding: 18px 20px; border-left: 3px solid var(--brass); background: rgba(176,141,87,0.08); font-size: 0.92rem; }
-  .note-box p { margin:0; max-width:none; color: var(--ink); }
+        /* ── extra info (custom, rush, etc.) ── */
+        .extra-services {
+            padding: 40px 0;
+            background: #efe9db;
+            margin-top: 20px;
+        }
+        .extra-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 24px;
+        }
+        .extra-item {
+            background: var(--ivory);
+            padding: 20px 18px;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .extra-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+        }
+        .extra-item p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        .extra-item .price-tag {
+            display: inline-block;
+            margin-top: 8px;
+            font-weight: 600;
+            color: var(--thread);
+        }
 
-  .steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 28px; }
-  .step { border-top: 2px solid var(--ink); padding-top: 14px; }
-  .step h3 { font-size: 1rem; }
-  .step p { font-size: 0.9rem; }
+        /* ── CTA to book ── */
+        .cta-booking {
+            padding: 48px 0;
+            text-align: center;
+        }
+        .cta-booking h2 {
+            font-size: 2rem;
+        }
+        .cta-booking .btn-group {
+            margin-top: 24px;
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
-  .gallery-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
-  .gallery-item { aspect-ratio:1; border-radius:3px; display:flex; align-items:flex-end; padding:12px; color:var(--ivory); font-size:0.8rem; font-family:'Fraunces',serif; }
-  .gallery-item:nth-child(1){background:linear-gradient(135deg,#2b2822,#1c1a17);}
-  .gallery-item:nth-child(2){background:linear-gradient(135deg,#7a2e2a,#4a1815);}
-  .gallery-item:nth-child(3){background:linear-gradient(135deg,#b08d57,#7a5f37);}
-  .gallery-item:nth-child(4){background:linear-gradient(135deg,#3d4a4a,#232b2b);}
-  .gallery-item:nth-child(5){background:linear-gradient(135deg,#4a1815,#1c1a17);}
-  .gallery-item:nth-child(6){background:linear-gradient(135deg,#6b6459,#3a362f);}
-  .gallery-item:nth-child(7){background:linear-gradient(135deg,#232b2b,#b08d57);}
-  .gallery-item:nth-child(8){background:linear-gradient(135deg,#1c1a17,#7a2e2a);}
+        /* ── footer ── */
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 32px 0;
+        }
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .footer-row p {
+            margin: 0;
+            font-size: 0.86rem;
+        }
 
-  .trust { background: var(--ink); color: var(--ivory); padding: 48px 0; }
-  .trust .wrap { display:grid; grid-template-columns:1.3fr 1fr; gap:40px; align-items:center; }
-  .trust blockquote { font-family:'Fraunces',serif; font-size:1.35rem; margin:0; line-height:1.35; }
-  .trust cite { display:block; margin-top:16px; font-style:normal; color:var(--brass); }
-  .trust-stats { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-  .trust-stats .num { font-family:'Fraunces',serif; font-size:2rem; color:var(--brass); }
-  .trust-stats .label { font-size:0.82rem; color:rgba(245,240,230,0.7); }
+        /* ── WhatsApp float ── */
+        .wa-float {
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            background: var(--ink);
+            color: var(--ivory);
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+            z-index: 30;
+            transition: 0.2s;
+        }
+        .wa-float:hover {
+            transform: scale(1.06);
+            background: var(--thread);
+        }
 
-  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
-  .contact-info dl { margin: 20px 0 0; }
-  .contact-info dt { font-size: 0.8rem; color: var(--brass); margin-top: 16px; }
-  .contact-info dd { margin: 4px 0 0; font-size: 1.02rem; }
-  .contact-info dd:first-of-type { margin-top: 0; }
-
-  form { display: grid; gap: 14px; }
-  label { font-size: 0.88rem; display: block; margin-bottom: 5px; }
-  input, select, textarea {
-    width: 100%; padding: 11px 13px; border: 1px solid var(--line);
-    border-radius: 3px; background: #fff; font-family: inherit; font-size: 0.95rem;
-  }
-  textarea { min-height: 100px; resize: vertical; }
-  input:focus, select:focus, textarea:focus { outline: 2px solid var(--brass); outline-offset: 1px; }
-  .form-msg { margin-top: 12px; font-size: 0.88rem; display: none; }
-  .form-msg.show { display: block; }
-
-  footer { border-top: 1px solid var(--line); padding: 32px 0; }
-  .footer-row { display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; }
-  .footer-row p { margin:0; font-size:0.86rem; }
-
-  .wa-float {
-    position: fixed; bottom: 22px; right: 22px; background: var(--ink); color: var(--ivory);
-    width: 54px; height: 54px; border-radius: 50%; display:flex; align-items:center; justify-content:center;
-    text-decoration:none; box-shadow: 0 6px 16px rgba(0,0,0,0.25); z-index: 30;
-  }
-
-  @media (max-width: 860px) {
-    .hero { grid-template-columns: 1fr; }
-    .hero-media { order: -1; max-width: 240px; margin: 0 auto; }
-    .garment-grid { grid-template-columns: 1fr; }
-    .steps { grid-template-columns: 1fr 1fr; }
-    .gallery-grid { grid-template-columns: repeat(2,1fr); }
-    .trust .wrap { grid-template-columns: 1fr; }
-    .contact-grid { grid-template-columns: 1fr; }
-    .nav-links { display: none; }
-  }
-  @media (max-width: 480px) { .steps { grid-template-columns: 1fr; } }
-</style>
+        /* ── responsive ── */
+        @media (max-width: 860px) {
+            .nav-links {
+                display: none;
+            }
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+            .extra-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .extra-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="wrap nav">
-    <div class="brand">Bespoke & Co. <span>Tailors</span></div>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="#services">Services</a></li>
-        <li><a href="#how">How it works</a></li>
-        <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-    <a href="https://wa.me/254705728896" class="nav-cta">Book on WhatsApp</a>
-  </div>
-</header>
-
-<div class="tape"></div>
-
-<section class="hero">
-  <div class="wrap" style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;align-items:center;">
-    <div>
-      <div class="hero-eyebrow">Men's tailoring & alterations · Nairobi CBD</div>
-      <h1>Clothes that fit you, not the other way around.</h1>
-      <p class="lede">Bespoke & Co. Tailors Fit Kenya handles length, sleeves, waist, and full alterations on shirts, trousers, jackets, blazers, coats, joggers, and zippers — precise work, fast turnaround.</p>
-      <div class="hero-actions">
-        <a href="https://wa.me/254705728896" class="btn btn-primary">Chat on WhatsApp</a>
-        <a href="#services" class="btn btn-secondary">See services</a>
-      </div>
-    </div>
-    <div class="hero-media">
-      <div class="swatch">
-        <div class="swatch-label">Every stitch, measured twice.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="tape"></div>
-
-<section class="section" id="services">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Services & pricing</h2>
-      <p>Prices below are starting guides — final cost depends on garment and complexity. Ask on WhatsApp for an exact quote.</p>
-    </div>
-    <div class="garment-grid">
-      <div class="garment">
-        <h3>Shirts <small>MEN'S</small></h3>
-        <ul>
-          <li>Sleeve length <span class="price">KSh 300</span></li>
-          <li>Body/waist taper <span class="price">KSh 400</span></li>
-          <li>Collar adjustment <span class="price">KSh 350</span></li>
-          <li>Button/zipper repair <span class="price">KSh 200</span></li>
-        </ul>
-      </div>
-      <div class="garment">
-        <h3>Trousers <small>MEN'S</small></h3>
-        <ul>
-          <li>Length/hemming <span class="price">KSh 300</span></li>
-          <li>Waist take in/out <span class="price">KSh 400</span></li>
-          <li>Zipper replacement <span class="price">KSh 500</span></li>
-          <li>Taper leg <span class="price">KSh 400</span></li>
-        </ul>
-      </div>
-      <div class="garment">
-        <h3>Jackets & Blazers <small>MEN'S</small></h3>
-        <ul>
-          <li>Sleeve length <span class="price">KSh 500</span></li>
-          <li>Shoulder/body adjust <span class="price">KSh 800</span></li>
-          <li>Lining repair <span class="price">KSh 600</span></li>
-          <li>Button/zipper work <span class="price">KSh 350</span></li>
-        </ul>
-      </div>
-      <div class="garment">
-        <h3>Coats <small>MEN'S</small></h3>
-        <ul>
-          <li>Length adjustment <span class="price">KSh 700</span></li>
-          <li>Sleeve length <span class="price">KSh 600</span></li>
-          <li>Waist/body taper <span class="price">KSh 900</span></li>
-          <li>Zipper replacement <span class="price">KSh 700</span></li>
-        </ul>
-      </div>
-      <div class="garment">
-        <h3>Joggers <small>MEN'S</small></h3>
-        <ul>
-          <li>Length/hemming <span class="price">KSh 300</span></li>
-          <li>Waist adjust <span class="price">KSh 350</span></li>
-          <li>Cuff taper <span class="price">KSh 300</span></li>
-          <li>Drawstring/zipper repair <span class="price">KSh 250</span></li>
-        </ul>
-      </div>
-      <div class="garment">
-        <h3>All Garments <small>GENERAL</small></h3>
-        <ul>
-          <li>Zipper replacement (any) <span class="price">from KSh 300</span></li>
-          <li>Patch/reinforce <span class="price">from KSh 250</span></li>
-          <li>Custom alteration <span class="price">on quote</span></li>
-          <li>Rush service (24hr) <span class="price">+KSh 200</span></li>
-        </ul>
-      </div>
-    </div>
-    <div class="note-box">
-      <p>Bring the garment in, or send us your measurements on WhatsApp for a quote before you travel in. Most alterations are ready in 1–3 days; rush service available.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="how" style="background:#efe9db;">
-  <div class="wrap">
-    <div class="section-head"><h2>How it works</h2></div>
-    <div class="steps">
-      <div class="step"><h3>1. Message us</h3><p>Send a photo of the garment and what needs fixing via WhatsApp.</p></div>
-      <div class="step"><h3>2. Get a quote</h3><p>We confirm the price and turnaround time before you commit.</p></div>
-      <div class="step"><h3>3. Drop it off</h3><p>Bring the garment to our Nairobi CBD workshop, or arrange pickup.</p></div>
-      <div class="step"><h3>4. Collect, fitted</h3><p>We notify you when it's ready — usually within 1–3 days.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="gallery">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Recent work</h2>
-      <p>A few examples of alterations and tailoring we've completed.</p>
-    </div>
-    <div class="gallery-grid">
-      <div class="gallery-item">Trouser hem</div>
-      <div class="gallery-item">Blazer taper</div>
-      <div class="gallery-item">Shirt sleeves</div>
-      <div class="gallery-item">Coat length</div>
-      <div class="gallery-item">Jogger cuff</div>
-      <div class="gallery-item">Zipper swap</div>
-      <div class="gallery-item">Waist adjust</div>
-      <div class="gallery-item">Jacket lining</div>
-    </div>
-  </div>
-</section>
-
-<div class="trust">
-  <div class="wrap">
-    <div>
-      <blockquote>"Took my suit jacket in for a shoulder adjustment — fit better than when I bought it. Ready in two days."</blockquote>
-      — David M., Nairobi
-    </div>
-    <div class="trust-stats">
-      <div><div class="num">1,200+</div><div class="label">Garments altered</div></div>
-      <div><div class="num">1–3</div><div class="label">Days turnaround</div></div>
-    </div>
-  </div>
-</div>
-
-<section class="section" id="contact">
-  <div class="wrap contact-grid">
-    <div class="contact-info">
-      <h2>Get in touch</h2>
-      <p>Fastest way to reach us is WhatsApp — send a photo and we'll quote you right away.</p>
-      <dl>
-        <dt>WhatsApp / Phone</dt>
-        <dd><a href="https://wa.me/254705728896">0705 728 896</a></dd>
-        <dt>Email</dt>
-        <dd><a href="mailto:davidochieng2345678@gmail.com">davidochieng2345678@gmail.com</a></dd>
-        <dt>Location</dt>
-        <dd>Nairobi CBD, Kenya</dd>
-        <dt>Hours</dt>
-        <dd>Mon–Sat, 8am–6pm</dd>
-      </dl>
-    </div>
-    <div>
-      <form id="contactForm">
-        <div>
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" required>
+    <!-- ═══ HEADER ═══ -->
+    <header>
+        <div class="wrap nav">
+            <div class="brand">Bespoke &amp; Co. <span>Tailors</span></div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#shirts">Shirts</a></li>
+                    <li><a href="#trousers">Trousers</a></li>
+                    <li><a href="#jackets">Jackets</a></li>
+                    <li><a href="#coats">Coats</a></li>
+                    <li><a href="#joggers">Joggers</a></li>
+                </ul>
+            </nav>
+            <a href="https://wa.me/254705728896" class="nav-cta">Book on WhatsApp</a>
         </div>
-        <div>
-          <label for="garment">Garment</label>
-          <select id="garment" name="garment">
-            <option>Shirt</option>
-            <option>Trousers</option>
-            <option>Jacket / Blazer</option>
-            <option>Coat</option>
-            <option>Joggers</option>
-            <option>Other</option>
-          </select>
+    </header>
+
+    <div class="tape"></div>
+
+    <!-- ═══ PAGE INTRO ═══ -->
+    <section class="page-intro">
+        <div class="wrap">
+            <h1>Our tailoring services</h1>
+            <p>Everything we offer, with clear pricing and detailed descriptions. All alterations are done by hand with precision — because a great fit changes everything.</p>
         </div>
-        <div>
-          <label for="message">What do you need done?</label>
-          <textarea id="message" name="message" required></textarea>
+    </section>
+
+    <div class="tape"></div>
+
+    <!-- ═══ SERVICE CATEGORIES ═══ -->
+
+    <!-- Shirts -->
+    <section class="service-category" id="shirts">
+        <div class="wrap">
+            <h2>Shirts <small>MEN'S</small></h2>
+            <p class="service-desc">From casual button-downs to formal dress shirts — we adjust length, taper the body, fix collars, and replace buttons or zippers.</p>
+            <div class="service-grid">
+                <div class="service-item"><span>Sleeve length</span><span class="price">KSh 300</span></div>
+                <div class="service-item"><span>Body / waist taper</span><span class="price">KSh 400</span></div>
+                <div class="service-item"><span>Collar adjustment</span><span class="price">KSh 350</span></div>
+                <div class="service-item"><span>Button / zipper repair</span><span class="price">KSh 200</span></div>
+                <div class="service-item"><span>Full resizing (bespoke)</span><span class="price">from KSh 800</span></div>
+            </div>
+            <div class="service-note">We can also add darts or shorten the overall length — just ask.</div>
         </div>
-        <button type="submit" class="btn btn-primary">Send request</button>
-        <p class="form-msg" id="formMsg"></p>
-      </form>
-    </div>
-  </div>
-</section>
+    </section>
 
-<footer>
-  <div class="wrap footer-row">
-    <p>&copy; 2026 Bespoke & Co. Tailors Fit Kenya. All rights reserved.</p>
-    <p>Men's tailoring & alterations, Nairobi CBD</p>
-  </div>
-</footer>
+    <!-- Trousers -->
+    <section class="service-category" id="trousers">
+        <div class="wrap">
+            <h2>Trousers <small>MEN'S</small></h2>
+            <p class="service-desc">Perfect the fit of your chinos, dress pants, or casual trousers. We hem, adjust the waist, replace zippers, and taper legs for a modern silhouette.</p>
+            <div class="service-grid">
+                <div class="service-item"><span>Length / hemming</span><span class="price">KSh 300</span></div>
+                <div class="service-item"><span>Waist take in / out</span><span class="price">KSh 400</span></div>
+                <div class="service-item"><span>Zipper replacement</span><span class="price">KSh 500</span></div>
+                <div class="service-item"><span>Taper leg (slim fit)</span><span class="price">KSh 400</span></div>
+                <div class="service-item"><span>Full restyle</span><span class="price">on quote</span></div>
+            </div>
+            <div class="service-note">We also adjust the rise and seat for a more comfortable fit.</div>
+        </div>
+    </section>
 
-<a href="https://wa.me/254705728896" class="wa-float" aria-label="Chat on WhatsApp">
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8.86 8.86 0 0012 4a8.9 8.9 0 00-7.7 13.4L3 21l3.7-1.28A8.9 8.9 0 0012 20.9a8.9 8.9 0 006.3-15.2A8.86 8.86 0 0017.6 6.32zM12 19.2a7.2 7.2 0 01-3.68-1l-.26-.16-2.74.95.9-2.67-.17-.27A7.24 7.24 0 1119.24 12 7.25 7.25 0 0112 19.2zm3.96-5.42c-.22-.11-1.28-.63-1.47-.7s-.34-.11-.48.11-.55.7-.68.84-.25.16-.47.05a5.93 5.93 0 01-1.75-1.08 6.6 6.6 0 01-1.21-1.5c-.13-.22 0-.34.1-.45s.22-.25.33-.38a1.5 1.5 0 00.22-.36.4.4 0 000-.38c-.06-.11-.48-1.16-.66-1.58s-.35-.36-.48-.37h-.41a.79.79 0 00-.57.27 2.4 2.4 0 00-.75 1.78 4.16 4.16 0 00.87 2.21 9.5 9.5 0 003.64 3.22c.51.22.9.35 1.21.45a2.9 2.9 0 001.34.08 2.2 2.2 0 001.44-1 1.8 1.8 0 00.13-1c-.06-.09-.2-.14-.42-.25z"/></svg>
-</a>
+    <!-- Jackets & Blazers -->
+    <section class="service-category" id="jackets">
+        <div class="wrap">
+            <h2>Jackets &amp; Blazers <small>MEN'S</small></h2>
+            <p class="service-desc">Blazers and suit jackets require precision — we shorten sleeves, adjust shoulders, take in the body, repair linings, and replace buttons or zippers.</p>
+            <div class="service-grid">
+                <div class="service-item"><span>Sleeve length</span><span class="price">KSh 500</span></div>
+                <div class="service-item"><span>Shoulder / body adjust</span><span class="price">KSh 800</span></div>
+                <div class="service-item"><span>Lining repair</span><span class="price">KSh 600</span></div>
+                <div class="service-item"><span>Button / zipper work</span><span class="price">KSh 350</span></div>
+                <div class="service-item"><span>Full reconstruction</span><span class="price">from KSh 1,500</span></div>
+            </div>
+            <div class="service-note">We also shorten the jacket length and adjust lapels if needed.</div>
+        </div>
+    </section>
 
-<script>
-  // Contact form: opens the person's email client with the details pre-filled,
-  // since a static GitHub Pages site has no backend to send email itself.
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const garment = document.getElementById('garment').value;
-    const message = document.getElementById('message').value;
-    const subject = encodeURIComponent('Alteration request: ' + garment);
-    const body = encodeURIComponent('Name: ' + name + '\nGarment: ' + garment + '\n\n' + message);
-    window.location.href = 'mailto:davidochieng2345678@gmail.com?subject=' + subject + '&body=' + body;
-    const msg = document.getElementById('formMsg');
-    msg.textContent = 'Opening your email app to send the request...';
-    msg.classList.add('show');
-  });
-</script>
+    <!-- Coats -->
+    <section class="service-category" id="coats">
+        <div class="wrap">
+            <h2>Coats <small>MEN'S</small></h2>
+            <p class="service-desc">Overcoats, trench coats, and heavy jackets — we adjust length, sleeves, taper the body, and replace zippers or lining.</p>
+            <div class="service-grid">
+                <div class="service-item"><span>Length adjustment</span><span class="price">KSh 700</span></div>
+                <div class="service-item"><span>Sleeve length</span><span class="price">KSh 600</span></div>
+                <div class="service-item"><span>Waist / body taper</span><span class="price">KSh 900</span></div>
+                <div class="service-item"><span>Zipper replacement</span><span class="price">KSh 700</span></div>
+                <div class="service-item"><span>Lining replacement</span><span class="price">from KSh 1,000</span></div>
+            </div>
+            <div class="service-note">We can also reinforce pockets and adjust the collar.</div>
+        </div>
+    </section>
+
+    <!-- Joggers -->
+    <section class="service-category" id="joggers">
+        <div class="wrap">
+            <h2>Joggers <small>MEN'S</small></h2>
+            <p class="service-desc">Athleisure and casual joggers — we hem, taper cuffs, adjust the waist, and fix drawstrings or zippers.</p>
+            <div class="service-grid">
+                <div class="service-item"><span>Length / hemming</span><span class="price">KSh 300</span></div>
+                <div class="service-item"><span>Waist adjust</span><span class="price">KSh 350</span></div>
+                <div class="service-item"><span>Cuff taper</span><span class="price">KSh 300</span></div>
+                <div class="service-item"><span>Drawstring / zipper repair</span><span class="price">KSh 250</span></div>
+                <div class="service-item"><span>Full resizing</span><span class="price">from KSh 600</span></div>
+            </div>
+            <div class="service-note">We also re-stitch seams and patch small tears.</div>
+        </div>
+    </section>
+
+    <div class="tape"></div>
+
+    <!-- ═══ EXTRA SERVICES (general & rush) ═══ -->
+    <section class="extra-services">
+        <div class="wrap">
+            <h2>General services &amp; extras</h2>
+            <div class="extra-grid">
+                <div class="extra-item">
+                    <h3>Zipper replacement</h3>
+                    <p>For any garment — from trousers to jackets and coats.</p>
+                    <span class="price-tag">from KSh 300</span>
+                </div>
+                <div class="extra-item">
+                    <h3>Patch &amp; reinforce</h3>
+                    <p>Repair tears, reinforce knees or elbows, and patch holes.</p>
+                    <span class="price-tag">from KSh 250</span>
+                </div>
+                <div class="extra-item">
+                    <h3>Custom alterations</h3>
+                    <p>Anything not listed — just ask, we'll quote you fairly.</p>
+                    <span class="price-tag">on quote</span>
+                </div>
+                <div class="extra-item">
+                    <h3>Rush service (24hr)</h3>
+                    <p>Need it tomorrow? We'll prioritise your garment.</p>
+                    <span class="price-tag">+KSh 200</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ CTA TO BOOK ═══ -->
+    <section class="cta-booking">
+        <div class="wrap">
+            <h2>Ready to get your perfect fit?</h2>
+            <p>Send us a photo of your garment on WhatsApp, and we'll give you a quick, accurate quote.</p>
+            <div class="btn-group">
+                <a href="https://wa.me/254705728896" class="btn btn-primary">Chat on WhatsApp</a>
+                <a href="mailto:davidochieng2345678@gmail.com" class="btn btn-secondary">Email us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer>
+        <div class="wrap footer-row">
+            <p>&copy; 2026 Bespoke &amp; Co. Tailors Fit Kenya. All rights reserved.</p>
+            <p>Nairobi CBD · Mon–Sat 8am–6pm</p>
+        </div>
+    </footer>
+
+    <!-- ═══ WHATSAPP FLOAT ═══ -->
+    <a href="https://wa.me/254705728896" class="wa-float" aria-label="Chat on WhatsApp">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.6 6.32A8.86 8.86 0 0012 4a8.9 8.9 0 00-7.7 13.4L3 21l3.7-1.28A8.9 8.9 0 0012 20.9a8.9 8.9 0 006.3-15.2A8.86 8.86 0 0017.6 6.32zM12 19.2a7.2 7.2 0 01-3.68-1l-.26-.16-2.74.95.9-2.67-.17-.27A7.24 7.24 0 1119.24 12 7.25 7.25 0 0112 19.2zm3.96-5.42c-.22-.11-1.28-.63-1.47-.7s-.34-.11-.48.11-.55.7-.68.84-.25.16-.47.05a5.93 5.93 0 01-1.75-1.08 6.6 6.6 0 01-1.21-1.5c-.13-.22 0-.34.1-.45s.22-.25.33-.38a1.5 1.5 0 00.22-.36.4.4 0 000-.38c-.06-.11-.48-1.16-.66-1.58s-.35-.36-.48-.37h-.41a.79.79 0 00-.57.27 2.4 2.4 0 00-.75 1.78 4.16 4.16 0 00.87 2.21 9.5 9.5 0 003.64 3.22c.51.22.9.35 1.21.45a2.9 2.9 0 001.34.08 2.2 2.2 0 001.44-1 1.8 1.8 0 00.13-1c-.06-.09-.2-.14-.42-.25z"/>
+        </svg>
+    </a>
 
 </body>
 </html>
