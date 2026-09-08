@@ -1,44 +1,200 @@
 
+
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url>
+
+    <!-- ═══ HOMEPAGE ═══ -    <url>
         <loc>https://voltplughub.shop/</loc>
-        <lastmod>2026-09-07</lastmod>
+        <lastmod>2026-09-08</lastmod>
+        <priority>1.0</priority>
     </url>
+
+    <!-- ═══ POLICY PAGES ═══ -->
+    <url>
+        <loc>https://voltplughub.shop/privacy-policy/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/terms-conditions/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/cookie-policy/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/returns-refund-policy/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.5</priority>
+    </url>
+
+    <!-- ═══ TOPS ═══ -->
     <url>
         <loc>https://voltplughub.shop/shirt-alteration-services/</loc>
-        <lastmod>2026-09-07</lastmod>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://voltplughub.shop/polo-shirt-alteration-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/t-shirt-alteration-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/sweater-alteration-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- ═══ BOTTOMS ═══ -->
+    <url>
         <loc>https://voltplughub.shop/trouser-alteration-services/</loc>
-        <lastmod>2026-09-07</lastmod>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/trouser-rise-adjustment-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>https://voltplughub.shop/chino-alteration-services/</loc>
-        <lastmod>2026-09-07</lastmod>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>https://voltplughub.shop/jeans-alteration-services/</loc>
-        <lastmod>2026-09-07</lastmod>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/shorts-alteration-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/cargo-pant-alteration-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/track-pant-alteration-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/dungaree-alteration-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>https://voltplughub.shop/jogger-set-alteration-services/</loc>
-        <lastmod>2026-09-07</lastmod>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
     </url>
+
+    <!-- ═══ OUTERWEAR ═══ -->
     <url>
         <loc>https://voltplughub.shop/suit-alteration-services/</loc>
-        <lastmod>2026-09-07</lastmod>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/suit-jacket-lengthening-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/suit-shoulder-reduction-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>https://voltplughub.shop/blazer-alteration-services/</loc>
-        <lastmod>2026-09-07</lastmod>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>https://voltplughub.shop/casual-jacket-alteration-services/</loc>
-        <lastmod>2026-09-07</lastmod>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>https://voltplughub.shop/trenchcoat-alteration-services/</loc>
-        <lastmod>2026-09-07</lastmod>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
     </url>
+    <url>
+        <loc>https://voltplughub.shop/overcoat-alteration-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/leather-jacket-alteration-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- ═══ FORMAL & SPECIAL ═══ -->
+    <url>
+        <loc>https://voltplughub.shop/waistcoat-alteration-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/bridal-formal-wear-alterations/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/school-uniform-alterations/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/bespoke-tailoring-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- ═══ REPAIRS & ADJUSTMENTS ═══ -->
+    <url>
+        <loc>https://voltplughub.shop/re-lining-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/darning-invisible-mending/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/strap-adjustment-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/elastic-replacement-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/zipper-replacement-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://voltplughub.shop/fabric-patching-services/</loc>
+        <lastmod>2026-09-08</lastmod>
+        <priority>0.7</priority>
+    </url>
+
 </urlset>
+        
