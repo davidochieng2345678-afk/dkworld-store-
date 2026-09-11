@@ -36,6 +36,198 @@
     </script>
 
     <style>
+/* ═══ MEET THE MAKER BANNER ═══ */
+.section-maker-banner {
+    padding: 60px 0;
+    background: var(--ivory);
+}
+
+.maker-banner-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 6px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.maker-banner-link:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(28, 26, 23, 0.12);
+}
+
+.maker-banner-inner {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 0;
+    background: var(--ink);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(28, 26, 23, 0.15);
+    border: 1px solid rgba(176, 141, 87, 0.25);
+    position: relative;
+}
+
+.maker-banner-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 60%, rgba(176, 141, 87, 0.08) 100%);
+    pointer-events: none;
+}
+
+.maker-banner-image {
+    position: relative;
+    overflow: hidden;
+    background: #2a2620;
+    min-height: 320px;
+}
+
+.maker-banner-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+.maker-banner-link:hover .maker-banner-image img {
+    transform: scale(1.05);
+}
+
+.maker-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: var(--brass);
+    color: var(--ink);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    z-index: 2;
+}
+
+.maker-banner-content {
+    padding: 44px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: var(--ivory);
+    position: relative;
+    z-index: 2;
+}
+
+.maker-eyebrow {
+    color: var(--brass);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.maker-banner-content h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+    line-height: 1.25;
+    color: var(--ivory);
+    margin: 0 0 16px;
+}
+
+.maker-banner-content p {
+    color: rgba(245, 240, 230, 0.75);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    margin: 0 0 20px;
+    max-width: 100%;
+}
+
+.maker-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 20px;
+}
+
+.maker-bullets li {
+    color: rgba(245, 240, 230, 0.85);
+    font-size: 0.88rem;
+    line-height: 1.4;
+}
+
+.maker-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--thread);
+    color: var(--ivory);
+    padding: 13px 26px;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 0.92rem;
+    align-self: flex-start;
+    transition: background 0.25s ease, gap 0.25s ease;
+}
+
+.maker-cta svg {
+    transition: transform 0.25s ease;
+}
+
+.maker-banner-link:hover .maker-cta {
+    background: #5f2320;
+}
+
+.maker-banner-link:hover .maker-cta svg {
+    transform: translateX(4px);
+}
+
+/* ── Banner Responsive ── */
+@media (max-width: 860px) {
+    .maker-banner-inner {
+        grid-template-columns: 1fr;
+    }
+    .maker-banner-image {
+        min-height: 240px;
+        max-height: 300px;
+    }
+    .maker-banner-content {
+        padding: 32px 28px;
+    }
+    .maker-bullets {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+    .maker-cta {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-maker-banner {
+        padding: 40px 0;
+    }
+    .maker-banner-content {
+        padding: 26px 22px;
+    }
+    .maker-banner-content h2 {
+        font-size: 1.2rem;
+    }
+    .maker-badge {
+        top: 14px;
+        left: 14px;
+        font-size: 0.68rem;
+        padding: 5px 11px;
+    }
+}
+
+        
         /* ── reset & root ── */
         * {
             box-sizing: border-box;
