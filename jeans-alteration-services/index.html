@@ -352,7 +352,223 @@
         </div>
     </section>
 
+<!-- ═══ KENYAN JEANS ALTERATION GUIDE — REAL DENIM QUESTIONS ═══ -->
+<style>
+#jeans-guide{background:#1c1a17;color:#f5f0e6;font-family:'Work Sans',sans-serif;line-height:1.7;padding:60px 0}
+#jeans-guide .jwrap{max-width:1140px;margin:0 auto;padding:0 24px}
+#jeans-guide h2{font-family:'Fraunces',serif;font-weight:600;font-size:2rem;line-height:1.2;margin:0 0 .4em;color:#f5f0e6}
+#jeans-guide h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.3rem;line-height:1.2;margin:0 0 .6em;color:#b08d57}
+#jeans-guide h4{font-family:'Work Sans',sans-serif;font-weight:600;font-size:1rem;margin:0 0 .4em;color:#f5f0e6}
+#jeans-guide p{max-width:62ch;color:rgba(245,240,230,.78);margin:0 0 1.1em}
+#jeans-guide .jhead{max-width:64ch;margin:0 auto 40px;text-align:center}
+#jeans-guide .jhead p{font-size:1.05rem;margin:0 auto}
+#jeans-guide .jhead .eyebrow{color:#b08d57;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;display:block;margin-bottom:12px}
+#jeans-guide .jgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+#jeans-guide .jcard{background:rgba(245,240,230,.05);border-radius:6px;padding:24px 22px;border:1px solid rgba(176,141,87,.2);border-left:4px solid #b08d57;transition:.25s}
+#jeans-guide .jcard:hover{background:rgba(245,240,230,.08);transform:translateY(-3px);border-left-color:#7a2e2a}
+#jeans-guide .jcard .sw{display:inline-block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#b08d57;font-weight:600;margin-bottom:8px}
+#jeans-guide .jcard .q{font-family:'Fraunces',serif;font-size:1.05rem;color:#f5f0e6;line-height:1.35;margin:0 0 12px;font-weight:600}
+#jeans-guide .jcard .a{font-size:.92rem;color:rgba(245,240,230,.78);margin:0}
+#jeans-guide .jcard .a strong{color:#f5f0e6;font-weight:500}
+#jeans-guide .jcard .price{display:inline-block;margin-top:10px;background:rgba(176,141,87,.15);padding:4px 10px;border-radius:3px;font-size:.82rem;font-weight:600;color:#b08d57}
+#jeans-guide .jhem{background:rgba(245,240,230,.04);border:1px solid rgba(176,141,87,.25);border-radius:6px;padding:32px 28px;margin-top:44px}
+#jeans-guide .jhem h3{text-align:center;margin-bottom:24px}
+#jeans-guide .jhem-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+#jeans-guide .jhem-card{background:rgba(245,240,230,.06);padding:20px 22px;border-radius:4px;border:1px solid rgba(176,141,87,.15)}
+#jeans-guide .jhem-card h4{color:#b08d57;margin-bottom:8px;font-family:'Fraunces',serif;font-size:1.05rem}
+#jeans-guide .jhem-card p{font-size:.88rem;margin:0;color:rgba(245,240,230,.78)}
+#jeans-guide .jproblems{background:linear-gradient(135deg,#7a2e2a 0%,#5f2320 100%);border-radius:6px;padding:36px 28px;margin-top:44px}
+#jeans-guide .jproblems h3{color:#f5f0e6;text-align:center;margin-bottom:24px}
+#jeans-guide .jprob-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+#jeans-guide .jprob-item{background:rgba(245,240,230,.1);padding:12px 16px;border-radius:4px;font-size:.9rem;color:rgba(245,240,230,.9);border:1px solid rgba(245,240,230,.15)}
+#jeans-guide .jprob-item::before{content:'👖 ';color:#f5f0e6}
+#jeans-guide .jcoverage{background:rgba(245,240,230,.04);border:1px solid rgba(176,141,87,.25);border-radius:6px;padding:32px 28px;margin-top:44px}
+#jeans-guide .jcoverage h3{text-align:center;margin-bottom:24px}
+#jeans-guide .jarea-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+#jeans-guide .jarea{background:rgba(245,240,230,.06);padding:10px 14px;border-radius:4px;text-align:center;font-size:.86rem;color:rgba(245,240,230,.9);border:1px solid rgba(176,141,87,.15)}
+#jeans-guide .jarea::before{content:'📍 ';color:#b08d57}
+#jeans-guide .jquote{margin-top:44px;padding:32px 28px;background:rgba(176,141,87,.12);border-left:4px solid #b08d57;border-radius:4px;max-width:820px;margin-left:auto;margin-right:auto}
+#jeans-guide .jquote blockquote{font-family:'Fraunces',serif;font-size:1.15rem;line-height:1.4;color:#f5f0e6;margin:0 0 12px;font-style:italic}
+#jeans-guide .jquote .attr{font-size:.85rem;color:#b08d57;font-weight:500;font-style:normal}
+#jeans-guide .jcta{margin-top:44px;text-align:center;padding:36px 28px;background:rgba(176,141,87,.1);border-radius:6px;border:1px solid rgba(176,141,87,.3)}
+#jeans-guide .jcta h3{color:#f5f0e6;font-size:1.5rem;margin-bottom:10px}
+#jeans-guide .jcta p{color:rgba(245,240,230,.85);margin:0 auto 20px;max-width:52ch}
+#jeans-guide .jbtns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+#jeans-guide .jbtn{display:inline-block;padding:14px 28px;border-radius:3px;font-weight:500;font-size:.95rem;text-decoration:none;transition:.2s}
+#jeans-guide .jbtn-wa{background:#25D366;color:#fff}
+#jeans-guide .jbtn-wa:hover{background:#1da851;transform:translateY(-2px)}
+#jeans-guide .jbtn-alt{background:transparent;color:#f5f0e6;border:1.5px solid rgba(245,240,230,.4)}
+#jeans-guide .jbtn-alt:hover{background:rgba(245,240,230,.1)}
+@media (max-width:860px){
+#jeans-guide .jgrid{grid-template-columns:1fr}
+#jeans-guide h2{font-size:1.6rem}
+#jeans-guide .jhem-grid{grid-template-columns:1fr}
+}
+@media (max-width:480px){
+#jeans-guide{padding:40px 0}
+#jeans-guide .jcard{padding:18px 16px}
+#jeans-guide .jhem,#jeans-guide .jproblems,#jeans-guide .jcoverage{padding:24px 18px}
+}
+</style>
+
+<section id="jeans-guide">
+<div class="jwrap">
+
+    <div class="jhead">
+        <span class="eyebrow">Real Kenyan Questions · Real Denim Answers</span>
+        <h2>What Kenyans Ask Before Altering Jeans</h2>
+        <p>From "kubana jeans" to "how much to alter jeans Kenya" — these are the exact phrases customers use when they message us about denim. If your question isn't here, ask David directly on WhatsApp.</p>
+    </div>
+
+    <div class="jgrid">
+
+        <div class="jcard">
+            <span class="sw">Finding a Tailor</span>
+            <h4 class="q">Where to alter jeans in Nairobi?</h4>
+            <p class="a">You've found us. <strong>Jeans alteration near me</strong> is easy when the tailor comes to you. We offer <strong>jeans alteration Nairobi</strong> with free door-to-door pickup. Whether you're searching <strong>denim alteration Kenya</strong> or just need a quick hem, message us on WhatsApp and we'll schedule pickup same day.</p>
+        </div>
+
+        <div class="jcard">
+            <span class="sw">Finding a Tailor</span>
+            <h4 class="q">Who is the best jeans tailor in Nairobi?</h4>
+            <p class="a">Owner <strong>David Ochieng</strong> has 14 years of tailoring experience — including at Manix Clothing Store, Italian Men's Wear, and City Walk Ltd. If you're looking for the <strong>best jeans tailor in Nairobi</strong>, we offer free pickup, 1–2 day turnaround, and a 100% satisfaction guarantee. <strong>Denim tailor Westlands</strong>, <strong>jeans alteration Kilimani</strong>, and <strong>jeans slimming Karen Nairobi</strong> are all on our daily routes.</p>
+        </div>
+
+        <div class="jcard">
+            <span class="sw">Cost &amp; Pricing</span>
+            <h4 class="q">How much to alter jeans in Kenya?</h4>
+            <p class="a">For customers asking <strong>how much to alter jeans Kenya</strong> — our prices start at KSh 800 for a simple hem and go up to KSh 1,500 for full slimming. Our <strong>jeans bottom hem price Kenya</strong> includes free pickup and delivery. Every quote is free — send a photo on WhatsApp and we'll tell you the exact price for your denim before we start.</p>
+            <span class="price">From KSh 800</span>
+        </div>
+
+        <div class="jcard">
+            <span class="sw">Swahili / Sheng</span>
+            <h4 class="q">Natafuta kushona jeans Nairobi — mko wapi?</h4>
+            <p class="a">Tuko hapa. We offer <strong>kushona jeans Kenya</strong> with free pickup. If your <strong>suruali ya jeans Nairobi</strong> needs hemming, slimming, or a new zip — we handle it. For <strong>kubana jeans</strong> (tightening/slimming), we taper the legs precisely while preserving the denim's weight and finish. Message us on WhatsApp for a free quote.</p>
+        </div>
+
+        <div class="jcard">
+            <span class="sw">Specific Service</span>
+            <h4 class="q">Jeans hemming Nairobi — overlock or machine straight?</h4>
+            <p class="a">We offer both. <strong>Overlock hem jeans Nairobi</strong> is ideal for a modern, tidy finish that prevents fraying. <strong>Machine straight hem denim Kenya</strong> gives a classic, factory-style finish. For premium denim, we recommend our original-hem preservation technique — you keep the original stitching entirely. Price starts at KSh 800.</p>
+        </div>
+
+        <div class="jcard">
+            <span class="sw">Specific Service</span>
+            <h4 class="q">Jeans length shortening near me — do you preserve the original hem?</h4>
+            <p class="a">Yes. For <strong>jeans length shortening near me</strong>, we offer three options: overlock finish, machine straight finish, or original hem preservation. Original hem preservation is our most requested service for designer denim — it keeps the faded, worn look of the original hem so the alteration is invisible. Price from KSh 1,200 for original hem.</p>
+        </div>
+
+        <div class="jcard">
+            <span class="sw">Specific Service</span>
+            <h4 class="q">Jeans slimming Nairobi — can you narrow the legs?</h4>
+            <p class="a"><strong>Jeans slimming Nairobi</strong> is one of our specialties. We taper the legs from the knee down for a modern slim fit, or narrow the full leg for a slim-straight look. <strong>Jeans hemming Parklands</strong> and nearby areas are on our weekly pickup routes. We handle all denim weights — from 8 oz light denim to 14 oz heavy selvedge. Price from KSh 1,500.</p>
+        </div>
+
+        <div class="jcard">
+            <span class="sw">Specific Service</span>
+            <h4 class="q">Jeans waist adjustment Kenya — can you take it in or let it out?</h4>
+            <p class="a">Yes — <strong>jeans waist adjustment Kenya</strong> is a common request. We can take the waist in by 2–4 cm (denim has limited seam allowance). Because denim is heavy and non-stretchy, we reinforce the waistband with a hidden stay stitch so it holds. We also reposition belt loops if needed. Price from KSh 1,500.</p>
+        </div>
+
+        <div class="jcard">
+            <span class="sw">Fixing a Problem</span>
+            <h4 class="q">Jeans zip broken — repair or replace?</h4>
+            <p class="a">We replace the whole zip with a heavy-duty YKK brass or metal zip that matches the original colour. For denim, a metal zip works better than plastic. Price from KSh 800. Usually ready in 1–2 days. <strong>Jeans repair Nairobi CBD</strong> and across the city — we collect from your home or office.</p>
+        </div>
+
+        <div class="jcard">
+            <span class="sw">Timeline</span>
+            <h4 class="q">Jeans alteration haraka — how fast can you do it?</h4>
+            <p class="a">For <strong>jeans alteration haraka</strong>, most hems are done the same day. Slimming and waist adjustments take 1–2 days because denim requires slower, reinforced stitching. If you need it urgently — a trip, event, or interview — message us on WhatsApp first and we'll prioritise you. Rush service available at a small fee.</p>
+        </div>
+
+        <div class="jcard">
+            <span class="sw">Convenience</span>
+            <h4 class="q">Jeans alteration pickup and delivery Nairobi?</h4>
+            <p class="a">Yes — <strong>jeans alteration pickup and delivery Nairobi</strong> is our standard service. We collect from your home or office anywhere in Nairobi and deliver back fitted. No travel, no traffic, no parking. Free pickup and delivery on every order — whether it's one pair of jeans or ten.</p>
+        </div>
+
+        <div class="jcard">
+            <span class="sw">Informational</span>
+            <h4 class="q">Can jeans be altered to fit perfectly?</h4>
+            <p class="a">Yes — jeans are one of the best garments to alter because denim holds its shape after adjustment. Length, waist, slimming, zip, and hem style can all be modified. The main limitation is that denim has less seam allowance than suiting, so waist adjustments are limited to about 4 cm. <strong>Jeans repair Nairobi CBD</strong> and across the city. Send us a photo and we'll advise honestly.</p>
+        </div>
+
+    </div>
+
+    <div class="jhem">
+        <h3>Hem Finish Options — Overlock vs Machine Straight vs Original Hem</h3>
+        <div class="jhem-grid">
+            <div class="jhem-card">
+                <h4>Overlock (ON) Finish</h4>
+                <p>The cleanest modern finish. The raw edge is enclosed with a serged stitch that prevents fraying. Ideal for slim-fit and tapered jeans. Recommended for casual denim.</p>
+            </div>
+            <div class="jhem-card">
+                <h4>Machine Straight Finish</h4>
+                <p>A classic single-stitch hem, similar to how jeans come from the factory. Traditional look with a visible stitch line. Recommended for classic straight-leg and boot-cut jeans.</p>
+            </div>
+            <div class="jhem-card">
+                <h4>Original Hem Preservation</h4>
+                <p>We detach the original hem, shorten the leg, then reattach the original hem. The jeans look completely factory-finished — the fade, wear, and stitching are preserved. Recommended for premium and designer denim.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="jproblems">
+        <h3>Common Jeans Problems We Fix Every Day</h3>
+        <div class="jprob-grid">
+            <div class="jprob-item">Jeans too long — shorten with overlock, straight, or original hem</div>
+            <div class="jprob-item">Jeans too baggy — slim legs for modern fit</div>
+            <div class="jprob-item">Waist too big — take in with reinforced stay stitch</div>
+            <div class="jprob-item">Zip broken — replace with heavy-duty YKK</div>
+            <div class="jprob-item">Crotch worn thin — reinforce or patch discreetly</div>
+            <div class="jprob-item">Knee ripped — repair with matching denim patch</div>
+            <div class="jprob-item">Hem frayed — re-hem with your choice of finish</div>
+            <div class="jprob-item">Pocket torn — repair with reinforced stitching</div>
+            <div class="jprob-item">Belt loops broken — replace with matching denim</div>
+            <div class="jprob-item">Bottom too wide — narrow for tapered look</div>
+        </div>
+    </div>
+
+    <div class="jcoverage">
+        <h3>Jeans Alteration Tailor in Every Nairobi Neighbourhood</h3>
+        <div class="jarea-grid">
+            <div class="jarea">Denim tailor Westlands</div>
+            <div class="jarea">Jeans alteration Kilimani</div>
+            <div class="jarea">Jeans slimming Karen Nairobi</div>
+            <div class="jarea">Jeans hemming Parklands</div>
+            <div class="jarea">Jeans alteration Lavington</div>
+            <div class="jarea">Jeans repair Kileleshwa</div>
+            <div class="jarea">Jeans alteration near me CBD</div>
+            <div class="jarea">Jeans tailor Upper Hill</div>
+            <div class="jarea">Jeans alteration Eastlands</div>
+            <div class="jarea">Jeans repair Embakasi</div>
+            <div class="jarea">Jeans alteration Runda</div>
+            <div class="jarea">Jeans tailor Muthaiga</div>
+        </div>
+    </div>
+
+    <div class="jquote">
+        <blockquote>"Denim is the most honest fabric in a man's wardrobe. It shows every alteration — the good ones and the bad ones. When I alter a pair of jeans, I make sure the fix looks like it was always supposed to be there. Nobody should ever know a tailor touched them."</blockquote>
+        <span class="attr">— David Ochieng, Founder &amp; Master Tailor</span>
+    </div>
+
+    <div class="jcta">
+        <h3>Ready to Fix Your Jeans?</h3>
+        <p>Send a photo of your jeans on WhatsApp — David will reply personally with a quote and pickup time. Free door-to-door service anywhere in Nairobi.</p>
+        <div class="jbtns">
+            <a href="https://wa.me/254705728896" class="jbtn jbtn-wa">WhatsApp David Now</a>
+            <a href="mailto:davidochieng2345678@gmail.com" class="jbtn jbtn-alt">Email Us</a>
+        </div>
+    </div>
+
+</div>
+</section>
+<!-- ═══ END KENYAN JEANS GUIDE SECTION ═══ -->
+    
     <div class="tape"></div>
+
 
     <!-- ═══ CTA TO BOOK ═══ -->
     <section class="cta-booking">
