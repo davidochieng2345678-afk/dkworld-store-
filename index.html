@@ -1332,6 +1332,111 @@
         </div>
     </section>
 
+    <!-- ═══ ABOUT US + CONTACT US CLICKABLE BANNER ═══ -->
+<style>
+#home-banner{padding:60px 0;background:#f5f0e6;font-family:'Work Sans',sans-serif}
+#home-banner .hbwrap{max-width:1140px;margin:0 auto;padding:0 24px}
+#home-banner .hbhead{max-width:60ch;margin:0 auto 36px;text-align:center}
+#home-banner .hbhead .eyebrow{color:#b08d57;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;display:block;margin-bottom:12px}
+#home-banner .hbhead h2{font-family:'Fraunces',serif;font-weight:600;font-size:2rem;line-height:1.2;margin:0 0 .4em;color:#1c1a17}
+#home-banner .hbhead p{font-size:1.05rem;color:#6b6459;max-width:56ch;margin:0 auto}
+#home-banner .hbgrid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+#home-banner .hbcard{display:block;background:#fff;border-radius:8px;overflow:hidden;text-decoration:none;color:inherit;border:1px solid rgba(28,26,23,.1);transition:.3s;position:relative}
+#home-banner .hbcard:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(0,0,0,.1);border-color:#b08d57}
+#home-banner .hbcard .hbimg{height:200px;position:relative;overflow:hidden;background:#1c1a17}
+#home-banner .hbcard .hbimg img{width:100%;height:100%;object-fit:cover;transition:.6s;display:block}
+#home-banner .hbcard:hover .hbimg img{transform:scale(1.06)}
+#home-banner .hbcard .hbbadge{position:absolute;top:16px;left:16px;background:#b08d57;color:#1c1a17;font-size:.72rem;font-weight:600;padding:6px 14px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;z-index:2}
+#home-banner .hbcard .hbcontent{padding:28px 26px 26px;display:flex;flex-direction:column}
+#home-banner .hbcard h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.35rem;line-height:1.25;margin:0 0 10px;color:#1c1a17}
+#home-banner .hbcard p{font-size:.95rem;color:#6b6459;margin:0 0 20px;flex:1}
+#home-banner .hbcard .hblink{display:inline-flex;align-items:center;gap:10px;color:#7a2e2a;font-weight:600;font-size:.95rem;transition:gap .25s}
+#home-banner .hbcard:hover .hblink{gap:16px}
+#home-banner .hbcard .hblink svg{transition:transform .25s}
+#home-banner .hbcard:hover .hblink svg{transform:translateX(4px)}
+#home-banner .hbcard.hbcontact .hbbadge{background:#25D366;color:#fff}
+#home-banner .hbcard.hbcontact .hblink{color:#25D366}
+#home-banner .hbcta{margin-top:36px;text-align:center;padding:28px 24px;background:#1c1a17;color:#f5f0e6;border-radius:8px}
+#home-banner .hbcta p{margin:0 auto 18px;max-width:52ch;color:rgba(245,240,230,.8);font-size:1rem}
+#home-banner .hbcta .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+#home-banner .hbcta .btn{display:inline-block;padding:14px 28px;border-radius:3px;font-weight:500;font-size:.95rem;text-decoration:none;transition:.2s}
+#home-banner .hbcta .btn-wa{background:#25D366;color:#fff}
+#home-banner .hbcta .btn-wa:hover{background:#1da851;transform:translateY(-2px)}
+#home-banner .hbcta .btn-alt{background:transparent;color:#f5f0e6;border:1.5px solid rgba(245,240,230,.3)}
+#home-banner .hbcta .btn-alt:hover{background:rgba(245,240,230,.1)}
+@media (max-width:860px){
+#home-banner .hbgrid{grid-template-columns:1fr}
+#home-banner .hbhead h2{font-size:1.6rem}
+}
+@media (max-width:480px){
+#home-banner{padding:40px 0}
+#home-banner .hbcard .hbcontent{padding:22px 20px}
+#home-banner .hbcta{padding:22px 18px}
+}
+</style>
+
+<section id="home-banner">
+<div class="hbwrap">
+
+    <div class="hbhead">
+        <span class="eyebrow">Get to Know Us</span>
+        <h2>Learn About Our Craft · Get in Touch Today</h2>
+        <p>Meet the team behind your perfect fit, or send us a message and get a free quote within minutes.</p>
+    </div>
+
+    <div class="hbgrid">
+
+        <!-- ABOUT US CARD -->
+        <a href="/about-us/" class="hbcard hbabout" aria-label="Learn more about Bespoke & Co. Tailors Fit Kenya">
+            <div class="hbimg">
+                <span class="hbbadge">About Us</span>
+                <img src="https://i.ibb.co/qLPBbwfg/file-00000000332082118db4812c0d45752e.png" alt="Bespoke & Co. Tailors team at work in Nairobi" />
+            </div>
+            <div class="hbcontent">
+                <h3>Meet Bespoke &amp; Co. Tailors — Nairobi's Trusted Alteration Specialists</h3>
+                <p>Founded by master tailor David Ochieng with 14 years of Italian menswear experience. Learn our story, our values, and why thousands of Nairobi residents trust us with their garments.</p>
+                <span class="hblink">
+                    Read Our Story
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </span>
+            </div>
+        </a>
+
+        <!-- CONTACT US CARD -->
+        <a href="/contact-us/" class="hbcard hbcontact" aria-label="Contact Bespoke & Co. Tailors for a free quote">
+            <div class="hbimg" style="background:linear-gradient(135deg,#7a2e2a 0%,#5f2320 100%)">
+                <span class="hbbadge">Contact Us</span>
+                <div style="display:flex;align-items:center;justify-content:center;height:100%;color:#f5f0e6">
+                    <svg width="110" height="110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="hbcontent">
+                <h3>Get a Free Quote in Minutes — WhatsApp, Email or Phone</h3>
+                <p>Send a photo of your garment and get an accurate quote right away. Free door-to-door pickup and delivery anywhere in Nairobi. Fast reply, no obligation.</p>
+                <span class="hblink">
+                    Contact Us Now
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </span>
+            </div>
+        </a>
+
+    </div>
+
+    <!-- QUICK CTA BELOW CARDS -->
+    <div class="hbcta">
+        <p>Ready to get started? Send a photo of your garment on WhatsApp and David will reply personally with a free quote — usually within 5 minutes.</p>
+        <div class="btns">
+            <a href="https://wa.me/254705728896" class="btn btn-wa">Chat on WhatsApp Now</a>
+            <a href="/contact-us/" class="btn btn-alt">See All Contact Options</a>
+        </div>
+    </div>
+
+</div>
+</section>
+<!-- ═══ END ABOUT + CONTACT BANNER ═══ -->
+
     <div class="tape"></div>
 
     <!-- ═══ HOW IT WORKS ═══ -->
